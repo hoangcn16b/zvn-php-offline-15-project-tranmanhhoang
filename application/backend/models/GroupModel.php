@@ -11,37 +11,23 @@ class GroupModel extends Model
 	{
 		$query = [];
 		//search
-		$flagKey = false;
 		if (!empty($arrParams['input-keyword'])) {
 			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
-			$query[] = "WHERE `name` $keyword";
-			$flagKey = true;
+			$query[] = "AND `name` $keyword";
 		}
-		//filter
-		if (isset($arrParams['status'])) {
-			if ($flagKey == false) {
-				if ($arrParams['status'] == 'all' || $arrParams['status'] == null) {
-					$query[] = '';
-				} else {
-					$query[] = "WHERE `status` = '{$arrParams['status']}'";
-				}
-			} else {
-				if ($arrParams['status'] == 'all' || $arrParams['status'] == null) {
-					$query[] = '';
-				} else {
-					$query[] = "AND `status` = '{$arrParams['status']}'";
-				}
-			}
+
+		if (isset($arrParams['status']) && $arrParams['status'] != 'all') {
+			$query[] = "AND `status` = '{$arrParams['status']}'";
 		}
-		// $query = implode(" ", $query);
-		return $query;
+
+		return implode(' ', $query);
 	}
 
 	public function listItems($arrParams, $option = null)
 	{
-		$query[] = "SELECT * FROM `$this->table`";
+		$query[] = "SELECT * FROM `$this->table` WHERE `id` > 0";
 
-		$query[] = implode(" ", $this->createQuery($arrParams));
+		$query[] = $this->createQuery($arrParams);
 		$query = implode(" ", $query);
 		$result = $this->listRecord($query);
 		return $result;

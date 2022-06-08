@@ -14,25 +14,17 @@ class HelperForm
         return ('<label>' . $name . ' <span class="text-danger">*</span></label>');
     }
 
-    public static function SelectBox($arrData, $name, $keySelected = 'default', $class = 'custom-select')
+    public static function selectBox($arrData, $name, $keySelected = 'default', $class = 'custom-select')
     {
         $xhtml = "";
         if (!empty($arrData)) {
-
-            $xhtml = '  
-                        <select class="' . $class . '" name="' . $name . '">
-                    ';
             foreach ($arrData as $key => $value) {
-                if ($key == $keySelected) {
-                    $xhtml .= '<option value="' . $key . '" selected >' . $value . '</option>';
-                } else {
-                    $xhtml .= '<option value="' . $key . '">' . $value . '</option>';
-                }
+                $selected = $key == $keySelected ? 'selected' : '';
+                $xhtml .= '<option value="' . $key . '" ' . $selected . '>' . $value . '</option>';
             }
-            $xhtml .= ' 
-                        </select>
-                    ';
         }
+
+        $xhtml = '<select class="' . $class . '" name="' . $name . '">' . $xhtml . '</select>';
         return $xhtml;
     }
 }

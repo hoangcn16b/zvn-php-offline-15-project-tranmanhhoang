@@ -10,10 +10,12 @@ $lblName = HelperForm::label('Name');
 $inputName = HelperForm::input('text', 'form[name]', $data['name'] ?? '', 'form-control');
 
 $lblGroupAcp = HelperForm::label('Group ACP');
-$selectGroupAcp = HelperForm::SelectBox($arrSelect['group_acp'], 'form[group_acp]', $data['group_acp'] ?? 2);
+// camelCase
+// coding convention
+$selectGroupAcp = HelperForm::selectBox($arrSelect['group_acp'], 'form[group_acp]', $data['group_acp'] ?? 2);
 
 $lblStatus = HelperForm::label('Status');
-$selectStatus = HelperForm::SelectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'default');
+$selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'default');
 
 if (isset($this->arrParams['id'])) {
     $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);

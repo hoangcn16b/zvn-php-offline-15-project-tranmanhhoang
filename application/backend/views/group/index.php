@@ -58,7 +58,7 @@ if (!empty($this->items)) {
                     <div class="row justify-content-between align-items-center">
                         <div class="area-filter-status mb-2">
                             <?php $filterStatus = $this->filterStatus;
-                            echo Helper::filterStatus($filterStatus, ($this->arrParams['status'] ?? ''), $this->arrParams['input-keyword'] ?? '') ?>
+                            echo Helper::filterStatus($filterStatus, ($this->arrParams['status'] ?? 'all'), $this->arrParams['input-keyword'] ?? '') ?>
                         </div>
                         <div class="area-search mb-2">
                             <form action="" method="get" id="form-search">

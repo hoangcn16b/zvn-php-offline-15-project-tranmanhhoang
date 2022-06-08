@@ -92,13 +92,7 @@ class Helper
 
         $xhtml = '';
         foreach ($arrParams as $key => $value) {
-            if ($key == 'all' && $option == null) {
-                $class = 'info';
-            } elseif ($option == $key) {
-                $class = 'info';
-            } else if ($option != $key) {
-                $class = 'secondary';
-            }
+            $class = $option == $key ? 'info' : 'secondary';
             if ($keyword == '') {
                 $url =  URL::createLink('backend', 'Group', 'index', ['status' => $key]);
             } else {
