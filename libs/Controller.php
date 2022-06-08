@@ -18,6 +18,7 @@ class Controller{
 		$this->setTemplate($this);
 		$this->setView($arrParams['module']);
 		$this->setParams($arrParams);
+		$this->_view->arrParams = $this->_arrParam;
 	}
 	
 	// SET MODEL

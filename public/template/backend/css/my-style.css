@@ -1,0 +1,9 @@
+.table.align-middle td,
+.table.align-middle th {
+    vertical-align: middle;
+}
+
+.mark, mark {
+    padding: 0;
+    background-color: gold;
+}
