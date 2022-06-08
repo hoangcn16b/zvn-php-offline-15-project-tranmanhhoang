@@ -37,15 +37,12 @@ if (isset($this->arrParams['id'])) {
                     <?= Helper::cmsError($this->errors ?? '') ?>
                     <div class="form-group">
                         <?= $lblName . '</br>' . $inputName ?>
-                        <!-- <input type="text" class="form-control" name="name"> -->
                     </div>
                     <div class="form-group">
                         <?= $lblGroupAcp . '</br>' . $selectGroupAcp ?>
-
                     </div>
                     <div class="form-group">
                         <?= $lblStatus . '</br>' . $selectStatus ?>
-
                     </div>
                     <?= $inputId ?? '' ?>
                 </div>
