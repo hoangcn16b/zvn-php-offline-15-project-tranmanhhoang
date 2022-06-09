@@ -102,7 +102,7 @@ class Helper
                         <a href="' . $url . '" class="btn btn-' . $class . '"> ' . ucfirst($key) . '        <span class="badge badge-pill badge-light">' . $value . '</span>
                         </a> 
                     ';
-            $url = '';
+            // $url = '';
         }
         return $xhtml;
     }

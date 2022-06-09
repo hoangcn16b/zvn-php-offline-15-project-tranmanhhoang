@@ -27,6 +27,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <!-- index.php?module=backend&controller=Group&action=index -->
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
@@ -36,13 +37,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="group-list.php" class="nav-link">
+                            <a href="<?= URL::createLink('backend', 'group', 'index') ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="group-form.php" class="nav-link">
+                            <a href="<?= URL::createLink('backend', 'group', 'form') ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add</p>
                             </a>
