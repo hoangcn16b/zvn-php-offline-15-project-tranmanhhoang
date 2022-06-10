@@ -85,6 +85,9 @@ class Validate
 					case 'group':
 						$this->validateGroupID($element);
 						break;
+					case 'select':
+						$this->validateSelect($element);
+						break;
 					case 'password':
 						$this->validatePassword($element, $value['options']);
 						break;
@@ -171,6 +174,13 @@ class Validate
 		}
 	}
 
+	private function validateSelect($element)
+	{
+		if ($this->source[$element] == 'default') {
+			$this->setError($element, 'Select status');
+		}
+	}
+
 	// Validate group ACP
 	private function validateGroupAcp($element)
 	{
@@ -191,8 +201,9 @@ class Validate
 	// Validate Password
 	private function validatePassword($element, $options)
 	{
+		// #^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}$#';	// Php4567!
 		if ($options['action'] == 'add' || ($options['action'] == 'edit' && $this->source[$element])) {
-			$pattern = '#^(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8}$#';	// Php4567!
+			$pattern = '"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"';
 			if (!preg_match($pattern, $this->source[$element])) {
 				$this->setError($element, 'is an invalid password');
 			};

@@ -6,15 +6,14 @@ $arrSelect = [
     'status' => ['default' => 'Select Status', 'inactive' => 'Không kích hoạt', 'active' => 'Kích hoạt']
 ];
 
-$lblName = HelperForm::label('Name');
+$lblName = HelperForm::label('Name',true);
 $inputName = HelperForm::input('text', 'form[name]', $data['name'] ?? '', 'form-control');
 
-$lblGroupAcp = HelperForm::label('Group ACP');
-// camelCase
-// coding convention
+$lblGroupAcp = HelperForm::label('Group ACP',true);
+
 $selectGroupAcp = HelperForm::selectBox($arrSelect['group_acp'], 'form[group_acp]', $data['group_acp'] ?? 2);
 
-$lblStatus = HelperForm::label('Status');
+$lblStatus = HelperForm::label('Status',true);
 $selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'default');
 
 if (isset($this->arrParams['id'])) {

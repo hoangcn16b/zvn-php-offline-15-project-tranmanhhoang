@@ -87,16 +87,16 @@ class Helper
         return $value;
     }
 
-    public static function filterStatus($arrParams, $option = null, $keyword = '')
+    public static function filterStatus($arrParams, $option = null, $toUrl, $keyword = '')
     {
 
         $xhtml = '';
         foreach ($arrParams as $key => $value) {
             $class = $option == $key ? 'info' : 'secondary';
             if ($keyword == '') {
-                $url =  URL::createLink('backend', 'Group', 'index', ['status' => $key]);
+                $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], ['status' => $key]);
             } else {
-                $url =  URL::createLink('backend', 'Group', 'index', ['status' => $key, 'input-keyword' => $keyword]);
+                $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], ['status' => $key, 'input-keyword' => $keyword]);
             }
             $xhtml .= ' 
                         <a href="' . $url . '" class="btn btn-' . $class . '"> ' . ucfirst($key) . '        <span class="badge badge-pill badge-light">' . $value . '</span>

@@ -9,9 +9,10 @@ class HelperForm
         return $xhtml;
     }
 
-    public static function label($name)
+    public static function label($name, $option = false)
     {
-        return ('<label>' . $name . ' <span class="text-danger">*</span></label>');
+        $option = ($option == true) ? '<span class="text-danger">*</span>' : '';
+        return ('<label>' . $name . $option . ' </label>');
     }
 
     public static function selectBox($arrData, $name, $keySelected = 'default', $class = 'custom-select')
