@@ -5,9 +5,8 @@ $action = $this->arrParams['action'];
 $arrSelect = [
     'group' => $this->listGroup
 ];
-
+unset($arrSelect['group']['default']);
 $xhtml = '';
-
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
 
@@ -25,6 +24,7 @@ if (!empty($this->items)) {
         $linkEdit = URL::createLink('backend', 'User', 'form', ['id' => $id]);
         $linkDelete = URL::createLink('backend', 'User', 'delete', ['id' => $id]);
 
+        $groupName = lcfirst($item['group_name']);
         $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" ">';
         $xhtml .= '
                     <tr>
@@ -35,7 +35,7 @@ if (!empty($this->items)) {
                             <p class="mb-0">FullName: ' . $item['fullname'] . '</p>
                             <p class="mb-0">Email: ' . $item['email'] . '</p>
                         </td>
-                        <td> ' . HelperForm::selectBox($arrSelect['group'], 'select', 'default', 'form-control custom-select w-auto') . '
+                        <td> ' . HelperForm::selectBox($arrSelect['group'], 'select', $groupName, 'form-control custom-select w-auto') . '
                         </td>
                         <td>
                             ' . $status . '
@@ -76,9 +76,9 @@ if (!empty($this->items)) {
                 <div class="container-fluid">
                     <div class="row justify-content-between align-items-center">
                         <div class="area-filter-status mb-2">
-                            <?php $filterStatus = $this->filterStatus;
+                            <?php
                             echo Helper::filterStatus(
-                                $filterStatus,
+                                $this->filterStatus,
                                 ($this->arrParams['status'] ?? 'all'),
                                 $this->arrParams,
                                 ($this->arrParams['input-keyword'] ?? '')

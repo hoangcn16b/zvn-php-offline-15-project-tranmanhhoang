@@ -5,9 +5,12 @@ $arrSelect = [
     'status' => ['default' => 'Select Status', 'inactive' => 'Không kích hoạt', 'active' => 'Kích hoạt'],
     'group' => $this->listGroup
 ];
-
+if (isset($this->arrParams['id'])) {
+    $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
+}
+$readOnly = isset($this->arrParams['id']) ? 'readonly' : '';
 $lblUsername = HelperForm::label('Username', true);
-$inputUserName = HelperForm::input('text', 'form[username]', $data['username'] ?? '', 'form-control');
+$inputUserName = HelperForm::input('text', 'form[username]', $data['username'] ?? '', 'form-control', $readOnly);
 
 $lblPassWord = HelperForm::label('Password', true);
 $inputPassWord = HelperForm::input('password', 'form[password]', $data['password'] ?? '', 'form-control');
@@ -24,9 +27,7 @@ $selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $dat
 $lblGroup = HelperForm::label('Group', true);
 $selectGroup = HelperForm::selectBox($arrSelect['group'], 'form[group]', lcfirst($data['group'] ?? 'default'));
 
-if (isset($this->arrParams['id'])) {
-    $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
-}
+
 ?>
 
 <div class="row">
@@ -62,6 +63,9 @@ if (isset($this->arrParams['id'])) {
                     </div>
                     <div class="form-group">
                         <?= $lblGroup . $selectGroup ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $inputId ?? '' ?>
                     </div>
                 </div>
                 <div class="card-footer">

@@ -13,22 +13,24 @@ class UserModel extends Model
 		//search
 		if (!empty($arrParams['input-keyword'])) {
 			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
-			$query[] = "AND `username` $keyword";
+			$query[] = "AND `u`.`username` $keyword";
 		}
 
 		if (isset($arrParams['status']) && $arrParams['status'] != 'all') {
-			$query[] = "AND `status` = '{$arrParams['status']}'";
+			$query[] = "AND `u`.`status` = '{$arrParams['status']}'";
 		}
 
-		return implode(' ', $query);
+		return implode(" ", $query);
 	}
 
 	public function listItems($arrParams, $option = null)
 	{
-		$query[] = "SELECT * FROM `$this->table` WHERE `id` > 0";
-
+		$query[] = "SELECT u.id, u.username, u.email, u.fullname, u.created, u.created_by, u.modified, u.modified_by, u.status, g.name AS `group_name`";
+		$query[] = "FROM `user` AS `u`, `group` AS `g`";
+		$query[] = "WHERE u.`id` > 0 AND `u`.`group_id` = `g`.`id` ORDER BY u.id ";
 		$query[] = $this->createQuery($arrParams);
 		$query = implode(" ", $query);
+		$query;
 		$result = $this->listRecord($query);
 		return $result;
 	}
@@ -67,6 +69,7 @@ class UserModel extends Model
 		}
 
 		$query = implode(" ", $query);
+		$query;
 		$result = $this->singleRecord($query);
 		return $result;
 	}
@@ -83,12 +86,12 @@ class UserModel extends Model
 		return $result;
 	}
 
-	public function getGroupId($option = null)
+	public function getGroupId($name = null)
 	{
 		$query[] = "SELECT DISTINCT g.`name`, u.`group_id`";
-		$query[] = "FROM `user`AS `u`, `group` AS `g`";
-		$query[] = "WHERE u.`group_id` = g.`id`";
-		$query[] = ($option != null) ? "AND g.`name` = '{$option}'" : '';
+		$query[] = "FROM `user` AS `u`, `group` AS `g`";
+		$query[] = "WHERE `u`.`group_id` = `g`.`id`";
+		$query[] = ($name != null) ? "AND `g`.`name` = '$name'" : '';
 		$query = implode(" ", $query);
 		$result = $this->singleRecord($query);
 
@@ -99,8 +102,13 @@ class UserModel extends Model
 	{
 		if ($options['task'] == 'add') {
 			$params['created'] = date("Y-m-d H:i:s");
-			// $params['password'] = md5($params['password']);
-			$params['group_id'] = $this->getGroupId($params['group']) ?? '';
+			$params['password'] = md5($params['password']);
+			echo '<pre>';
+			print_r($params);
+			echo '</pre>';
+			$group = ucfirst($params['group'] ?? '');
+			$groupId =  $this->getGroupId($group);
+			$params['group_id'] = $groupId['group_id'];
 			unset($params['group']);
 			$this->insert($params);
 			Session::set('messageForm', ['class' => 'success', 'content' => ADD_SUCCESS]);
@@ -108,9 +116,18 @@ class UserModel extends Model
 			$params['modified'] = date("Y-m-d H:i:s");
 			$id = $params['id'];
 			unset($params['id']);
-			// $params['password'] = md5($params['password']);
-			$params['group_id'] = $this->getGroupId($params['group']);
+			$params['password'] = md5($params['password']);
+			unset($params['username']);
+			unset($params['password']);
+
+			$group = ucfirst($params['group'] ?? '');
+			$groupId = $this->getGroupId($group);
+
+			$groupId = $groupId['group_id'];
+			$params['group_id'] = $groupId['group_id'];
+
 			unset($params['group']);
+			$where = [['id', $id]];
 			$this->update($params, [['id', $id]]);
 			Session::set('messageForm', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
 		}
@@ -135,6 +152,13 @@ class UserModel extends Model
 		$query = implode(" ", $query);
 		$result = $this->singleRecord($query);
 
+		return $result;
+	}
+
+	public function checkUserName($params)
+	{
+		$query = "SELECT `username` from `user` where `username` = '{$params['username']}'";
+		$result = $this->isExist($query);
 		return $result;
 	}
 }

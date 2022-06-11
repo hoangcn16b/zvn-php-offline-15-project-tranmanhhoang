@@ -1,11 +1,12 @@
 <?php
 class HelperForm
 {
-    public static function input($type, $name, $value = null, $class = null)
+    public static function input($type, $name, $value = null, $class = null, $option = '')
     {
+        
         $xhtml = sprintf('
-                    <input type="%s" name="%s" value="%s" class="%s">
-                ', $type, $name, $value, $class);
+                    <input type="%s" name="%s" value="%s" class="%s %s">
+                ', $type, $name, $value, $class, $option);
         return $xhtml;
     }
 

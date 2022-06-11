@@ -108,7 +108,7 @@ class Model
 	{
 		$newSet 	= $this->createUpdateSQL($data);
 		$newWhere 	= $this->createWhereUpdateSQL($where);
-		$query = "UPDATE `$this->table` SET " . $newSet . " WHERE $newWhere";
+		echo $query = "UPDATE `$this->table` SET " . $newSet . " WHERE $newWhere";
 		$this->query($query);
 		return $this->affectedRows();
 	}
