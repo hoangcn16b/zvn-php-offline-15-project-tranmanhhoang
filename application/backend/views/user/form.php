@@ -5,9 +5,7 @@ $arrSelect = [
     'status' => ['default' => 'Select Status', 'inactive' => 'Không kích hoạt', 'active' => 'Kích hoạt'],
     'group' => $this->listGroup
 ];
-if (isset($this->arrParams['id'])) {
-    $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
-}
+
 $readOnly = isset($this->arrParams['id']) ? 'readonly' : '';
 $lblUsername = HelperForm::label('Username', true);
 $inputUserName = HelperForm::input('text', 'form[username]', $data['username'] ?? '', 'form-control', $readOnly);
@@ -27,6 +25,11 @@ $selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $dat
 $lblGroup = HelperForm::label('Group', true);
 $selectGroup = HelperForm::selectBox($arrSelect['group'], 'form[group]', lcfirst($data['group'] ?? 'default'));
 
+if (isset($this->arrParams['id'])) {
+    $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
+    $lblPassWord = '';
+    $inputPassWord = '';
+}
 
 ?>
 
@@ -47,16 +50,16 @@ $selectGroup = HelperForm::selectBox($arrSelect['group'], 'form[group]', lcfirst
                 <div class="card-body">
                     <?= Helper::cmsError($this->errors ?? '') ?>
                     <div class="form-group">
-                        <?= $lblUsername . '</br>' . $inputUserName ?>
+                        <?= $lblUsername . $inputUserName ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblPassWord . '</br>' . $inputPassWord ?>
+                        <?= $lblPassWord . $inputPassWord ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblEmail . '</br>' . $inputEmail ?>
+                        <?= $lblEmail . $inputEmail ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblFullName . '</br>' . $inputFullName ?>
+                        <?= $lblFullName . $inputFullName ?>
                     </div>
                     <div class="form-group">
                         <?= $lblStatus . $selectStatus ?>

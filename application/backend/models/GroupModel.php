@@ -7,6 +7,24 @@ class GroupModel extends Model
 		$this->setTable('group');
 	}
 
+	public function getGroupAcp($hasDefault = false)
+	{
+		$query = 'SELECT `group_acp` FROM `group`';
+		$list = $this->listRecord($query);
+		$result = [];
+		if ($hasDefault) $result['default'] = 'Select Group';
+		foreach ($list as $key => $value) {
+			if ($value['group_acp'] == 1) {
+				$result[$value['group_acp']] = 'Active';
+			} else {
+				$result[$value['group_acp']] = 'Inative';
+			}
+
+			// $result[$value['group_acp']] = $value['group_acp'];
+		}
+		return $result;
+	}
+
 	public function createQuery($arrParams)
 	{
 		$query = [];
@@ -26,6 +44,11 @@ class GroupModel extends Model
 	public function listItems($arrParams, $option = null)
 	{
 		$query[] = "SELECT * FROM `$this->table` WHERE `id` > 0";
+
+		if (isset($arrParams['group_acp']) &&  $arrParams['group_acp'] != 'default') {
+            $groupAcp = trim(($arrParams['group_acp']));
+            $query[] = "AND `group_acp` = $groupAcp ";
+        }
 
 		$query[] = $this->createQuery($arrParams);
 		$query = implode(" ", $query);

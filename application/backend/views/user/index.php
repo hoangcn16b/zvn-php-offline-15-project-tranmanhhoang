@@ -2,17 +2,12 @@
 $module = $this->arrParams['module'];
 $controller = $this->arrParams['controller'];
 $action = $this->arrParams['action'];
-$arrSelect = [
-    'group' => $this->listGroup
-];
-unset($arrSelect['group']['default']);
 $xhtml = '';
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
-
         $id = $item['id'];
         $name = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['username']);
-        $linkStatus = URL::createLink('backend', 'User', 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
+        $linkStatus = URL::createLink($module, $controller, 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
 
         $created = Helper::created($item['created']);
@@ -21,40 +16,40 @@ if (!empty($this->items)) {
         $modified = Helper::created($item['modified']);
         $modifiedBy = Helper::createdBy($item['modified_by']);
 
-        $linkEdit = URL::createLink('backend', 'User', 'form', ['id' => $id]);
-        $linkDelete = URL::createLink('backend', 'User', 'delete', ['id' => $id]);
+        $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
+        $linkDelete = URL::createLink($module, $controller, 'delete', ['id' => $id]);
 
         $groupName = lcfirst($item['group_name']);
         $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" ">';
         $xhtml .= '
-                    <tr>
-                        <td>' . $ckb . '</td>
-                        <td>' . $id . '</td>
-                        <td class="text-left">
-                            <p class="mb-0">Username: ' . $name . '</p>
-                            <p class="mb-0">FullName: ' . $item['fullname'] . '</p>
-                            <p class="mb-0">Email: ' . $item['email'] . '</p>
-                        </td>
-                        <td> ' . HelperForm::selectBox($arrSelect['group'], 'select', $groupName, 'form-control custom-select w-auto') . '
-                        </td>
-                        <td>
-                            ' . $status . '
-                        </td>
-                        <td>
-                            ' . $createdBy . '
-                            ' . $created . '
-                        </td>
-                        <td>
-                            ' . $modifiedBy . '
-                            ' . $modified . '
-                        </td>
-                        <td>
-                            <a href="#" class="btn btn-secondary btn-sm rounded-circle"><i class="fas fa-key"></i></a>
-                            <a href="' . $linkEdit . '" class="btn btn-info btn-sm rounded-circle"><i class="fas fa-pen"></i></a>
-                            <a href="' . $linkDelete . '" class="btn btn-danger btn-sm rounded-circle"><i class="fas fa-trash "></i></a>
-                        </td>
-                    </tr>
-                ';
+            <tr>
+                <td>' . $ckb . '</td>
+                <td>' . $id . '</td>
+                <td class="text-left">
+                    <p class="mb-0">Username: ' . $name . '</p>
+                    <p class="mb-0">FullName: ' . $item['fullname'] . '</p>
+                    <p class="mb-0">Email: ' . $item['email'] . '</p>
+                </td>
+                <td> ' . HelperForm::selectBox($this->listGroup, '', $item['group_id'], 'w-auto') . '
+                </td>
+                <td>
+                    ' . $status . '
+                </td>
+                <td>
+                    ' . $createdBy . '
+                    ' . $created . '
+                </td>
+                <td>
+                    ' . $modifiedBy . '
+                    ' . $modified . '
+                </td>
+                <td>
+                    <a href="#" class="btn btn-secondary btn-sm rounded-circle"><i class="fas fa-key"></i></a>
+                    <a href="' . $linkEdit . '" class="btn btn-info btn-sm rounded-circle"><i class="fas fa-pen"></i></a>
+                    <a href="' . $linkDelete . '" class="btn btn-danger btn-sm rounded-circle"><i class="fas fa-trash "></i></a>
+                </td>
+            </tr>
+        ';
     }
 }
 ?>

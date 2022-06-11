@@ -15,6 +15,7 @@ class GroupController extends Controller
 	{
 		$this->_view->items = $this->_model->listItems($this->_arrParam,);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
+		$this->_view->getGroupAcp = $this->_model->getGroupAcp(true);
 		$this->_view->render('group/index');
 	}
 

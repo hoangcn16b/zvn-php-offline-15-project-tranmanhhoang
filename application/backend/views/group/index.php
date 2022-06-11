@@ -55,6 +55,7 @@ if (!empty($this->items)) {
                         <i class="fas fa-minus"></i>
                     </button>
                 </div>
+
             </div>
             <div class="card-body">
                 <div class="container-fluid">
@@ -63,6 +64,20 @@ if (!empty($this->items)) {
                             <?php $filterStatus = $this->filterStatus;
                             echo Helper::filterStatus($filterStatus, ($this->arrParams['status'] ?? 'all'), $this->arrParams, $this->arrParams['input-keyword'] ?? '') ?>
                         </div>
+
+                        <div>
+                            <form action="" method="GET" id="filter-form">
+                                <?php
+                                $arrGroupAcp = ['default' => 'Select Group ACP', 1 => 'Active', 0 => 'Inactive'];
+                                $select = HelperForm::selectBoxKeyInt($arrGroupAcp, 'group_acp', $this->arrParams['group_acp'] ?? 'default', 'filter-element');
+                                echo HelperForm::input('hidden', 'module', $module) .
+                                    HelperForm::input('hidden', 'controller', $controller) .
+                                    HelperForm::input('hidden', 'action', $action) . $select;
+
+                                ?>
+                            </form>
+                        </div>
+
                         <div class="area-search mb-2">
                             <form action="" method="get" id="form-search">
                                 <div class="input-group" id="form-input">

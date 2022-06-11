@@ -25,7 +25,7 @@ class UserModel extends Model
 
 	public function listItems($arrParams, $option = null)
 	{
-		$query[] = "SELECT u.id, u.username, u.email, u.fullname, u.created, u.created_by, u.modified, u.modified_by, u.status, g.name AS `group_name`";
+		$query[] = "SELECT u.id, u.username, u.email, u.fullname, u.created, u.created_by, u.modified, u.modified_by, u.status, u.group_id, g.name AS `group_name`";
 		$query[] = "FROM `user` AS `u`, `group` AS `g`";
 		$query[] = "WHERE u.`id` > 0 AND `u`.`group_id` = `g`.`id` ORDER BY u.id ";
 		$query[] = $this->createQuery($arrParams);
@@ -74,14 +74,14 @@ class UserModel extends Model
 		return $result;
 	}
 
-	public function getGroupAdmin()
+	public function getGroupAdmin($hasDefault = false)
 	{
-		$query = 'SELECT `name` FROM `group`';
+		$query = 'SELECT `id`, `name` FROM `group`';
 		$list = $this->listRecord($query);
 		$result = [];
-		$result['default'] = 'Select Group';
+		if ($hasDefault) $result['default'] = 'Select Group';
 		foreach ($list as $key => $value) {
-			$result[lcfirst($value['name'])] = $value['name'];
+			$result[$value['id']] = $value['name'];
 		}
 		return $result;
 	}

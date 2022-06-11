@@ -38,7 +38,7 @@ class UserController extends Controller
 
 	public function formAction()
 	{
-		$this->_view->listGroup = $this->_model->getGroupAdmin();
+		$this->_view->listGroup = $this->_model->getGroupAdmin(true);
 		$this->_view->setTitleForm = 'Add User Admin';
 		$data = null;
 		$task = 'add';
