@@ -6,7 +6,9 @@ $xhtml = '';
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
         $id = $item['id'];
-        $name = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['username']);
+        $userName = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['username']);
+        $fullName = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['fullname']);
+        $email = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['email']);
         $linkStatus = URL::createLink($module, $controller, 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
 
@@ -26,9 +28,9 @@ if (!empty($this->items)) {
                 <td>' . $ckb . '</td>
                 <td>' . $id . '</td>
                 <td class="text-left">
-                    <p class="mb-0">Username: ' . $name . '</p>
-                    <p class="mb-0">FullName: ' . $item['fullname'] . '</p>
-                    <p class="mb-0">Email: ' . $item['email'] . '</p>
+                    <p class="mb-0">Username: ' . $userName . '</p>
+                    <p class="mb-0">FullName: ' . $fullName . '</p>
+                    <p class="mb-0">Email: ' . $email . '</p>
                 </td>
                 <td> ' . HelperForm::selectBox($this->listGroup, '', $item['group_id'], 'w-auto') . '
                 </td>
@@ -92,9 +94,9 @@ if (!empty($this->items)) {
                             <form action="" method="get" id="form-search">
                                 <div class="input-group" id="form-input">
                                     <?php
-                                    echo HelperForm::input('hidden', 'module', 'backend') .
-                                        HelperForm::input('hidden', 'controller', 'User') .
-                                        HelperForm::input('hidden', 'action', 'index') .
+                                    echo HelperForm::input('hidden', 'module', $module) .
+                                        HelperForm::input('hidden', 'controller', $controller) .
+                                        HelperForm::input('hidden', 'action', $action) .
                                         HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
                                     ?>
                                     <!-- <input type="text" id="input-keyword" name="input-keyword" value="<?= $this->arrParams['input-keyword'] ?? '' ?>" class="form-control"> -->

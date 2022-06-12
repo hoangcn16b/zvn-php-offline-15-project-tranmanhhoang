@@ -7,14 +7,26 @@ class UserModel extends Model
 		$this->setTable('user');
 	}
 
-	public function createQuery($arrParams)
+	public function createQuery($arrParams, $total = 3, $options = ['username', 'fullname', 'email'])
 	{
 		$query = [];
 		//search
+		$i = 0;
 		if (!empty($arrParams['input-keyword'])) {
-			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
-			$query[] = "AND `u`.`username` $keyword";
+			$query[] = "AND (";
+			foreach ($options as $cols => $value) {
+				if ($i == $total) break;
+				$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
+				$query[] = ($i < 2) ? "`u`.`{$value}` $likeKeyWord OR" : "`u`.`{$value}` $likeKeyWord";
+				$i++;
+			}
+			$query[] = ")";
 		}
+
+		// if (!empty($arrParams['input-keyword'])) {
+		// 	$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
+		// 	$query[] = "AND `u`.`username` $keyword";
+		// }
 
 		if (isset($arrParams['status']) && $arrParams['status'] != 'all') {
 			$query[] = "AND `u`.`status` = '{$arrParams['status']}'";
@@ -27,10 +39,10 @@ class UserModel extends Model
 	{
 		$query[] = "SELECT u.id, u.username, u.email, u.fullname, u.created, u.created_by, u.modified, u.modified_by, u.status, u.group_id, g.name AS `group_name`";
 		$query[] = "FROM `user` AS `u`, `group` AS `g`";
-		$query[] = "WHERE u.`id` > 0 AND `u`.`group_id` = `g`.`id` ORDER BY u.id ";
-		$query[] = $this->createQuery($arrParams);
+		$query[] = "WHERE `u`.`id` > 0 AND `u`.`group_id` = `g`.`id`";
+		$query[] = $this->createQuery($arrParams, 3);
+		$query[] = "ORDER BY `u`.`id` DESC";
 		$query = implode(" ", $query);
-		$query;
 		$result = $this->listRecord($query);
 		return $result;
 	}
@@ -58,18 +70,26 @@ class UserModel extends Model
 		Session::set('messageDelete', ['class' => 'success', 'content' => DELETE_SUCCESS]);
 	}
 
-	public function filterStatusFix($arrParams)
+	public function filterStatusFix($arrParams, $total = 3, $options = ['username', 'fullname', 'email'])
 	{
 		$result = [];
 		$query[] = "SELECT COUNT(`status`) as `all`, SUM(`status` = 'active') as `active`, SUM(`status` = 'inactive') as `inactive` FROM `$this->table`";
-
+		$i = 0;
 		if (!empty($arrParams['input-keyword'])) {
-			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
-			$query[] = "WHERE `username` $keyword";
+			$query[] = "WHERE ";
+			foreach ($options as $cols => $value) {
+				if ($i == $total) break;
+				$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
+				$query[] = ($i < 2) ? "`{$value}` $likeKeyWord OR" : "`{$value}` $likeKeyWord";
+				$i++;
+			}
 		}
+		// if (!empty($arrParams['input-keyword'])) {
+		// 	$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
+		// 	$query[] = "WHERE `username` $keyword";
+		// }
 
 		$query = implode(" ", $query);
-		$query;
 		$result = $this->singleRecord($query);
 		return $result;
 	}
