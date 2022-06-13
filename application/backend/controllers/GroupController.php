@@ -47,7 +47,6 @@ class GroupController extends Controller
 		$this->_view->setTitleForm = 'Add Group Admin';
 		$data = null;
 		$task = 'add';
-
 		if (isset($this->_arrParam['id'])) {
 			$this->_view->setTitleForm = 'Edit Group Admin';
 			$data = $this->_model->checkItem($this->_arrParam);
@@ -60,12 +59,22 @@ class GroupController extends Controller
 		if (!empty($this->_arrParam['form'])) {
 			$data = $this->_arrParam['form'];
 			$validate = new Validate($data);
-			$validate->addRule('name', 'string', ['min' => 0, 'max' => 20])
+			// $nameGroup = $this->_model->checkNameGroup($this->_arrParam['form']);
+
+			$flag = false;
+			if ($this->_model->checkNameGroup($data) == 1) {
+				$validate->setError('name', 'Name Group is exist');
+				$flag = true;
+			}
+			$required = $task == 'add' ? true : false;
+
+			$validate->addRule('name', 'string', ['min' => 4, 'max' => 20], $required)
 				->addRule('group_acp', 'groupAcp')
 				->addRule('status', 'status');
 			$validate->run();
-
 			$data = $validate->getResult();
+			$data['name'] = ($flag == true) ? '' : ($data['name'] ?? '');
+
 			if ($validate->isValid()) {
 				$this->_model->saveItem($data, ['task' => $task]);
 				URL::redirectLink('backend', 'Group', 'index');

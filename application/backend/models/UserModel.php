@@ -31,7 +31,6 @@ class UserModel extends Model
 		if (isset($arrParams['status']) && $arrParams['status'] != 'all') {
 			$query[] = "AND `u`.`status` = '{$arrParams['status']}'";
 		}
-
 		return implode(" ", $query);
 	}
 

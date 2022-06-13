@@ -71,7 +71,7 @@ class Validate
 						$this->validateString($element, $value['options']['min'], $value['options']['max']);
 						break;
 					case 'username':
-						$this->validateUserName($element, $value['options']['min'], $value['options']['max'], 'add');
+						$this->validateUserName($element, $value['options']['min'], $value['options']['max']);
 						break;
 					case 'password':
 						$this->validatePassword($element, $value['options']['min'], $value['options']['max']);
@@ -132,6 +132,10 @@ class Validate
 		} elseif (!is_string($this->source[$element])) {
 			$this->setError($element, 'is an invalid string');
 		}
+		$pattern = '"^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"';
+		if (!preg_match($pattern, $this->source[$element])) {
+			$this->setError($element, 'is an invalid string');
+		};
 	}
 
 	// Validate URL
@@ -202,17 +206,15 @@ class Validate
 	}
 
 	//validate username
-	private function validateUserName($element, $min = 0, $max = 0, $task = 'add')
+	private function validateUserName($element, $min = 0, $max = 0)
 	{
-		if ($task == 'add') {
-			$length = strlen($this->source[$element]);
-			if ($length < $min) {
-				$this->setError($element, 'is too short');
-			} elseif ($length > $max) {
-				$this->setError($element, 'is too long');
-			} elseif (!is_string($this->source[$element])) {
-				$this->setError($element, 'is an invalid string');
-			}
+		$length = strlen($this->source[$element]);
+		if ($length < $min) {
+			$this->setError($element, 'is too short');
+		} elseif ($length > $max) {
+			$this->setError($element, 'is too long');
+		} elseif (!is_string($this->source[$element])) {
+			$this->setError($element, 'is an invalid string');
 		}
 	}
 
@@ -229,7 +231,8 @@ class Validate
 		} elseif (!is_string($this->source[$element])) {
 			$this->setError($element, 'is an invalid string');
 		}
-		$pattern = '"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"';
+		// $pattern = '"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"';
+		$pattern = '"^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"';
 		if (!preg_match($pattern, $this->source[$element])) {
 			$this->setError($element, 'is an invalid password');
 		};

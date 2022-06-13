@@ -108,7 +108,7 @@ class Model
 	{
 		$newSet 	= $this->createUpdateSQL($data);
 		$newWhere 	= $this->createWhereUpdateSQL($where);
-		echo $query = "UPDATE `$this->table` SET " . $newSet . " WHERE $newWhere";
+		$query = "UPDATE `$this->table` SET " . $newSet . " WHERE $newWhere";
 		$this->query($query);
 		return $this->affectedRows();
 	}
@@ -133,7 +133,8 @@ class Model
 		if (!empty($data)) {
 			foreach ($data as $value) {
 				$newWhere[] = "`$value[0]` = '$value[1]'";
-				$newWhere[] = $value[2];
+				$newWhere[] = (isset($value[2])) ? $value[2] : '';
+				// $newWhere[] = $value[2];
 			}
 			$newWhere = implode(" ", $newWhere);
 		}

@@ -46,9 +46,9 @@ class GroupModel extends Model
 		$query[] = "SELECT * FROM `$this->table` WHERE `id` > 0";
 
 		if (isset($arrParams['group_acp']) &&  $arrParams['group_acp'] != 'default') {
-            $groupAcp = trim(($arrParams['group_acp']));
-            $query[] = "AND `group_acp` = $groupAcp ";
-        }
+			$groupAcp = trim(($arrParams['group_acp']));
+			$query[] = "AND `group_acp` = $groupAcp ";
+		}
 
 		$query[] = $this->createQuery($arrParams);
 		$query = implode(" ", $query);
@@ -96,6 +96,7 @@ class GroupModel extends Model
 
 	public function saveItem($params, $options = null)
 	{
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
 		if ($options['task'] == 'add') {
 			$params['created'] = date("Y-m-d H:i:s");
 			$this->insert($params);
@@ -116,6 +117,22 @@ class GroupModel extends Model
 		$query = implode(" ", $query);
 
 		$result = $this->singleRecord($query);
+		return $result;
+	}
+
+	public function checkNameGroup($params)
+	{
+		$query[] = "SELECT * FROM `$this->table`";
+		if (isset($params['id'])) {
+			$query[] = "WHERE `id` != " . $params['id'] . " AND `name` = '" . $params['name'] . "'";
+		} else {
+			$query[] = "WHERE `name` = '" . $params['name'] . "'";
+		}
+
+
+		$query = implode(" ", $query);
+		// $result = $this->singleRecord($query);
+		$result = $this->isExist($query);
 		return $result;
 	}
 }
