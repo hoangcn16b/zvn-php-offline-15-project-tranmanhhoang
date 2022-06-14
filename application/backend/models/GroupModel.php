@@ -43,7 +43,7 @@ class GroupModel extends Model
 
 	public function listItems($arrParams, $option = null)
 	{
-		$query[] = "SELECT * FROM `$this->table` WHERE `id` > 0";
+		$query[] = "SELECT * FROM `$this->table` WHERE `id` > 0 ORDER BY `id` DESC";
 
 		if (isset($arrParams['group_acp']) &&  $arrParams['group_acp'] != 'default') {
 			$groupAcp = trim(($arrParams['group_acp']));
@@ -56,17 +56,35 @@ class GroupModel extends Model
 		return $result;
 	}
 
-	public function changeStatusAndAcp($Params, $option = null)
+	// public function changeStatusAndAcp($Params, $option = null)
+	// {
+	// 	$id = mysqli_real_escape_string($this->connect, $Params['id']);
+	// 	if ($option['task'] == 'change-status') {
+	// 		$status = $Params['status'] == 'active' ? 'inactive' : 'active';
+	// 		$query = "UPDATE `$this->table` SET `status` = '$status' where `id` = '$id'";
+	// 		$result = [$id, $status, URL::createLink('backend', 'Group', 'ajaxStatus', ['id' => $id, 'status' => $status])];
+	// 	} else if ($option['task'] == 'change-group-acp') {
+	// 		$groupAcp = $Params['group_acp'] == 1 ? 0 : 1;
+	// 		$query = "UPDATE `$this->table` SET `group_acp` = '$groupAcp' where `id` = '$id'";
+	// 		$result = [$id, $groupAcp, URL::createLink('backend', 'Group', 'ajaxGroupAcp', ['id' => $id, 'group_acp' => $groupAcp])];
+	// 	}
+	// 	$this->query($query);
+	// 	return $result;
+	// }
+
+	public function changeStatusAndAcp($params, $option = null)
 	{
-		$id = mysqli_real_escape_string($this->connect, $Params['id']);
-		if ($option['task'] == 'change-status') {
-			$status = $Params['status'] == 'active' ? 'inactive' : 'active';
+		$id = $params['id'];
+		if ($option['task'] == 'changeStatus') {
+			$status = $params['status'] == 'active' ? 'inactive' : 'active';
 			$query = "UPDATE `$this->table` SET `status` = '$status' where `id` = '$id'";
-			$result = [$id, $status, URL::createLink('backend', 'Group', 'ajaxStatus', ['id' => $id, 'status' => $status])];
-		} else if ($option['task'] == 'change-group-acp') {
-			$groupAcp = $Params['group_acp'] == 1 ? 0 : 1;
+			$url = URL::createLink($params['module'], $params['controller'], 'ajaxStatus', ['id' => $id, 'status' => $status]);
+			$result = Helper::cmsStatus($status, $url, $id);
+		} else if ($option['task'] == 'changeGroupAcp') {
+			$groupAcp = $params['group_acp'] == 1 ? 0 : 1;
 			$query = "UPDATE `$this->table` SET `group_acp` = '$groupAcp' where `id` = '$id'";
-			$result = [$id, $groupAcp, URL::createLink('backend', 'Group', 'ajaxGroupAcp', ['id' => $id, 'group_acp' => $groupAcp])];
+			$url = URL::createLink($params['module'], $params['controller'], 'ajaxGroupAcp', ['id' => $id, 'group_acp' => $groupAcp]);
+			$result = Helper::cmsGroupAcp($groupAcp, $url, $id);
 		}
 		$this->query($query);
 		return $result;

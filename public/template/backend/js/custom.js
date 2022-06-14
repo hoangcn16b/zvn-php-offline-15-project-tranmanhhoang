@@ -1,21 +1,21 @@
-function changeStatus(url) {
-    $.get(url, function (data) {
-        // console.log(data);
-        // <a id = "status-' . $id . '" href="javascript:changeStatus(\'' . $link . '\');" class="' . $status . ' rounded-circle btn-sm">
-        //      <i class="fas fa-check"></i>
-        // </a>
-        var id = data[0];
-        var status = data[1];
-        var link = data[2];
-        var classAdd = 'btn btn-success rounded-circle btn-sm';
-        var element = 'a#status-' + id;
-        if (status == 'inactive') {
-            classAdd = 'btn btn-danger rounded-circle btn-sm';
-        }
-        $(element).attr('href', "javascript:changeStatus('" + link + "') ");
-        $(element).attr('class', classAdd);
-    }, 'JSON');
-}
+// function changeStatus(url) {
+//     $.get(url, function (data) {
+//         // console.log(data);
+//         // <a id = "status-' . $id . '" href="javascript:changeStatus(\'' . $link . '\');" class="' . $status . ' rounded-circle btn-sm">
+//         //      <i class="fas fa-check"></i>
+//         // </a>
+//         var id = data[0];
+//         var status = data[1];
+//         var link = data[2];
+//         var classAdd = 'btn btn-success rounded-circle btn-sm';
+//         var element = 'a#status-' + id;
+//         if (status == 'inactive') {
+//             classAdd = 'btn btn-danger rounded-circle btn-sm';
+//         }
+//         $(element).attr('href', "javascript:changeStatus('" + link + "') ");
+//         $(element).attr('class', classAdd);
+//     }, 'JSON');
+// }
 
 function changeGroupAcp(url) {
     $.get(url, function (data) {
@@ -51,9 +51,54 @@ $(document).ready(function () {
     // })
 
     $('.filter-element').on('change', function () {
-		$('#form-search').submit();
-        // console.log(12);
-	});
+        $('#form-search').submit();
+    });
+
+    // $('.ajax-status').click(function (e) {
+    //     e.preventDefault();
+    //     let url = $(this).attr('href');
+    //     var parent = $(this).parent();
+    //     console.log(parent);
+    //     $.ajax({
+    //         type: "GET",
+    //         url: url,
+    //         // data: "data",
+    //         // dataType: "dataType",
+    //         success: function (response) {
+    //             parent.html(response);
+    //         }
+    //     });
+    // });
+
+    $(document).on('click', '.ajax-status', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        var parent = $(this).parent();
+        $.ajax({
+            type: "GET",
+            url: url,
+            // data: "data",
+            // dataType: "dataType",
+            success: function (response) {
+                parent.html(response);
+            }
+        });
+    });
+
+    $(document).on('click', '.ajax-group-acp', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        var parent = $(this).parent();
+        $.ajax({
+            type: "GET",
+            url: url,
+            // data: "data",
+            // dataType: "dataType",
+            success: function (response) {
+                parent.html(response);
+            }
+        });
+    });
 });
 
 

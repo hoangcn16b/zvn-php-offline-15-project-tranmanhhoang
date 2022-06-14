@@ -1,7 +1,5 @@
 <?php
-// echo '<pre>';
-// print_r($this->filterStatus);
-// echo '</pre>';
+
 $module = $this->arrParams['module'];
 $controller = $this->arrParams['controller'];
 $action = $this->arrParams['action'];
@@ -10,10 +8,11 @@ if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
         $id = $item['id'];
         $name = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['name']);
-        $linkStatus = URL::createLink('backend', 'Group', 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
+        
+        $linkStatus = URL::createLink($module, $controller, 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
 
-        $linkGroupAcp = URL::createLink('backend', 'Group', 'ajaxGroupAcp', ['id' => $id, 'group_acp' => $item['group_acp']]);
+        $linkGroupAcp = URL::createLink($module, $controller, 'ajaxGroupAcp', ['id' => $id, 'group_acp' => $item['group_acp']]);
         $groupAcp = Helper::cmsGroupAcp($item['group_acp'], $linkGroupAcp, $id);
 
         $created = Helper::created($item['created']);
@@ -52,7 +51,7 @@ $filterStatus = Helper::filterStatus($this->filterStatus, ($this->arrParams['sta
 $arrGroupAcp = ['default' => 'Select Group ACP', 1 => 'Active', 0 => 'Inactive'];
 $select = HelperForm::selectBoxKeyInt($arrGroupAcp, 'group_acp', $this->arrParams['group_acp'] ?? 'default', 'filter-element');
 $filterGroupAcp = $valueApplication . $select;
-$searchForm = HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
+$filterSearch = HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
 ?>
 
 <div class="row">
@@ -85,7 +84,7 @@ $searchForm = HelperForm::input('text', 'input-keyword', ($this->arrParams['inpu
                             <div class="area-search mb-2">
                                 <!-- <form action="" method="get" id="form-search"> -->
                                 <div class="input-group" id="form-input">
-                                    <?= $searchForm ?>
+                                    <?= $filterSearch ?>
                                     <span class="input-group-append">
                                         <button type="submit" id="submit-keyword" class="btn btn-info">Search</button>
                                         <a href="<?= URL::createLink('backend', 'Group', 'index') ?>" name="clear-keyword" class="btn btn-danger">Clear</a>

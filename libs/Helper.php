@@ -45,11 +45,32 @@ class Helper
         return $result;
     }
 
+    // public static function cmsStatus($statusVal, $link, $id)
+    // {
+    //     $status = ($statusVal == 'active') ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
+    //     $xhtml = '
+    //                 <a id = "status-' . $id . '" href="javascript:changeStatus(\'' . $link . '\')" class="' . $status . ' ajax-status">
+    //                     <span ><i class="fas fa-check"></i></span>
+    //                 </a>
+    //             ';
+    //     return $xhtml;
+    // }
+
+    // public static function cmsGroupAcp($groupAcpVal, $link, $id)
+    // {
+    //     $groupAcp = ($groupAcpVal == 1) ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
+    //     $xhtml = '
+    //                 <a id = "groupAcp-' . $id . '" href="javascript:changeGroupAcp(\'' . $link . '\')" class="' . $groupAcp . '">
+    //                     <span ><i class="fas fa-check"></i></span>
+    //                 </a>
+    //             ';
+    //     return $xhtml;
+    // }
     public static function cmsStatus($statusVal, $link, $id)
     {
         $status = ($statusVal == 'active') ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
         $xhtml = '
-                    <a id = "status-' . $id . '" href="javascript:changeStatus(\'' . $link . '\')" class="' . $status . '">
+                    <a id = "status-' . $id . '" href="' . $link . '" class="' . $status . ' ajax-status">
                         <span ><i class="fas fa-check"></i></span>
                     </a>
                 ';
@@ -60,13 +81,13 @@ class Helper
     {
         $groupAcp = ($groupAcpVal == 1) ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
         $xhtml = '
-                    <a id = "groupAcp-' . $id . '" href="javascript:changeGroupAcp(\'' . $link . '\')" class="' . $groupAcp . '">
+                    <a id = "groupAcp-' . $id . '" href="' . $link . '" class="' . $groupAcp . ' ajax-group-acp">
                         <span ><i class="fas fa-check"></i></span>
                     </a>
                 ';
         return $xhtml;
     }
-
+    
     public static function cmsMessage($message)
     {
         $xhtml = '';

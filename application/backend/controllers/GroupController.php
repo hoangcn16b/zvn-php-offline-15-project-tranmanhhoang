@@ -21,14 +21,17 @@ class GroupController extends Controller
 
 	public function ajaxStatusAction()
 	{
-		$result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'change-status']);
-		echo json_encode($result);
+		$result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'changeStatus']);
+		echo $result;
+		// echo json_encode($result);
 	}
 
 	public function ajaxGroupAcpAction()
 	{
-		$result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'change-group-acp']);
-		echo json_encode($result);
+		
+		$result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'changeGroupAcp']);
+		echo $result;
+		// echo json_encode($result);
 	}
 
 	public function deleteAction()
