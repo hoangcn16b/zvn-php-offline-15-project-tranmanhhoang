@@ -15,15 +15,20 @@ class UserController extends Controller
 	{
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
-
+		$this->_view->filterGroupUser = $this->_model->getGroupAdmin(true);
 		$this->_view->listGroup = $this->_model->getGroupAdmin();
-		$this->_view->render('user/index');
+		$this->_view->render($this->_arrParam['controller'] . '/index');
 	}
 
 	public function ajaxStatusAction()
 	{
-		$result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'change-status']);
-		echo json_encode($result);
+		$result = $this->_model->changeStatus($this->_arrParam);
+		echo $result;
+		// echo json_encode($result);
+	}
+	public function ajaxGroupAction()
+	{
+		$this->_model->changeGroupUser($this->_arrParam);
 	}
 
 	public function deleteAction()
@@ -32,9 +37,9 @@ class UserController extends Controller
 			$this->_model->deleteItem($this->_arrParam['id']);
 			// Session::set('message', ['content' => 'Xoá thành công']);
 		} else {
-			$this->_view->render('user/error');
+			$this->_view->render($this->_arrParam['controller'] . '/error');
 		}
-		URL::redirectLink('backend', 'user', 'index');
+		URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 	}
 
 	public function formAction()
@@ -47,7 +52,7 @@ class UserController extends Controller
 			$this->_view->setTitleForm = 'Edit User Admin';
 			$data = $this->_model->checkItem($this->_arrParam);
 			if (empty($data)) {
-				URL::redirectLink('backend', 'User', 'index');
+				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 			}
 			$task = 'edit';
 			$addGroupId = $this->_model->getNameByGroupId($data['group_id']);
@@ -56,7 +61,7 @@ class UserController extends Controller
 		if (!empty($this->_arrParam['form'])) {
 			$data = $this->_arrParam['form'];
 			$validate = new Validate($data);
-			
+
 			$required = $task == 'add' ? true : false;
 			$validate->addRule('username', 'username', ['min' => 3, 'max' => 20], $required)
 				// ->addRule('password', 'password', ['action' => $task])
@@ -75,16 +80,13 @@ class UserController extends Controller
 			$data = $validate->getResult();
 			if ($validate->isValid()) {
 				$this->_model->saveItem($data, ['task' => $task]);
-				URL::redirectLink('backend', 'User', 'index');
+				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 			} else {
 				$this->_view->errors = $validate->showErrors();
 			}
 		}
-		echo '<pre>';
-		print_r ($data);
-		echo '</pre>';
 		$this->_view->outPut = $data;
-		$this->_view->render('user/form');
+		$this->_view->render($this->_arrParam['controller'] . '/form');
 	}
 
 

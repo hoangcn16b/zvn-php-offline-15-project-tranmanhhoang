@@ -12,7 +12,7 @@ class UserModel extends Model
 		$query = [];
 		//search
 		$i = 0;
-		if (!empty($arrParams['input-keyword'])) {
+		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
 			$query[] = "AND (";
 			foreach ($options as $cols => $value) {
 				if ($i == $total) break;
@@ -22,11 +22,12 @@ class UserModel extends Model
 			}
 			$query[] = ")";
 		}
-
-		// if (!empty($arrParams['input-keyword'])) {
-		// 	$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
-		// 	$query[] = "AND `u`.`username` $keyword";
-		// }
+		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default') {
+			$query[] = "AND (";
+			$groupAcp = trim(($arrParams['group_id']));
+			$query[] = "`group_id` = $groupAcp ";
+			$query[] = ")";
+		}
 
 		if (isset($arrParams['status']) && $arrParams['status'] != 'all') {
 			$query[] = "AND `u`.`status` = '{$arrParams['status']}'";
@@ -40,24 +41,20 @@ class UserModel extends Model
 		$query[] = "FROM `user` AS `u`, `group` AS `g`";
 		$query[] = "WHERE `u`.`id` > 0 AND `u`.`group_id` = `g`.`id`";
 		$query[] = $this->createQuery($arrParams, 3);
+
 		$query[] = "ORDER BY `u`.`id` DESC";
 		$query = implode(" ", $query);
 		$result = $this->listRecord($query);
 		return $result;
 	}
 
-	public function changeStatusAndAcp($Params, $option = null)
+	public function changeStatus($params)
 	{
-		$id = mysqli_real_escape_string($this->connect, $Params['id']);
-		if ($option['task'] == 'change-status') {
-			$status = $Params['status'] == 'active' ? 'inactive' : 'active';
-			$query = "UPDATE `$this->table` SET `status` = '$status' where `id` = '$id'";
-			$result = [$id, $status, URL::createLink('backend', 'Group', 'ajaxStatus', ['id' => $id, 'status' => $status])];
-		} else if ($option['task'] == 'change-group-acp') {
-			$groupAcp = $Params['group_acp'] == 1 ? 0 : 1;
-			$query = "UPDATE `$this->table` SET `group_acp` = '$groupAcp' where `id` = '$id'";
-			$result = [$id, $groupAcp, URL::createLink('backend', 'Group', 'ajaxGroupAcp', ['id' => $id, 'group_acp' => $groupAcp])];
-		}
+		$id = $params['id'];
+		$status = $params['status'] == 'active' ? 'inactive' : 'active';
+		$query = "UPDATE `$this->table` SET `status` = '$status' where `id` = '$id'";
+		$url = URL::createLink($params['module'], $params['controller'], 'ajaxStatus', ['id' => $id, 'status' => $status]);
+		$result = Helper::cmsStatus($status, $url, $id);
 		$this->query($query);
 		return $result;
 	}
@@ -72,22 +69,24 @@ class UserModel extends Model
 	public function filterStatusFix($arrParams, $total = 3, $options = ['username', 'fullname', 'email'])
 	{
 		$result = [];
-		$query[] = "SELECT COUNT(`status`) as `all`, SUM(`status` = 'active') as `active`, SUM(`status` = 'inactive') as `inactive` FROM `$this->table`";
+		$query[] = "SELECT COUNT(`status`) as `all`, SUM(`status` = 'active') as `active`, SUM(`status` = 'inactive') as `inactive`";
+		$query[] = "FROM `$this->table`";
+		$query[] = "WHERE 1 ";
 		$i = 0;
 		if (!empty($arrParams['input-keyword'])) {
-			$query[] = "WHERE ";
+			$query[] = "AND (";
 			foreach ($options as $cols => $value) {
 				if ($i == $total) break;
 				$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
 				$query[] = ($i < 2) ? "`{$value}` $likeKeyWord OR" : "`{$value}` $likeKeyWord";
 				$i++;
 			}
+			$query[] = ")";
 		}
-		// if (!empty($arrParams['input-keyword'])) {
-		// 	$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
-		// 	$query[] = "WHERE `username` $keyword";
-		// }
-
+		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default') {
+			$keyword = $arrParams['group_id'];
+			$query[] = "AND `group_id` = $keyword";
+		}
 		$query = implode(" ", $query);
 		$result = $this->singleRecord($query);
 		return $result;
@@ -166,5 +165,13 @@ class UserModel extends Model
 		$query = implode(" ", $query);
 		$result = $this->isExist($query);
 		return $result;
+	}
+
+	public function changeGroupUser($params)
+	{
+		$id = $params['id'];
+		$groupId = $params['group_id'];
+		$query = "UPDATE `$this->table` SET `group_id` = '$groupId' WHERE `id` = '$id'";
+		$this->query($query);
 	}
 }

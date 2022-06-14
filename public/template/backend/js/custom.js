@@ -99,6 +99,18 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('.select-group').on('change', function () {
+        var value = $(this).val();
+        var url = $(this).data('geturl');
+        url = url.replace('value_new', value);
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (response) {
+            }
+        });
+    });
 });
 
 

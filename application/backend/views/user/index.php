@@ -12,12 +12,12 @@ if (!empty($this->items)) {
         $email = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['email']);
         $linkStatus = URL::createLink($module, $controller, 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
+        $ajaxLinkGroup = URL::createLink($module, $controller, 'ajaxGroup', ['id' => $id, 'group_id' => 'value_new']);
+        $attr = 'data-geturl = "' . $ajaxLinkGroup . '"';
+        $group = HelperForm::selectBox($this->listGroup, '', $item['group_id'], 'w-auto select-group', $attr);
 
-        $created = Helper::created($item['created']);
-        $createdBy = Helper::createdBy($item['created_by']);
-
-        $modified = Helper::created($item['modified']);
-        $modifiedBy = Helper::createdBy($item['modified_by']);
+        $createdBy = Helper::createdBy($item['created_by'], $item['created']);
+        $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
 
         $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
         $linkDelete = URL::createLink($module, $controller, 'delete', ['id' => $id]);
@@ -33,19 +33,10 @@ if (!empty($this->items)) {
                     <p class="mb-0">FullName: ' . $fullName . '</p>
                     <p class="mb-0">Email: ' . $email . '</p>
                 </td>
-                <td> ' . HelperForm::selectBox($this->listGroup, '', $item['group_id'], 'w-auto') . '
-                </td>
-                <td>
-                    ' . $status . '
-                </td>
-                <td>
-                    ' . $createdBy . '
-                    ' . $created . '
-                </td>
-                <td>
-                    ' . $modifiedBy . '
-                    ' . $modified . '
-                </td>
+                <td> ' . $group . ' </td>
+                <td>' . $status . ' </td>
+                <td>' . $createdBy . '</td>
+                <td> ' . $modifiedBy . '</td>
                 <td>
                     <a href="#" class="btn btn-secondary btn-sm rounded-circle"><i class="fas fa-key"></i></a>
                     <a href="' . $linkEdit . '" class="btn btn-info btn-sm rounded-circle"><i class="fas fa-pen"></i></a>
@@ -55,6 +46,16 @@ if (!empty($this->items)) {
         ';
     }
 }
+$valueApplication = HelperForm::input('hidden', 'module', $module) .
+    HelperForm::input('hidden', 'controller', $controller) .
+    HelperForm::input('hidden', 'action', $action);
+
+$filterStatus = Helper::filterStatusUser($this->filterStatus, $this->arrParams);
+
+$select = HelperForm::selectBox($this->filterGroupUser, 'group_id', $this->arrParams['group_id'] ?? 'default', ' filter-element');
+// $select = HelperForm::selectBox($this->listGroup, 'group_acp', $this->arrParams['group_acp'] ?? 'default', ' form-control custom-select filter-element');
+$filterGroupUser = $valueApplication . $select;
+$filterSearch = HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
 ?>
 
 <div class="row">
@@ -74,40 +75,25 @@ if (!empty($this->items)) {
                 <div class="container-fluid">
                     <div class="row justify-content-between align-items-center">
                         <div class="area-filter-status mb-2">
-                            <?php
-                            echo Helper::filterStatus(
-                                $this->filterStatus,
-                                ($this->arrParams['status'] ?? 'all'),
-                                $this->arrParams,
-                                ($this->arrParams['input-keyword'] ?? '')
-                            ) ?>
+                            <?= $filterStatus ?>
                         </div>
-                        <div class="area-filter-attribute mb-2">
-                            <select class="form-control custom-select">
-                                <option> - Select Group - </option>
-                                <option>Admin</option>
-                                <option>Manager</option>
-                                <option>Member</option>
-                                <option>Register</option>
-                            </select>
-                        </div>
-                        <div class="area-search mb-2">
-                            <form action="" method="get" id="form-search">
+
+                        <form action="" method="get" id="form-search">
+                            <div class="area-filter-attribute mb-2">
+                                <?= $filterGroupUser ?>
+                            </div>
+                            <div class="area-search mb-2">
                                 <div class="input-group" id="form-input">
-                                    <?php
-                                    echo HelperForm::input('hidden', 'module', $module) .
-                                        HelperForm::input('hidden', 'controller', $controller) .
-                                        HelperForm::input('hidden', 'action', $action) .
-                                        HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
-                                    ?>
-                                    <!-- <input type="text" id="input-keyword" name="input-keyword" value="<?= $this->arrParams['input-keyword'] ?? '' ?>" class="form-control"> -->
+                                    <?= $filterSearch ?>
+
+
                                     <span class="input-group-append">
                                         <button type="submit" id="submit-keyword" class="btn btn-info">Search</button>
                                         <a href="<?= URL::createLink('backend', 'User', 'index') ?>" name="clear-keyword" class="btn btn-danger">Clear</a>
                                     </span>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

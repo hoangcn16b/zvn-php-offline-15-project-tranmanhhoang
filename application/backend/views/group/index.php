@@ -8,18 +8,15 @@ if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
         $id = $item['id'];
         $name = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['name']);
-        
+
         $linkStatus = URL::createLink($module, $controller, 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
 
         $linkGroupAcp = URL::createLink($module, $controller, 'ajaxGroupAcp', ['id' => $id, 'group_acp' => $item['group_acp']]);
         $groupAcp = Helper::cmsGroupAcp($item['group_acp'], $linkGroupAcp, $id);
 
-        $created = Helper::created($item['created']);
-        $createdBy = Helper::createdBy($item['created_by']);
-
-        $modified = Helper::created($item['modified']);
-        $modifiedBy = Helper::createdBy($item['modified_by']);
+        $createdBy = Helper::createdBy($item['created_by'], $item['created']);
+        $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
 
         $linkEdit = URL::createLink('backend', 'Group', 'form', ['id' => $id]);
         $linkDelete = URL::createLink('backend', 'Group', 'delete', ['id' => $id]);
@@ -32,8 +29,8 @@ if (!empty($this->items)) {
                         <td>' . $name . '</td>
                         <td>' . $groupAcp . '</td>
                         <td>' . $status . '</td>
-                        <td>' . $createdBy . $created . '</td>
-                        <td>' . $modifiedBy . $modified . '</td>
+                        <td>' . $createdBy . '</td>
+                        <td>' . $modifiedBy . '</td>
                         <td>
                             <a href="' . $linkEdit . '" class="btn btn-info btn-sm rounded-circle"><i class="fas fa-pen"></i></a>
                             <a href="' . $linkDelete . '" id="dialog-confirm" class="btn btn-danger btn-sm rounded-circle"><i class="fas fa-trash "></i></a>
@@ -46,10 +43,10 @@ $valueApplication = HelperForm::input('hidden', 'module', $module) .
     HelperForm::input('hidden', 'controller', $controller) .
     HelperForm::input('hidden', 'action', $action);
 
-$filterStatus = Helper::filterStatus($this->filterStatus, ($this->arrParams['status'] ?? 'all'), $this->arrParams);
+$filterStatus = Helper::filterStatusGroup($this->filterStatus, $this->arrParams);
 
 $arrGroupAcp = ['default' => 'Select Group ACP', 1 => 'Active', 0 => 'Inactive'];
-$select = HelperForm::selectBoxKeyInt($arrGroupAcp, 'group_acp', $this->arrParams['group_acp'] ?? 'default', 'filter-element');
+$select = HelperForm::selectBox($arrGroupAcp, 'group_acp', $this->arrParams['group_acp'] ?? 'default', 'filter-element');
 $filterGroupAcp = $valueApplication . $select;
 $filterSearch = HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
 ?>

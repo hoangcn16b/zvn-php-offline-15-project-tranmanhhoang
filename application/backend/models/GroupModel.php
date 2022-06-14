@@ -43,14 +43,14 @@ class GroupModel extends Model
 
 	public function listItems($arrParams, $option = null)
 	{
-		$query[] = "SELECT * FROM `$this->table` WHERE `id` > 0 ORDER BY `id` DESC";
+		$query[] = "SELECT * FROM `$this->table` WHERE `id` > 0";
 
 		if (isset($arrParams['group_acp']) &&  $arrParams['group_acp'] != 'default') {
 			$groupAcp = trim(($arrParams['group_acp']));
 			$query[] = "AND `group_acp` = $groupAcp ";
 		}
-
 		$query[] = $this->createQuery($arrParams);
+		$query[] = "ORDER BY `id` DESC";
 		$query = implode(" ", $query);
 		$result = $this->listRecord($query);
 		return $result;

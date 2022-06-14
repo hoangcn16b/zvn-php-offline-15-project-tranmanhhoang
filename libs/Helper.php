@@ -11,17 +11,27 @@ class Helper
                 ';
         return $xhtml;
     }
-
-    public static function createdBy($createdBy)
+    public static function createdBy($createdBy, $created='')
     {
+        $created = Helper::formatDate($created);
         $xhtml = '
                     <p class="mb-0">
                         <i class="far fa-user"></i> ' . $createdBy . '
                     </p>
+                    <p class="mb-0">
+                        <i class="far fa-clock"></i> ' . $created . '
+                    </p>
                 ';
         return $xhtml;
     }
-
+    public static function formatDate($value, $format = 'H:i:s d-m-Y ')
+    {
+        $result = '';
+        if (isset($value) && $value != '0000-00-00 00:00:00') {
+            $result = date($format, strtotime($value));
+        }
+        return $result;
+    }
     public static function groupAcp($option, $link = '')
     {
         if ($option == 'active') {
@@ -34,15 +44,6 @@ class Helper
                 ';
         }
         return $xhtml;
-    }
-
-    public static function formatDate($value, $format = 'H:i:s d-m-Y ')
-    {
-        $result = '';
-        if (!empty($value) && $value != '0000-00-00 00:00:00') {
-            $result = date($format, strtotime($value));
-        }
-        return $result;
     }
 
     // public static function cmsStatus($statusVal, $link, $id)
@@ -87,7 +88,7 @@ class Helper
                 ';
         return $xhtml;
     }
-    
+
     public static function cmsMessage($message)
     {
         $xhtml = '';
@@ -108,10 +109,10 @@ class Helper
         return $value;
     }
 
-    public static function filterStatus($arrParams, $option = null, $toUrl)
+    public static function filterStatusGroup($arrParams, $toUrl)
     {
-
         $xhtml = '';
+        $option = $toUrl['status'] ?? 'all';
         $keySearch = $toUrl['input-keyword'] ?? '';
         foreach ($arrParams as $key => $value) {
             $optionsLink = [];
@@ -119,25 +120,43 @@ class Helper
             if (isset($toUrl['group_acp'])) {
                 $optionsLink['group_acp'] = $toUrl['group_acp'];
             }
-
             if ($keySearch == '') {
                 $optionsLink['status'] = $key;
             } else {
                 $optionsLink['status'] = $key;
                 $optionsLink['input-keyword'] = $keySearch;
             }
-
-            // if ($keyword == '') {
-            //     $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], ['status' => $key]);
-            // } else {
-            //     $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], ['status' => $key, 'input-keyword' => $keyword]);
-            // }
             $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], $optionsLink);
             $xhtml .= ' 
                         <a href="' . $url . '" class="btn btn-' . $class . '"> ' . ucfirst($key) . '        <span class="badge badge-pill badge-light">' . $value . '</span>
                         </a> 
                     ';
-            // $url = '';
+        }
+        return $xhtml;
+    }
+
+    public static function filterStatusUser($arrParams, $toUrl)
+    {
+        $xhtml = '';
+        $option = $toUrl['status'] ?? 'all';
+        $keySearch = $toUrl['input-keyword'] ?? '';
+        foreach ($arrParams as $key => $value) {
+            $optionsLink = [];
+            $class = $option == $key ? 'info' : 'secondary';
+            if (isset($toUrl['group_id'])) {
+                $optionsLink['group_id'] = $toUrl['group_id'];
+            }
+            if ($keySearch == '') {
+                $optionsLink['status'] = $key;
+            } else {
+                $optionsLink['status'] = $key;
+                $optionsLink['input-keyword'] = $keySearch;
+            }
+            $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], $optionsLink);
+            $xhtml .= ' 
+                        <a href="' . $url . '" class="btn btn-' . $class . '"> ' . ucfirst($key) . '        <span class="badge badge-pill badge-light">' . $value . '</span>
+                        </a> 
+                    ';
         }
         return $xhtml;
     }
