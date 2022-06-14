@@ -87,17 +87,31 @@ class Helper
         return $value;
     }
 
-    public static function filterStatus($arrParams, $option = null, $toUrl, $keyword = '')
+    public static function filterStatus($arrParams, $option = null, $toUrl)
     {
 
         $xhtml = '';
+        $keySearch = $toUrl['input-keyword'] ?? '';
         foreach ($arrParams as $key => $value) {
+            $optionsLink = [];
             $class = $option == $key ? 'info' : 'secondary';
-            if ($keyword == '') {
-                $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], ['status' => $key]);
-            } else {
-                $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], ['status' => $key, 'input-keyword' => $keyword]);
+            if (isset($toUrl['group_acp'])) {
+                $optionsLink['group_acp'] = $toUrl['group_acp'];
             }
+
+            if ($keySearch == '') {
+                $optionsLink['status'] = $key;
+            } else {
+                $optionsLink['status'] = $key;
+                $optionsLink['input-keyword'] = $keySearch;
+            }
+
+            // if ($keyword == '') {
+            //     $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], ['status' => $key]);
+            // } else {
+            //     $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], ['status' => $key, 'input-keyword' => $keyword]);
+            // }
+            $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], $optionsLink);
             $xhtml .= ' 
                         <a href="' . $url . '" class="btn btn-' . $class . '"> ' . ucfirst($key) . '        <span class="badge badge-pill badge-light">' . $value . '</span>
                         </a> 

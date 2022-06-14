@@ -119,33 +119,18 @@ class UserModel extends Model
 
 	public function saveItem($params, $options = null)
 	{
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
 		if ($options['task'] == 'add') {
 			$params['created'] = date("Y-m-d H:i:s");
 			$params['password'] = md5($params['password']);
-			echo '<pre>';
-			print_r($params);
-			echo '</pre>';
-			$group = ucfirst($params['group'] ?? '');
-			$groupId =  $this->getGroupId($group);
-			$params['group_id'] = $groupId['group_id'];
-			unset($params['group']);
 			$this->insert($params);
 			Session::set('messageForm', ['class' => 'success', 'content' => ADD_SUCCESS]);
 		} elseif ($options['task'] == 'edit') {
 			$params['modified'] = date("Y-m-d H:i:s");
 			$id = $params['id'];
-			unset($params['id']);
-			$params['password'] = md5($params['password']);
 			unset($params['username']);
-			unset($params['password']);
-
-			$group = ucfirst($params['group'] ?? '');
-			$groupId = $this->getGroupId($group);
-
-			$groupId = $groupId['group_id'];
-			$params['group_id'] = $groupId['group_id'];
-
-			unset($params['group']);
+			unset($params['email']);
+			unset($params['id']);
 			$where = [['id', $id]];
 			$this->update($params, [['id', $id]]);
 			Session::set('messageForm', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
@@ -174,9 +159,11 @@ class UserModel extends Model
 		return $result;
 	}
 
-	public function checkUserName($params)
+	public function checkUserNameEmail($params)
 	{
-		$query = "SELECT `username` from `user` where `username` = '{$params['username']}'";
+		$query[] = "SELECT `username`, `email` from `$this->table` ";
+		$query[] = "WHERE `username` = '{$params['username']}' OR `email` = '{$params['email']}'";
+		$query = implode(" ", $query);
 		$result = $this->isExist($query);
 		return $result;
 	}

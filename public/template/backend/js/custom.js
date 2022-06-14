@@ -51,8 +51,8 @@ $(document).ready(function () {
     // })
 
     $('.filter-element').on('change', function () {
-		$('#filter-form').submit();
-        console.log(12);
+		$('#form-search').submit();
+        // console.log(12);
 	});
 });
 

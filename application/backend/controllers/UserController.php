@@ -15,6 +15,7 @@ class UserController extends Controller
 	{
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
+
 		$this->_view->listGroup = $this->_model->getGroupAdmin();
 		$this->_view->render('user/index');
 	}
@@ -55,33 +56,33 @@ class UserController extends Controller
 		if (!empty($this->_arrParam['form'])) {
 			$data = $this->_arrParam['form'];
 			$validate = new Validate($data);
-			$flag = false;
-			if ($task == 'add') {
-				if ($this->_model->checkUserName($this->_arrParam['form']) == 1) {
-					$validate->setError('username', 'User đã tồn tại');
-					$flag = true;
-				}
-			}
+			
 			$required = $task == 'add' ? true : false;
 			$validate->addRule('username', 'username', ['min' => 3, 'max' => 20], $required)
-				->addRule('password', 'password', ['min' => 4, 'max' => 20], $required)
+				// ->addRule('password', 'password', ['action' => $task])
 				->addRule('email', 'email')
 				->addRule('status', 'select')
-				->addRule('group', 'select');
+				->addRule('group_id', 'select');
+			if (isset($data['password'])) {
+				$validate->addRule('password', 'password', ['action' => $task]);
+			}
+			if ($task == 'add') {
+				if ($this->_model->checkUserNameEmail($data) == 1) {
+					$validate->setError('Errors', 'UserName or Email is exist');
+				}
+			}
 			$validate->run();
-
-
 			$data = $validate->getResult();
-			$data['username'] = ($flag == true) ? '' : ($data['username'] ?? '');
 			if ($validate->isValid()) {
-
 				$this->_model->saveItem($data, ['task' => $task]);
 				URL::redirectLink('backend', 'User', 'index');
 			} else {
 				$this->_view->errors = $validate->showErrors();
 			}
 		}
-		$data['password'] = $this->_arrParam['form']['password'] ?? '';
+		echo '<pre>';
+		print_r ($data);
+		echo '</pre>';
 		$this->_view->outPut = $data;
 		$this->_view->render('user/form');
 	}

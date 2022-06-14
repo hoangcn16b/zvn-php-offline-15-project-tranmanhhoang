@@ -1,4 +1,5 @@
 <?php
+
 $module = $this->arrParams['module'];
 $controller = $this->arrParams['controller'];
 $action = $this->arrParams['action'];

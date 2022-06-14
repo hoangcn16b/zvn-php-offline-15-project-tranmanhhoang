@@ -1,4 +1,7 @@
 <?php
+// echo '<pre>';
+// print_r($this->filterStatus);
+// echo '</pre>';
 $module = $this->arrParams['module'];
 $controller = $this->arrParams['controller'];
 $action = $this->arrParams['action'];
@@ -40,7 +43,16 @@ if (!empty($this->items)) {
                 ';
     }
 }
+$valueApplication = HelperForm::input('hidden', 'module', $module) .
+    HelperForm::input('hidden', 'controller', $controller) .
+    HelperForm::input('hidden', 'action', $action);
 
+$filterStatus = Helper::filterStatus($this->filterStatus, ($this->arrParams['status'] ?? 'all'), $this->arrParams);
+
+$arrGroupAcp = ['default' => 'Select Group ACP', 1 => 'Active', 0 => 'Inactive'];
+$select = HelperForm::selectBoxKeyInt($arrGroupAcp, 'group_acp', $this->arrParams['group_acp'] ?? 'default', 'filter-element');
+$filterGroupAcp = $valueApplication . $select;
+$searchForm = HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
 ?>
 
 <div class="row">
@@ -61,40 +73,26 @@ if (!empty($this->items)) {
                 <div class="container-fluid">
                     <div class="row justify-content-between align-items-center">
                         <div class="area-filter-status mb-2">
-                            <?php $filterStatus = $this->filterStatus;
-                            echo Helper::filterStatus($filterStatus, ($this->arrParams['status'] ?? 'all'), $this->arrParams, $this->arrParams['input-keyword'] ?? '') ?>
+                            <?= $filterStatus ?>
                         </div>
 
-                        <div>
-                            <form action="" method="GET" id="filter-form">
-                                <?php
-                                $arrGroupAcp = ['default' => 'Select Group ACP', 1 => 'Active', 0 => 'Inactive'];
-                                $select = HelperForm::selectBoxKeyInt($arrGroupAcp, 'group_acp', $this->arrParams['group_acp'] ?? 'default', 'filter-element');
-                                echo HelperForm::input('hidden', 'module', $module) .
-                                    HelperForm::input('hidden', 'controller', $controller) .
-                                    HelperForm::input('hidden', 'action', $action) . $select;
+                        <form action="" method="GET" id="form-search">
+                            <div>
+                                <?= $filterGroupAcp ?>
+                                <!-- </form> -->
+                            </div>
 
-                                ?>
-                            </form>
-                        </div>
-
-                        <div class="area-search mb-2">
-                            <form action="" method="get" id="form-search">
+                            <div class="area-search mb-2">
+                                <!-- <form action="" method="get" id="form-search"> -->
                                 <div class="input-group" id="form-input">
-                                    <?php
-                                    echo HelperForm::input('hidden', 'module', 'backend') .
-                                        HelperForm::input('hidden', 'controller', 'Group') .
-                                        HelperForm::input('hidden', 'action', 'index') .
-                                        HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
-                                    ?>
-                                    <!-- <input type="text" id="input-keyword" name="input-keyword" value="<?= $this->arrParams['input-keyword'] ?? '' ?>" class="form-control"> -->
+                                    <?= $searchForm ?>
                                     <span class="input-group-append">
                                         <button type="submit" id="submit-keyword" class="btn btn-info">Search</button>
                                         <a href="<?= URL::createLink('backend', 'Group', 'index') ?>" name="clear-keyword" class="btn btn-danger">Clear</a>
                                     </span>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

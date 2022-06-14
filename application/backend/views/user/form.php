@@ -11,10 +11,10 @@ $lblUsername = HelperForm::label('Username', true);
 $inputUserName = HelperForm::input('text', 'form[username]', $data['username'] ?? '', 'form-control', $readOnly);
 
 $lblPassWord = HelperForm::label('Password', true);
-$inputPassWord = HelperForm::input('password', 'form[password]', $data['password'] ?? '', 'form-control');
+$inputPassWord = HelperForm::input('password', 'form[password]', $data['password'] ?? '', 'form-control', $readOnly);
 
 $lblEmail = HelperForm::label('Email', true);
-$inputEmail = HelperForm::input('text', 'form[email]', $data['email'] ?? '', 'form-control');
+$inputEmail = HelperForm::input('text', 'form[email]', $data['email'] ?? '', 'form-control', $readOnly);
 
 $lblFullName = HelperForm::label('Fullname');
 $inputFullName = HelperForm::input('text', 'form[fullname]', $data['fullname'] ?? '', 'form-control');
@@ -23,7 +23,7 @@ $lblStatus = HelperForm::label('Status', true);
 $selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'default');
 
 $lblGroup = HelperForm::label('Group', true);
-$selectGroup = HelperForm::selectBox($arrSelect['group'], 'form[group]', lcfirst($data['group'] ?? 'default'));
+$selectGroup = HelperForm::selectBox($arrSelect['group'], 'form[group_id]', lcfirst($data['group_id'] ?? 'default'));
 
 if (isset($this->arrParams['id'])) {
     $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);

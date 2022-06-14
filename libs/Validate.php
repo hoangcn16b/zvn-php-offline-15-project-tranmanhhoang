@@ -74,7 +74,7 @@ class Validate
 						$this->validateUserName($element, $value['options']['min'], $value['options']['max']);
 						break;
 					case 'password':
-						$this->validatePassword($element, $value['options']['min'], $value['options']['max']);
+						$this->validatePassword($element, $value['options']);
 						break;
 					case 'url':
 						$this->validateUrl($element);
@@ -219,23 +219,26 @@ class Validate
 	}
 
 	// Validate Password
-	private function validatePassword($element, $min = 0, $max = 0)
+	private function validatePassword($element, $options)
 	{
+		$min = 4;
+		$max = 20;
 		// if ($options['action'] == 'add' || ($options['action'] == 'edit' && $this->source[$element])) {
-
-		$length = strlen($this->source[$element]);
-		if ($length < $min) {
-			$this->setError($element, 'is too short');
-		} elseif ($length > $max) {
-			$this->setError($element, 'is too long');
-		} elseif (!is_string($this->source[$element])) {
-			$this->setError($element, 'is an invalid string');
+		if ($options['action'] == 'add') {
+			$length = strlen($this->source[$element]);
+			if ($length < $min) {
+				$this->setError($element, 'is too short');
+			} elseif ($length > $max) {
+				$this->setError($element, 'is too long');
+			} elseif (!is_string($this->source[$element])) {
+				$this->setError($element, 'is an invalid string');
+			}
+			// $pattern = '"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"';
+			$pattern = '"^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"';
+			if (!preg_match($pattern, $this->source[$element])) {
+				$this->setError($element, 'is an invalid password');
+			};
 		}
-		// $pattern = '"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"';
-		$pattern = '"^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"';
-		if (!preg_match($pattern, $this->source[$element])) {
-			$this->setError($element, 'is an invalid password');
-		};
 	}
 
 	// Validate Date

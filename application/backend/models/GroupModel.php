@@ -83,12 +83,20 @@ class GroupModel extends Model
 	{
 		$result = [];
 		$query[] = "SELECT COUNT(`status`) as `all`, SUM(`status` = 'active') as `active`, SUM(`status` = 'inactive') as `inactive` FROM `$this->table`";
-
+		$flagSearch = false;
 		if (!empty($arrParams['input-keyword'])) {
 			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
 			$query[] = "WHERE `name` $keyword";
+			$flagSearch = true;
 		}
-
+		if (isset($arrParams['group_acp']) && $arrParams['group_acp'] != 'default') {
+			$keyword = $arrParams['group_acp'];
+			if ($flagSearch == true) {
+				$query[] = "AND `group_acp` = $keyword";
+			} else {
+				$query[] = "WHERE `group_acp` = $keyword";
+			}
+		}
 		$query = implode(" ", $query);
 		$result = $this->singleRecord($query);
 		return $result;
