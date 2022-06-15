@@ -180,8 +180,8 @@ class GroupModel extends Model
 			$status = $arrParams['status'];
 			$query[] = "AND `status` = '$status'";
 		}
-		echo $query = implode(" ", $query);
-		// $result = $this->singleRecord($query);
+		$query = implode(" ", $query);
+		$result = $this->singleRecord($query);
 		return $result['all'];
 	}
 }

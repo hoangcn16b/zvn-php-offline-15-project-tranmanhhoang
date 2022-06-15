@@ -181,15 +181,22 @@ class UserModel extends Model
 		$this->query($query);
 	}
 
-	public function countItem($arrParams, $options = null)
+	public function countItem($arrParams, $total = 3, $options = ['username', 'fullname', 'email'])
 	{
 		$result = [];
 		$query[] = "SELECT COUNT(`id`) AS `all`";
 		$query[] = "FROM `$this->table`";
 		$query[] = "WHERE 1";
+		$i = 0;
 		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
-			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
-			$query[] = "AND `username` $keyword";
+			$query[] = "AND (";
+			foreach ($options as $cols => $value) {
+				if ($i == $total) break;
+				$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
+				$query[] = ($i < 2) ? "`{$value}` $likeKeyWord OR" : "`{$value}` $likeKeyWord";
+				$i++;
+			}
+			$query[] = ")";
 		}
 		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default' && $arrParams['group_id'] != '') {
 			$groupAcp = $arrParams['group_id'];

@@ -13,14 +13,14 @@ class UserController extends Controller
 
 	public function indexAction()
 	{
-		$configPagination = ['totalItemsPerPage' => 2, 'pageRange' => 5];
+		$configPagination = ['totalItemsPerPage' => 2, 'pageRange' => 2];
 		$this->setPagination($configPagination);
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
 		$this->_view->filterGroupUser = $this->_model->getGroupAdmin(true);
 		$this->_view->listGroup = $this->_model->getGroupAdmin();
 
-		$this->totalItems = $this->_model->countItem($this->_arrParam, null);
+		$this->totalItems = $this->_model->countItem($this->_arrParam);
 	
 		$this->_view->pagination = new Pagination($this->totalItems, $this->_pagination);
 		$this->_view->render($this->_arrParam['controller'] . '/index');

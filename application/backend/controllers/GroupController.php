@@ -13,7 +13,7 @@ class GroupController extends Controller
 
 	public function indexAction()
 	{
-		$configPagination = ['totalItemsPerPage' => 3, 'pageRange' => 5];
+		$configPagination = ['totalItemsPerPage' => 2, 'pageRange' => 2];
 		$this->setPagination($configPagination);
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
