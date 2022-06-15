@@ -49,6 +49,15 @@ $arrGroupAcp = ['default' => 'Select Group ACP', 1 => 'Active', 0 => 'Inactive']
 $select = HelperForm::selectBox($arrGroupAcp, 'group_acp', $this->arrParams['group_acp'] ?? 'default', 'filter-element');
 $filterGroupAcp = $valueApplication . $select;
 $filterSearch = HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
+
+//pagination
+$extraParamUrl = [
+    'group_acp' => $this->arrParams['group_acp'] ?? 'default',
+    'status' => $this->arrParams['status'] ?? 'all',
+    'input-keyword' => $this->arrParams['input-keyword'] ?? '',
+];
+$xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $controller, $action, $extraParamUrl));
+
 ?>
 
 <div class="row">
@@ -250,15 +259,17 @@ $filterSearch = HelperForm::input('text', 'input-keyword', ($this->arrParams['in
                     </table>
                 </div>
             </div>
+
             <div class="card-footer clearfix">
                 <ul class="pagination m-0 float-right">
-                    <li class="page-item disabled"><a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a></li>
+                    <?= $xhtmlPagination ?>
+                    <!-- <li class="page-item disabled"><a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a></li>
                     <li class="page-item disabled"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
                     <li class="page-item active"><a class="page-link" href="#">1</a></li>
                     <li class="page-item"><a class="page-link" href="#">2</a></li>
                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                     <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
-                    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li>
+                    <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li> -->
                 </ul>
             </div>
         </div>

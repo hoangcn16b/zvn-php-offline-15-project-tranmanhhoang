@@ -13,10 +13,15 @@ class GroupController extends Controller
 
 	public function indexAction()
 	{
-		$this->_view->items = $this->_model->listItems($this->_arrParam,);
+		$configPagination = ['totalItemsPerPage' => 3, 'pageRange' => 5];
+		$this->setPagination($configPagination);
+		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
 		$this->_view->getGroupAcp = $this->_model->getGroupAcp(true);
-		$this->_view->render('group/index');
+		
+		$this->totalItems = $this->_model->countItem($this->_arrParam, null);
+		$this->_view->pagination = new Pagination($this->totalItems, $this->_pagination);
+		$this->_view->render($this->_arrParam['controller'] . '/index');
 	}
 
 	public function ajaxStatusAction()
@@ -28,7 +33,7 @@ class GroupController extends Controller
 
 	public function ajaxGroupAcpAction()
 	{
-		
+
 		$result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'changeGroupAcp']);
 		echo $result;
 		// echo json_encode($result);
@@ -40,9 +45,9 @@ class GroupController extends Controller
 			$this->_model->deleteItem($this->_arrParam['id']);
 			// Session::set('message', ['content' => 'Xoá thành công']);
 		} else {
-			$this->_view->render('group/error');
+			$this->_view->render($this->_arrParam['controller'] . '/error');
 		}
-		URL::redirectLink('backend', 'Group', 'index');
+		URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 	}
 
 	public function formAction()
@@ -54,7 +59,7 @@ class GroupController extends Controller
 			$this->_view->setTitleForm = 'Edit Group Admin';
 			$data = $this->_model->checkItem($this->_arrParam);
 			if (empty($data)) {
-				URL::redirectLink('backend', 'Group', 'index');
+				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 			}
 			$task = 'edit';
 		}
@@ -80,13 +85,13 @@ class GroupController extends Controller
 
 			if ($validate->isValid()) {
 				$this->_model->saveItem($data, ['task' => $task]);
-				URL::redirectLink('backend', 'Group', 'index');
+				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 			} else {
 				$this->_view->errors = $validate->showErrors();
 			}
 		}
 		$this->_view->outPut = $data;
-		$this->_view->render('group/form');
+		$this->_view->render($this->_arrParam['controller'] . '/form');
 	}
 
 

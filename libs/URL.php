@@ -4,7 +4,7 @@ class URL
     public static function createLink($module, $controller, $action, $param = null)
     {
         $paramLink = '';
-        if (!empty($param)) {
+        if (isset($param) && !empty($param)) {
             foreach ($param as $key => $value) {
                 $paramLink .= "&$key=$value";
             }
@@ -20,7 +20,8 @@ class URL
         exit();
     }
 
-    public static function requestURI($param = null){
+    public static function requestURI($param = null)
+    {
         $uri = $_SERVER['REQUEST_URI'];
         $paramLink = '';
         if (!empty($param)) {

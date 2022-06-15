@@ -29,28 +29,33 @@ class GroupModel extends Model
 	{
 		$query = [];
 		//search
-		if (!empty($arrParams['input-keyword'])) {
+		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
 			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
 			$query[] = "AND `name` $keyword";
 		}
 
-		if (isset($arrParams['status']) && $arrParams['status'] != 'all') {
+		if (isset($arrParams['status']) && $arrParams['status'] != 'all' && $arrParams['status'] != '') {
 			$query[] = "AND `status` = '{$arrParams['status']}'";
 		}
-
-		return implode(' ', $query);
+		if (isset($arrParams['group_acp']) && $arrParams['group_acp'] != 'default' && $arrParams['group_acp'] != '') {
+			$groupAcp = trim(($arrParams['group_acp']));
+			$query[] = "AND `group_acp` = $groupAcp ";
+		}
+		$result = implode(' ', $query);
+		return  $result;
 	}
 
 	public function listItems($arrParams, $option = null)
 	{
 		$query[] = "SELECT * FROM `$this->table` WHERE `id` > 0";
-
-		if (isset($arrParams['group_acp']) &&  $arrParams['group_acp'] != 'default') {
-			$groupAcp = trim(($arrParams['group_acp']));
-			$query[] = "AND `group_acp` = $groupAcp ";
-		}
 		$query[] = $this->createQuery($arrParams);
 		$query[] = "ORDER BY `id` DESC";
+		$pagination = $arrParams['pagination'];
+		$totalItemsPerPage = $pagination['totalItemsPerPage'];
+		if ($totalItemsPerPage > 0) {
+			$position = ($pagination['currentPage'] - 1) * $totalItemsPerPage;
+			$query[] = "LIMIT $position, $totalItemsPerPage";
+		}
 		$query = implode(" ", $query);
 		$result = $this->listRecord($query);
 		return $result;
@@ -101,19 +106,15 @@ class GroupModel extends Model
 	{
 		$result = [];
 		$query[] = "SELECT COUNT(`status`) as `all`, SUM(`status` = 'active') as `active`, SUM(`status` = 'inactive') as `inactive` FROM `$this->table`";
-		$flagSearch = false;
-		if (!empty($arrParams['input-keyword'])) {
+		$query[] = "WHERE 1";
+		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
 			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
-			$query[] = "WHERE `name` $keyword";
-			$flagSearch = true;
+			$query[] = "AND `name` $keyword";
 		}
-		if (isset($arrParams['group_acp']) && $arrParams['group_acp'] != 'default') {
-			$keyword = $arrParams['group_acp'];
-			if ($flagSearch == true) {
-				$query[] = "AND `group_acp` = $keyword";
-			} else {
-				$query[] = "WHERE `group_acp` = $keyword";
-			}
+
+		if (isset($arrParams['group_acp']) && $arrParams['group_acp'] != 'default' && $arrParams['group_acp'] != '') {
+			$groupAcp = $arrParams['group_acp'];
+			$query[] = "AND `group_acp` = $groupAcp";
 		}
 		$query = implode(" ", $query);
 		$result = $this->singleRecord($query);
@@ -154,11 +155,33 @@ class GroupModel extends Model
 		} else {
 			$query[] = "WHERE `name` = '" . $params['name'] . "'";
 		}
-
-
 		$query = implode(" ", $query);
 		// $result = $this->singleRecord($query);
 		$result = $this->isExist($query);
 		return $result;
+	}
+
+	public function countItem($arrParams, $options = null)
+	{
+		$result = [];
+		$query[] = "SELECT COUNT(`id`) AS `all`";
+		$query[] = "FROM `$this->table`";
+		$query[] = "WHERE 1";
+		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
+			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
+			$query[] = "AND `name` $keyword";
+		}
+		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default' && $arrParams['group_id'] != '') {
+			$groupAcp = $arrParams['group_acp'];
+			$query[] = "AND `group_acp` = $groupAcp";
+		}
+
+		if (isset($arrParams['status']) && $arrParams['status'] !== 'all' && $arrParams['status'] != '') {
+			$status = $arrParams['status'];
+			$query[] = "AND `status` = '$status'";
+		}
+		echo $query = implode(" ", $query);
+		// $result = $this->singleRecord($query);
+		return $result['all'];
 	}
 }

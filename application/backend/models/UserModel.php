@@ -22,14 +22,14 @@ class UserModel extends Model
 			}
 			$query[] = ")";
 		}
-		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default') {
+		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default' && $arrParams['group_id'] != '') {
 			$query[] = "AND (";
 			$groupAcp = trim(($arrParams['group_id']));
 			$query[] = "`group_id` = $groupAcp ";
 			$query[] = ")";
 		}
 
-		if (isset($arrParams['status']) && $arrParams['status'] != 'all') {
+		if (isset($arrParams['status']) && $arrParams['status'] != 'all' && $arrParams['status'] != 'all') {
 			$query[] = "AND `u`.`status` = '{$arrParams['status']}'";
 		}
 		return implode(" ", $query);
@@ -39,10 +39,16 @@ class UserModel extends Model
 	{
 		$query[] = "SELECT u.id, u.username, u.email, u.fullname, u.created, u.created_by, u.modified, u.modified_by, u.status, u.group_id, g.name AS `group_name`";
 		$query[] = "FROM `user` AS `u`, `group` AS `g`";
-		$query[] = "WHERE `u`.`id` > 0 AND `u`.`group_id` = `g`.`id`";
+		$query[] = "WHERE 1 AND `u`.`group_id` = `g`.`id`";
 		$query[] = $this->createQuery($arrParams, 3);
 
 		$query[] = "ORDER BY `u`.`id` DESC";
+		$pagination = $arrParams['pagination'];
+		$totalItemsPerPage = $pagination['totalItemsPerPage'];
+		if ($totalItemsPerPage > 0) {
+			$position = ($pagination['currentPage'] - 1) * $totalItemsPerPage;
+			$query[] = "LIMIT $position, $totalItemsPerPage";
+		}
 		$query = implode(" ", $query);
 		$result = $this->listRecord($query);
 		return $result;
@@ -73,7 +79,7 @@ class UserModel extends Model
 		$query[] = "FROM `$this->table`";
 		$query[] = "WHERE 1 ";
 		$i = 0;
-		if (!empty($arrParams['input-keyword'])) {
+		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
 			$query[] = "AND (";
 			foreach ($options as $cols => $value) {
 				if ($i == $total) break;
@@ -83,7 +89,7 @@ class UserModel extends Model
 			}
 			$query[] = ")";
 		}
-		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default') {
+		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default' && $arrParams['group_id'] != '') {
 			$keyword = $arrParams['group_id'];
 			$query[] = "AND `group_id` = $keyword";
 		}
@@ -173,5 +179,29 @@ class UserModel extends Model
 		$groupId = $params['group_id'];
 		$query = "UPDATE `$this->table` SET `group_id` = '$groupId' WHERE `id` = '$id'";
 		$this->query($query);
+	}
+
+	public function countItem($arrParams, $options = null)
+	{
+		$result = [];
+		$query[] = "SELECT COUNT(`id`) AS `all`";
+		$query[] = "FROM `$this->table`";
+		$query[] = "WHERE 1";
+		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
+			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
+			$query[] = "AND `username` $keyword";
+		}
+		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default' && $arrParams['group_id'] != '') {
+			$groupAcp = $arrParams['group_id'];
+			$query[] = "AND `group_id` = $groupAcp";
+		}
+
+		if (isset($arrParams['status']) && $arrParams['status'] !== 'all' && $arrParams['status'] != '') {
+			$status = $arrParams['status'];
+			$query[] = "AND `status` = '$status'";
+		}
+		$query = implode(" ", $query);
+		$result = $this->singleRecord($query);
+		return $result['all'];
 	}
 }

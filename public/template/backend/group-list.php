@@ -234,6 +234,7 @@
     <!-- ./wrapper -->
 
     <?php require_once 'html/script.php'; ?>
+
 </body>
 
 </html>

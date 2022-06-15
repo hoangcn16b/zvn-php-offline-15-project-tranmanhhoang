@@ -11,7 +11,7 @@ class Helper
                 ';
         return $xhtml;
     }
-    public static function createdBy($createdBy, $created='')
+    public static function createdBy($createdBy, $created = '')
     {
         $created = Helper::formatDate($created);
         $xhtml = '
@@ -104,9 +104,10 @@ class Helper
     {
         if (!empty(trim($searchValue))) {
             $searchValue = trim($searchValue);
-            return str_replace($searchValue, "<mark>{$searchValue}</mark>", $value);
+            $searchValue = preg_quote($searchValue);
+            // return str_replace("$searchValue", "<mark>$searchValue</mark>", $value);
         }
-        return $value;
+        return preg_replace("#$searchValue#i", "<mark>\\0</mark>", $value);
     }
 
     public static function filterStatusGroup($arrParams, $toUrl)
