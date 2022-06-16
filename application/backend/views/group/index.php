@@ -18,8 +18,8 @@ if (!empty($this->items)) {
         $createdBy = Helper::createdBy($item['created_by'], $item['created']);
         $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
 
-        $linkEdit = URL::createLink('backend', 'Group', 'form', ['id' => $id]);
-        $linkDelete = URL::createLink('backend', 'Group', 'delete', ['id' => $id]);
+        $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
+        $linkDelete = URL::createLink($module, $controller, 'delete', ['id' => $id]);
 
         $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" ">';
         $xhtml .= '
@@ -28,12 +28,12 @@ if (!empty($this->items)) {
                         <td>' . $id . '</td>
                         <td>' . $name . '</td>
                         <td>' . $groupAcp . '</td>
-                        <td>' . $status . '</td>
+                        <td class ="position-relative">' . $status . '</td>
                         <td>' . $createdBy . '</td>
                         <td>' . $modifiedBy . '</td>
                         <td>
                             <a href="' . $linkEdit . '" class="btn btn-info btn-sm rounded-circle"><i class="fas fa-pen"></i></a>
-                            <a href="' . $linkDelete . '" id="dialog-confirm" class="btn btn-danger btn-sm rounded-circle"><i class="fas fa-trash "></i></a>
+                            <a href="' . $linkDelete . '" id="dialog-confirm" class="btn btn-danger btn-sm rounded-circle btn-acpt-delete"><i class="fas fa-trash "></i></a>
                         </td>
                     </tr>
                 ';
@@ -41,7 +41,8 @@ if (!empty($this->items)) {
 }
 $valueApplication = HelperForm::input('hidden', 'module', $module) .
     HelperForm::input('hidden', 'controller', $controller) .
-    HelperForm::input('hidden', 'action', $action);
+    HelperForm::input('hidden', 'action', $action) .
+    HelperForm::input('hidden', 'status', $this->arrParams['status'] ?? 'all');
 
 $filterStatus = Helper::filterStatusGroup($this->filterStatus, $this->arrParams);
 
@@ -81,8 +82,8 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                             <?= $filterStatus ?>
                         </div>
 
-                        <form action="" method="GET" id="form-search">
-                            <div>
+                        <form action="" method="GET" id="form-search" class="flex-grow-1 row align-items-center justify-content-end">
+                            <div class="mb-2 mr-2">
                                 <?= $filterGroupAcp ?>
                                 <!-- </form> -->
                             </div>
@@ -129,7 +130,7 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                                     <option>Inactive</option>
                                 </select>
                                 <span class="input-group-append">
-                                    <button type="button" class="btn btn-info">Apply</button>
+                                    <button type="button" id="btn-bullk-action" class="btn btn-info">Apply</button>
                                 </span>
 
                             </div>

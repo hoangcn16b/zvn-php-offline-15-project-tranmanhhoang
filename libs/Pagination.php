@@ -20,9 +20,13 @@ class Pagination
 		$this->totalPage			= ceil($totalItems / $pagination['totalItemsPerPage']);
 	}
 
-	public function showPagination($link)
+	public function showPagination()
 	{
 		// Pagination
+		$link = 'index.php?' . $_SERVER['QUERY_STRING'];
+		$pos = strpos($link, '&page=');
+
+		if ($pos) $link = substr( $link, 0, $pos);
 
 		$paginationHTML = '';
 		if ($this->totalPage > 1) {

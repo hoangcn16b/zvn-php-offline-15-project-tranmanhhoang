@@ -48,7 +48,8 @@ if (!empty($this->items)) {
 }
 $valueApplication = HelperForm::input('hidden', 'module', $module) .
     HelperForm::input('hidden', 'controller', $controller) .
-    HelperForm::input('hidden', 'action', $action);
+    HelperForm::input('hidden', 'action', $action) .
+    HelperForm::input('hidden', 'status', $this->arrParams['status'] ?? 'all');;
 
 $filterStatus = Helper::filterStatusUser($this->filterStatus, $this->arrParams);
 
@@ -86,8 +87,8 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                             <?= $filterStatus ?>
                         </div>
 
-                        <form action="" method="get" id="form-search">
-                            <div class="area-filter-attribute mb-2">
+                        <form action="" method="get" id="form-search" class="flex-grow-1 row align-items-center justify-content-end">
+                            <div class="area-filter-attribute mb-2 mr-2 mb-2">
                                 <?= $filterGroupUser ?>
                             </div>
                             <div class="area-search mb-2">

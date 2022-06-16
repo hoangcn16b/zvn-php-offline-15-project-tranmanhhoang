@@ -43,9 +43,6 @@ class GroupController extends Controller
 	{
 		if (isset($this->_arrParam['id'])) {
 			$this->_model->deleteItem($this->_arrParam['id']);
-			// Session::set('message', ['content' => 'Xoá thành công']);
-		} else {
-			$this->_view->render($this->_arrParam['controller'] . '/error');
 		}
 		URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 	}

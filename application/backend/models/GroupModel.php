@@ -19,8 +19,6 @@ class GroupModel extends Model
 			} else {
 				$result[$value['group_acp']] = 'Inative';
 			}
-
-			// $result[$value['group_acp']] = $value['group_acp'];
 		}
 		return $result;
 	}
@@ -167,19 +165,20 @@ class GroupModel extends Model
 		$query[] = "SELECT COUNT(`id`) AS `all`";
 		$query[] = "FROM `$this->table`";
 		$query[] = "WHERE 1";
-		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
-			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
-			$query[] = "AND `name` $keyword";
-		}
-		if (isset($arrParams['group_id']) && $arrParams['group_id'] != 'default' && $arrParams['group_id'] != '') {
-			$groupAcp = $arrParams['group_acp'];
-			$query[] = "AND `group_acp` = $groupAcp";
-		}
+		$query[] = $this->createQuery($arrParams);
+		// if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
+		// 	$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
+		// 	$query[] = "AND `name` $keyword";
+		// }
+		// if (isset($arrParams['group_acp']) && $arrParams['group_acp'] != 'default' && $arrParams['group_acp'] != '') {
+		// 	$groupAcp = $arrParams['group_acp'];
+		// 	$query[] = "AND `group_acp` = $groupAcp";
+		// }
 
-		if (isset($arrParams['status']) && $arrParams['status'] !== 'all' && $arrParams['status'] != '') {
-			$status = $arrParams['status'];
-			$query[] = "AND `status` = '$status'";
-		}
+		// if (isset($arrParams['status']) && $arrParams['status'] != 'all' && $arrParams['status'] != '') {
+		// 	$status = $arrParams['status'];
+		// 	$query[] = "AND `status` = '$status'";
+		// }
 		$query = implode(" ", $query);
 		$result = $this->singleRecord($query);
 		return $result['all'];

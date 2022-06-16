@@ -21,7 +21,6 @@ class UserController extends Controller
 		$this->_view->listGroup = $this->_model->getGroupAdmin();
 
 		$this->totalItems = $this->_model->countItem($this->_arrParam);
-	
 		$this->_view->pagination = new Pagination($this->totalItems, $this->_pagination);
 		$this->_view->render($this->_arrParam['controller'] . '/index');
 	}
