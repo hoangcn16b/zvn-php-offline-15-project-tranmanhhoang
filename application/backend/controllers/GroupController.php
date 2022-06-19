@@ -18,7 +18,7 @@ class GroupController extends Controller
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
 		$this->_view->getGroupAcp = $this->_model->getGroupAcp(true);
-		
+
 		$this->totalItems = $this->_model->countItem($this->_arrParam, null);
 		$this->_view->pagination = new Pagination($this->totalItems, $this->_pagination);
 		$this->_view->render($this->_arrParam['controller'] . '/index');
@@ -65,21 +65,26 @@ class GroupController extends Controller
 			$data = $this->_arrParam['form'];
 			$validate = new Validate($data);
 			// $nameGroup = $this->_model->checkNameGroup($this->_arrParam['form']);
-
-			$flag = false;
-			if ($this->_model->checkNameGroup($data) == 1) {
-				$validate->setError('name', 'Name Group is exist');
-				$flag = true;
-			}
+			// $flag = false;
+			// if ($this->_model->checkNameGroup($data) == 1) {
+			// 	$validate->setError('name', 'Name Group is exist');
+			// 	$flag = true;
+			// }
 			$required = $task == 'add' ? true : false;
-
-			$validate->addRule('name', 'string', ['min' => 4, 'max' => 20], $required)
+			$name	= $data['name'];
+			$query[] = "SELECT * FROM `group`";
+			if (isset($this->_arrParam['id'])) {
+				$query[] = "WHERE `id` != " . $this->_arrParam['id'] . " AND `name` = '" . $data['name'] . "'";
+			} else {
+				$query[] = "WHERE `name` = '" . $data['name'] . "'";
+			}
+			$query = implode(" ", $query);
+			$validate->addRule('name', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query], $required)
 				->addRule('group_acp', 'groupAcp')
 				->addRule('status', 'status');
 			$validate->run();
 			$data = $validate->getResult();
-			$data['name'] = ($flag == true) ? '' : ($data['name'] ?? '');
-
+			// $data['name'] = ($flag == true) ? '' : ($data['name'] ?? '');
 			if ($validate->isValid()) {
 				$this->_model->saveItem($data, ['task' => $task]);
 				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');

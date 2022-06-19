@@ -27,7 +27,7 @@ if (!empty($this->items)) {
                         <td>' . $ckb . '</td>
                         <td>' . $id . '</td>
                         <td>' . $name . '</td>
-                        <td>' . $groupAcp . '</td>
+                        <td class ="position-relative">' . $groupAcp . '</td>
                         <td class ="position-relative">' . $status . '</td>
                         <td>' . $createdBy . '</td>
                         <td>' . $modifiedBy . '</td>

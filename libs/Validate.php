@@ -100,6 +100,17 @@ class Validate
 					case 'existRecord':
 						$this->validateExistRecord($element, $value['options']);
 						break;
+					case 'notExistRecord':
+						$this->validateNotExistRecord($element, $value['options']);
+						break;
+					case 'string-notExistRecord':
+						$this->validateString($element, $value['options']['min'], $value['options']['max']);
+						$this->validateNotExistRecord($element, $value['options']);
+						break;
+					case 'email-notExistRecord':
+						$this->validateEmail($element);
+						$this->validateNotExistRecord($element, $value['options']);
+						break;
 					case 'file':
 						$this->validateFile($element, $value['options']);
 						break;
@@ -205,6 +216,7 @@ class Validate
 		}
 	}
 
+
 	//validate username
 	private function validateUserName($element, $min = 0, $max = 0)
 	{
@@ -268,10 +280,19 @@ class Validate
 
 		$query	  = $options['query'];
 		if ($database->isExist($query) == false) {
-			$this->setError($element, 'record is not exist');
+			$this->setError($element, 'giá trị này không tồn tại');
 		}
 	}
+	// Validate Not Exist record
+	private function validateNotExistRecord($element, $options)
+	{
+		$database = $options['database'];
 
+		$query	  = $options['query'];	// SELECT id FROM user where username = 'admin'
+		if ($database->isExist($query) == true) {
+			$this->setError($element, 'giá trị này đã tồn tại');
+		}
+	}
 	// Validate File
 	private function validateFile($element, $options)
 	{

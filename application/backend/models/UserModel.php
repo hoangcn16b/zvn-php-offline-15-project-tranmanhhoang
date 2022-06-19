@@ -211,4 +211,20 @@ class UserModel extends Model
 		$result = $this->singleRecord($query);
 		return $result['all'];
 	}
+
+	public function savePassword($params, $options = null)
+	{
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+		$params['modified'] = date("Y-m-d H:i:s");
+		$params['password'] = md5($params['password']);
+		$id = $params['id'];
+		unset($params['fullname']);
+		unset($params['username']);
+		unset($params['email']);
+		unset($params['id']);
+		$where = [['id', $id]];
+		$this->update($params, [['id', $id]]);
+		Session::set('messageForm', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
+	}
 }

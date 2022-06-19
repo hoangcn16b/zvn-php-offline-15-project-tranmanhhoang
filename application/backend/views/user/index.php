@@ -21,7 +21,7 @@ if (!empty($this->items)) {
 
         $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
         $linkDelete = URL::createLink($module, $controller, 'delete', ['id' => $id]);
-
+        $linkPassword = URL::createLink($module, $controller, 'changePassword', ['id' => $id]);
         $groupName = lcfirst($item['group_name']);
         $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" ">';
         $xhtml .= '
@@ -34,13 +34,13 @@ if (!empty($this->items)) {
                     <p class="mb-0">Email: ' . $email . '</p>
                 </td>
                 <td> ' . $group . ' </td>
-                <td>' . $status . ' </td>
+                <td class ="position-relative"> ' . $status . ' </td>
                 <td>' . $createdBy . '</td>
                 <td> ' . $modifiedBy . '</td>
                 <td>
-                    <a href="#" class="btn btn-secondary btn-sm rounded-circle"><i class="fas fa-key"></i></a>
+                    <a href="' . $linkPassword . '" class="btn btn-secondary btn-sm rounded-circle"><i class="fas fa-key"></i></a>
                     <a href="' . $linkEdit . '" class="btn btn-info btn-sm rounded-circle"><i class="fas fa-pen"></i></a>
-                    <a href="' . $linkDelete . '" class="btn btn-danger btn-sm rounded-circle"><i class="fas fa-trash "></i></a>
+                    <a href="' . $linkDelete . '" class="btn btn-danger btn-sm rounded-circle btn-acpt-delete"><i class="fas fa-trash "></i></a>
                 </td>
             </tr>
         ';

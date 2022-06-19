@@ -98,6 +98,7 @@ $(document).ready(function () {
             // dataType: "dataType",
             success: function (response) {
                 parent.html(response);
+                parent.find('.ajax-group-acp').notify("Success!", { className: 'success', position: 'top-center' });
             }
         });
     });
@@ -137,7 +138,19 @@ $(document).ready(function () {
         })
     });
 
+    document.getElementById('random-password').value = make_password(5);
+    function make_password(length) {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() *
+                charactersLength));
+        }
+        return result;
+    }
 });
+
 
 
 
