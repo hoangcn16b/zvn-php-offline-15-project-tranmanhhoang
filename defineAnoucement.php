@@ -4,4 +4,5 @@
 	define ('EDIT_SUCCESS'			, 'Sửa dữ liệu thành công!');						
 	define ('DELETE_SUCCESS'			, 'Xoá dữ liệu thành công!');						
 	define ('UPDATE_SUCCESS'			, 'Cập nhật thành công!');						
+	define ('REGISTER_SUCCESS'			, 'Đăng ký thành công!');						
 	

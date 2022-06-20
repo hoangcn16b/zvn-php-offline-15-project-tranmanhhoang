@@ -103,9 +103,17 @@ class Validate
 					case 'notExistRecord':
 						$this->validateNotExistRecord($element, $value['options']);
 						break;
+					case 'string-existRecord':
+						$this->validateString($element, $value['options']['min'], $value['options']['max']);
+						$this->validateExistRecord($element, $value['options']);
+						break;
 					case 'string-notExistRecord':
 						$this->validateString($element, $value['options']['min'], $value['options']['max']);
 						$this->validateNotExistRecord($element, $value['options']);
+						break;
+					case 'email-existRecord':
+						$this->validateEmail($element);
+						$this->validateExistRecord($element, $value['options']);
 						break;
 					case 'email-notExistRecord':
 						$this->validateEmail($element);
@@ -165,15 +173,27 @@ class Validate
 		}
 	}
 
+	// public function showErrors()
+	// {
+	// 	$xhtml = '';
+	// 	if (!empty($this->errors)) {
+	// 		$xhtml .= '<ul class="error">';
+	// 		foreach ($this->errors as $key => $value) {
+	// 			$xhtml .= '<li>' . $value . ' </li>';
+	// 		}
+	// 		$xhtml .=  '</ul>';
+	// 	}
+	// 	return $xhtml;
+	// }
 	public function showErrors()
 	{
 		$xhtml = '';
 		if (!empty($this->errors)) {
-			$xhtml .= '<ul class="error">';
+			$xhtml .= '<div class="error">';
 			foreach ($this->errors as $key => $value) {
-				$xhtml .= '<li>' . $value . ' </li>';
+				$xhtml .= '<span>' . $value . ' </span></br>';
 			}
-			$xhtml .=  '</ul>';
+			$xhtml .=  '</div>';
 		}
 		return $xhtml;
 	}
@@ -276,21 +296,27 @@ class Validate
 	// Validate Exist record
 	private function validateExistRecord($element, $options)
 	{
-		$database = $options['database'];
-
-		$query	  = $options['query'];
-		if ($database->isExist($query) == false) {
-			$this->setError($element, 'giá trị này không tồn tại');
+		$required = true;
+		$required = ($options['required'] == false) ? false : true;
+		if ($required == true) {
+			$database = $options['database'];
+			$query	  = $options['query'];
+			if ($database->isExist($query) == false) {
+				$this->setError($element, 'giá trị này không tồn tại');
+			}
 		}
 	}
 	// Validate Not Exist record
 	private function validateNotExistRecord($element, $options)
 	{
-		$database = $options['database'];
-
-		$query	  = $options['query'];	// SELECT id FROM user where username = 'admin'
-		if ($database->isExist($query) == true) {
-			$this->setError($element, 'giá trị này đã tồn tại');
+		$required = true;
+		$required = ($options['required'] == false) ? false : true;
+		if ($required == true) {
+			$database = $options['database'];
+			$query	  = $options['query'];	// SELECT id FROM user where username = 'admin'
+			if ($database->isExist($query) == true) {
+				$this->setError($element, 'giá trị này đã tồn tại');
+			}
 		}
 	}
 	// Validate File

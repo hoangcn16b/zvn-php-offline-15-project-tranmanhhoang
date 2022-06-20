@@ -79,7 +79,7 @@ class GroupController extends Controller
 				$query[] = "WHERE `name` = '" . $data['name'] . "'";
 			}
 			$query = implode(" ", $query);
-			$validate->addRule('name', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query], $required)
+			$validate->addRule('name', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => $required])
 				->addRule('group_acp', 'groupAcp')
 				->addRule('status', 'status');
 			$validate->run();

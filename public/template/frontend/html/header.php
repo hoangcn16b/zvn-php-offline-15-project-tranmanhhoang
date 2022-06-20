@@ -19,10 +19,10 @@
                                     <li>
                                         <div class="mobile-back text-right">Back<i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
                                     </li>
-                                    <li><a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'index') ?>" class="my-menu-link active">Trang chủ</a></li>
+                                    <li><a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'index') ?>" class="my-menu-link index-index">Trang chủ</a></li>
                                     <li><a href="list.html">Sách</a></li>
                                     <li>
-                                        <a href="category.html">Danh mục</a>
+                                        <a href="category.html" class="index-category">Danh mục</a>
                                         <ul>
                                             <li><a href="list.html">Bà mẹ - Em bé</a></li>
                                             <li><a href="list.html">Chính Trị - Pháp Lý</a></li>
@@ -39,8 +39,8 @@
                                 <li class="onhover-dropdown mobile-account">
                                     <img src="<?= $this->_pathImg ?>avatar.png" alt="avatar">
                                     <ul class="onhover-show-div">
-                                        <li><a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'login') ?>">Đăng nhập</a></li>
-                                        <li><a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'register') ?>">Đăng ký</a></li>
+                                        <li><a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'login') ?>" class="index-login">Đăng nhập</a></li>
+                                        <li><a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'register') ?>" class="index-register">Đăng ký</a></li>
                                     </ul>
                                 </li>
                             </ul>

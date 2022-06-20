@@ -1,7 +1,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Admin Panel</title>
-
-<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+<?php echo $this->_pluginCssFiles ?>
+<?php echo $this->_cssFiles; ?>
+<!-- <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
 <link rel="stylesheet" href="css/adminlte.min.css" />
-<link rel="stylesheet" href="css/my-style.css" />
+<link rel="stylesheet" href="css/my-style.css" /> -->

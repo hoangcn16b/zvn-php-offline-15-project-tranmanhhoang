@@ -1,12 +1,14 @@
+<?php
 
-
+echo Helper::cmsSuccess($_SESSION['messageRegister'] ?? '');
+Session::unset('messageRegister');
+?>
 <div class="breadcrumb-section">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="page-title">
-                    <h2 class="py-2">
-                        Đăng nhập </h2>
+                    <h2 class="py-2"><?= $this->titlePage ?? '' ?></h2>
                 </div>
             </div>
         </div>
@@ -28,7 +30,7 @@
                             <label for="password" class="required">Mật khẩu</label>
                             <input type="password" id="form[password]" name="form[password]" value="" class="form-control">
                         </div>
-                        <input type="hidden" id="form[token]" name="form[token]" value="1599208737">
+                        <!-- <input type="hidden" id="form[token]" name="form[token]" value="1599208737"> -->
                         <button type="submit" id="submit" name="submit" value="Đăng nhập" class="btn btn-solid">Đăng nhập</button>
                     </form>
                 </div>
@@ -39,7 +41,7 @@
                     <h6 class="title-font">Đăng ký tài khoản</h6>
                     <p>Sign up for a free account at our store. Registration is quick and easy. It allows you to be
                         able to order from our shop. To start shopping click register.</p>
-                    <a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'],'register') ?>" class="btn btn-solid">Đăng ký</a>
+                    <a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'register') ?>" class="btn btn-solid">Đăng ký</a>
                 </div>
             </div>
         </div>

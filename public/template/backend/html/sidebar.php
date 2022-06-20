@@ -21,14 +21,14 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="index.php" class="nav-link active">
+                    <a href="<?= URL::createLink('backend', 'index', 'index') ?>" class="nav-link index-index">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <!-- index.php?module=backend&controller=Group&action=index -->
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link group-index">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Group
@@ -51,8 +51,8 @@
                     </ul>
                 </li>
                 <!-- index.php?module=backend&controller=user&action=index -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item ">
+                    <a href="#" class="nav-link user-index">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             User
@@ -75,7 +75,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link category-index">
                         <i class="nav-icon fas fa-thumbtack"></i>
                         <p>
                             Category
@@ -98,7 +98,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link book-index">
                         <i class="nav-icon fas fa-book-open"></i>
                         <p>
                             Book

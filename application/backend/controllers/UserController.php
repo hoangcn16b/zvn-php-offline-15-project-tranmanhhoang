@@ -71,8 +71,8 @@ class UserController extends Controller
 			$query[] = "WHERE `username` = '{$data['username']}' OR `email` = '{$data['email']}'";
 			$query = implode(" ", $query);
 			$required = $task == 'add' ? true : false;
-			$validate->addRule('username', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query], $required)
-				->addRule('email', 'email-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query], $required)
+			$validate->addRule('username', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => $required])
+				->addRule('email', 'email-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => $required])
 				->addRule('status', 'select')
 				->addRule('group_id', 'select');
 			if (isset($data['password'])) {
@@ -108,7 +108,7 @@ class UserController extends Controller
 		if (!empty($this->_arrParam['form'])) {
 			$data = $this->_arrParam['form'];
 			$validate = new Validate($data);
-			$validate->addRule('password', 'password',['action' => 'add']);
+			$validate->addRule('password', 'password', ['action' => 'add']);
 			$validate->run();
 			$data = $validate->getResult();
 			if ($validate->isValid()) {

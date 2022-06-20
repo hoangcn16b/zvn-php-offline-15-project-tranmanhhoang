@@ -10,9 +10,9 @@ class HelperForm
         return $xhtml;
     }
 
-    public static function label($name, $option = false)
+    public static function label($name, $option = false, $class = 'text-danger')
     {
-        $option = ($option == true) ? '<span class="text-danger">*</span>' : '';
+        $option = ($option == true) ? '<span class="' . $class . '">*</span>' : '';
         return ('<label>' . $name . $option . ' </label>');
     }
 
@@ -42,5 +42,18 @@ class HelperForm
 
         $xhtml = '<select class="form-control custom-select ' . $class . '" name="' . $name . '">' . $xhtml . '</select>';
         return $xhtml;
+    }
+
+    public static function iconFormLogin($class = '')
+    {
+        $xhtml = '';
+        $xhtml .= '
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas ' . $class . '"></span>
+                        </div>
+                    </div>
+                ';
+                return $xhtml;
     }
 }

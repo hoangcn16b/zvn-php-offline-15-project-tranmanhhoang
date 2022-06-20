@@ -23,3 +23,5 @@
 	define ('DB_PASS'			, '');						
 	define ('DB_NAME'			, 'php-offline-project');						
 	define ('DB_TABLE'			, 'user');						
+	define ('TABLE_USER'		, 'user');						
+	define ('TABLE_GROUP'			, 'group');						
