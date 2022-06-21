@@ -36,6 +36,7 @@ class UserController extends Controller
 		echo $result;
 		// echo json_encode($result);
 	}
+	
 	public function ajaxGroupAction()
 	{
 		$this->_model->changeGroupUser($this->_arrParam);
