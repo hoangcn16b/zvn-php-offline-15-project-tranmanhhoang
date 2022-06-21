@@ -20,28 +20,34 @@ class IndexController extends Controller
 	{
 		$this->_view->titlePage = 'Đăng Nhập';
 		$data = null;
-		if (!empty($this->_arrParam['form'])) {
+		$userInfor = Session::get('user');
+		$logged = (($userInfor['login'] ?? false) == true && ((($userInfor['time'] ?? '') + TIME_LOGIN) >= time()));
+		if ($logged) {
+			URL::redirectLink('frontend', 'user', 'profile');
+		}
+
+		if (!empty($this->_arrParam['form']['submit'])) {
 			$data = $this->_arrParam['form'];
 			$validate = new Validate($data);
-			$email	= $data['email'];
-			$password	= md5($data['password']);
-
-			$query[] = "SELECT `username`, `fullname`, `email` FROM `user`";
-			$query[] = "WHERE `email` = '" . $email . "' AND `password` = '" . $password . "' AND `status` = 'active' ";
-
-			echo $query = implode(" ", $query);
-			$this->_view->query = $query;
-			$validate->addRule('email', 'email')
-				->addRule('email', 'notExistRecord', ['database' => $this->_model, 'query' => $query], true)
-				->addRule('password', 'string-notExistRecord', ['min' => 4, 'max' => 20, 'database' => $this->_model, 'query' => $query], true);
+			$email = $data['email'];
+			$password = md5($data['password']);
+			$queryEmail = "SELECT `id` FROM `" . TABLE_USER . "` WHERE `email` = '$email'";
+			$query = "SELECT `id` FROM `" . TABLE_USER . "` WHERE `email` = '$email' AND `password` = '$password' ";
+			$validate->addRule('email', 'email-existRecord', ['database' => $this->_model, 'query' => $queryEmail, 'required' => true])
+				->addRule('password', 'string-existRecord', ['min' => 4, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => true]);
 			$validate->run();
-			$data = $validate->getResult();
 			if ($validate->isValid()) {
-
-				// $this->_model->saveItem($data, ['task' => 'add']);
-				// URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
+				unset($data['submit']);
+				$inforUser = $this->_model->inforItem($data);
+				$arrSession = [
+					'login' => true,
+					'info' => $inforUser,
+					'time' => time(),
+					'group_acp' => $inforUser['group_acp']
+				];
+				Session::set('user', $arrSession);
+				URL::redirectLink($this->_arrParam['module'], 'index', 'index');
 			} else {
-
 				$this->_view->errors = $validate->showErrors();
 			}
 		}
@@ -51,6 +57,11 @@ class IndexController extends Controller
 
 	public function registerAction()
 	{
+		$userInfor = Session::get('user');
+		$logged = (($userInfor['login'] ?? false) == true && ((($userInfor['time'] ?? '') + TIME_LOGIN) >= time()));
+		if ($logged) {
+			URL::redirectLink('frontend', 'user', 'profile');
+		}
 		$this->_view->titlePage = 'Đăng ký tài khoản';
 		$data = null;
 		if (!empty($this->_arrParam['form'])) {
@@ -79,5 +90,16 @@ class IndexController extends Controller
 		}
 		$this->_view->outPut = $data;
 		$this->_view->render($this->_arrParam['controller'] . '/register');
+	}
+
+	public function errorAction()
+	{
+		$this->_view->render('error/error');
+	}
+
+	public function logoutAction()
+	{
+		Session::unset('user');
+		URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 	}
 }

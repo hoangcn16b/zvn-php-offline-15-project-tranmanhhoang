@@ -4,6 +4,11 @@ class UserController extends Controller
 
 	public function __construct($arrParams)
 	{
+		$userInfor = Session::get('user');
+		$logged = (($userInfor['login'] ?? false) == true && ((($userInfor['time'] ?? '') + TIME_LOGIN) >= time()));
+		if ($logged == false)  {
+			URL::redirectLink('backend', 'index', 'login');
+		}
 		parent::__construct($arrParams);
 		$this->_templateObj->setFolderTemplate('backend/');
 		$this->_templateObj->setFileTemplate('index.php');

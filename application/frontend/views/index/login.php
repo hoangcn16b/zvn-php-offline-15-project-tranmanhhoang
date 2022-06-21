@@ -1,7 +1,15 @@
 <?php
-
 echo Helper::cmsSuccess($_SESSION['messageRegister'] ?? '');
 Session::unset('messageRegister');
+
+$lblEmail = HelperForm::label('Email', false, 'required');
+$inputEmail = HelperForm::input('email', 'form[email]', $data['name'] ?? '', 'form-control', 'id="form[email]"');
+
+$lblPassword = HelperForm::label('Password', false, 'required');
+$inputPassword = HelperForm::input('password', 'form[password]', $data['name'] ?? '', 'form-control', 'id="form[password]"');
+
+$linkAction = URL::createLink($this->arrParams['module'], $this->arrParams['controller'], $this->arrParams['action'])
+
 ?>
 <div class="breadcrumb-section">
     <div class="container">
@@ -20,18 +28,16 @@ Session::unset('messageRegister');
             <div class="col-lg-6">
                 <h3>Đăng nhập</h3>
                 <div class="theme-card">
-                    <form action="" method="post" id="admin-form" class="theme-form">
+                    <?= Helper::cmsError($this->errors ?? '') ?>
+                    <form action="<?= $linkAction ?>" method="post" id="admin-form" class="theme-form">
                         <div class="form-group">
-                            <label for="email" class="required">Email</label>
-                            <input type="email" id="form[email]" name="form[email]" value="" class="form-control">
+                            <?= $lblEmail . $inputEmail ?>
                         </div>
-
                         <div class="form-group">
-                            <label for="password" class="required">Mật khẩu</label>
-                            <input type="password" id="form[password]" name="form[password]" value="" class="form-control">
+                            <?= $lblPassword . $inputPassword ?>
                         </div>
                         <!-- <input type="hidden" id="form[token]" name="form[token]" value="1599208737"> -->
-                        <button type="submit" id="submit" name="submit" value="Đăng nhập" class="btn btn-solid">Đăng nhập</button>
+                        <button type="submit" id="submit" name="form[submit]" value="Đăng nhập" class="btn btn-solid">Đăng nhập</button>
                     </form>
                 </div>
             </div>

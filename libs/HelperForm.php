@@ -1,6 +1,7 @@
 <?php
 class HelperForm
 {
+
     public static function input($type, $name, $value = null, $class = null, $attributes = null)
     {
 

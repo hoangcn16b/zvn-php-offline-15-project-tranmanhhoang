@@ -13,9 +13,15 @@ class URL
         return $url;
     }
 
-    public static function redirectLink($module, $controller, $action)
+    public static function redirectLink($module, $controller, $action, $param = null)
     {
-        $url = "index.php?module=$module&controller=$controller&action=$action";
+        $paramLink = '';
+        if (isset($param) && !empty($param)) {
+            foreach ($param as $key => $value) {
+                $paramLink .= "&$key=$value";
+            }
+        }
+        $url = "index.php?module=$module&controller=$controller&action=$action" . $paramLink;
         header('location: ' . $url);
         exit();
     }

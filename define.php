@@ -17,6 +17,9 @@
 	define	('DEFAULT_CONTROLLER'	, 'index');
 	define	('DEFAULT_ACTION'		, 'index');
 
+	// config
+	define('TIME_LOGIN' 		, 500);
+
 	// ====================== DATABASE ===========================
 	define ('DB_HOST'			, 'localhost');
 	define ('DB_USER'			, 'root');						

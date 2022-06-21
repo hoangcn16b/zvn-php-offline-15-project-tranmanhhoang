@@ -15,6 +15,8 @@ class Bootstrap
 		if (file_exists($filePath)) {
 			$this->loadExistingController($filePath, $controllerName);
 			$this->callMethod();
+		} else {
+			URL::redirectLink('frontend', 'index', 'error', ['type' => 'file_not_exist']);
 		}
 	}
 
@@ -23,9 +25,44 @@ class Bootstrap
 	{
 		$actionName = $this->_params['action'] . 'Action';
 		if (method_exists($this->_controllerObject, $actionName) == true) {
-			$this->_controllerObject->$actionName();
+			$module = $this->_params['module'];
+			$controller = $this->_params['controller'];
+			$action = $this->_params['action'];
+			$userInfor = Session::get('user');
+			// Session::unset('user');
+
+			$logged = (($userInfor['login'] ?? false) == true && ((($userInfor['time'] ?? '') + TIME_LOGIN) >= time()));
+			// $pageLogin = ($controller == 'index' && $action == 'login');
+			if ($module == 'backend') {
+				if ($logged == true) {
+					if ($userInfor['group_acp'] == 1) {
+						$this->_controllerObject->$actionName();
+						// if ($pageLogin == true) URL::redirectLink('backend', 'index', 'index');
+						// if ($pageLogin == false) $this->_controllerObject->$actionName();
+					} else {
+						Session::unset('user');
+						URL::redirectLink('frontend', 'index', 'error', ['type' => 'decline']);
+					}
+				} else {
+					Session::unset('user');
+					$this->callLoginAction($module);
+					// if ($pageLogin == true) $this->_controllerObject->$actionName();
+					// if ($pageLogin == false) URL::redirectLink($module, 'index', 'login');
+				}
+			} elseif ($module == 'frontend') {
+				if ($controller == 'user') {
+					if ($logged == true) {
+						$this->_controllerObject->$actionName();
+					} else {
+						Session::unset('user');
+						$this->callLoginAction($module);
+					}
+				}
+				$this->_controllerObject->$actionName();
+			}
 		} else {
-			$this->_error();
+			URL::redirectLink('frontend', 'index', 'error', ['type' => 'file_not_exist']);
+			// $this->_error();
 		}
 	}
 
@@ -36,6 +73,14 @@ class Bootstrap
 		$this->_params['module'] 		= isset($this->_params['module']) ? $this->_params['module'] : DEFAULT_MODULE;
 		$this->_params['controller'] 	= isset($this->_params['controller']) ? $this->_params['controller'] : DEFAULT_CONTROLLER;
 		$this->_params['action'] 		= isset($this->_params['action']) ? $this->_params['action'] : DEFAULT_ACTION;
+	}
+
+	// CALL ACTION LOGIN
+	private function callLoginAction($module = 'frontend')
+	{
+		require_once APPLICATION_PATH . $module . DS . 'controllers' . DS  . 'IndexController.php';
+		$indexController = new IndexController($this->_params);
+		$indexController->loginAction();
 	}
 
 	// LOAD EXISTING CONTROLLER

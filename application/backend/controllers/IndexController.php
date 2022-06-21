@@ -13,6 +13,12 @@ class IndexController extends Controller
 
 	public function loginAction()
 	{
+		$userInfor = Session::get('user');
+		$logged = (($userInfor['login'] ?? false) == true && ((($userInfor['time'] ?? '') + TIME_LOGIN) >= time()));
+		if ($logged) {
+			URL::redirectLink('backend', 'index', 'index');
+		}
+
 		if (!empty($this->_arrParam['form']['submit'])) {
 			$data = $this->_arrParam['form'];
 			$validate = new Validate($data);
@@ -46,9 +52,23 @@ class IndexController extends Controller
 		$this->_templateObj->setFileTemplate('index.php');
 		$this->_templateObj->load();
 		$this->_view->total = $this->_model->countTotalToIndex();
-		echo '<pre>';
-		print_r($_SESSION);
-		echo '</pre>';
 		$this->_view->render($this->_arrParam['controller'] . '/index');
+	}
+
+	// public function errorAction()
+	// {
+	// 	$this->_view->render( 'error/error');
+	// }
+	public function profileAction()
+	{
+		$this->_templateObj->setFileTemplate('index.php');
+		$this->_templateObj->load();
+		$this->_view->render('index/profile');
+	}
+
+	public function logoutAction()
+	{
+		Session::unset('user');
+		URL::redirectLink($this->_arrParam['module'], 'index', 'login');
 	}
 }

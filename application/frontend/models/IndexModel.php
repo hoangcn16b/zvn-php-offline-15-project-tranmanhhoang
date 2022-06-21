@@ -32,4 +32,19 @@ class IndexModel extends Model
 			// Session::set('messageForm', ['class' => 'success', 'content' => ADD_SUCCESS]);
 		}
 	}
+
+	public function inforItem($params, $options = null)
+	{
+		if ($options == null) {
+			$email = $params['email'];
+			$password = md5($params['password']);
+			// unset($params['submit']);
+			$query[] = "SELECT `u`.`id`, `u`.`fullname`,`u`.`username`, `u`.`email`, `u`.`group_id`, `g`.`group_acp` ";
+			$query[] = "FROM `user` AS `u` LEFT JOIN `group` as `g` ON `u`.`group_id` = `g`.`id`";
+			$query[] = "WHERE `u`.`email` = '$email' AND `u`.`password` = '$password' ";
+			$query = implode(" ", $query);
+			$result = $this->singleRecord($query);
+			return $result;
+		}
+	}
 }

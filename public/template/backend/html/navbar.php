@@ -1,3 +1,10 @@
+<?php
+$linkLogOut = URL::createLink($this->arrParams['module'], 'index', 'logout');
+$linkViewSite = URL::createLink('frontend', 'index', 'index');
+$linkProfile = URL::createLink($this->arrParams['module'], 'index', 'profile');
+
+
+?>
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -10,7 +17,7 @@
     <ul class="navbar-nav ml-auto">
 
         <li class="nav-item">
-            <a class="nav-link" href="#" role="button">
+            <a class="nav-link" href="<?= $linkViewSite ?>" role="button">
                 <i class="fas fa-eye"></i> View Site
             </a>
         </li>
@@ -31,8 +38,8 @@
                 </li>
                 <!-- Menu Footer-->
                 <li class="user-footer">
-                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    <a href="#" class="btn btn-default btn-flat float-right">Sign out</a>
+                    <a href="<?= $linkProfile ?>" class="btn btn-default btn-flat">Profile</a>
+                    <a href="<?= $linkLogOut ?>" class="btn btn-default btn-flat float-right">Sign out</a>
                 </li>
             </ul>
         </li>

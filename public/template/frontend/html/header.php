@@ -1,4 +1,28 @@
 <header class="my-header sticky">
+    <?php
+    $userObj = Session::get('user');
+    // Session::unset('user');
+    $arrMenu = [];
+    if ($userObj == true && $userObj['group_acp'] == true) {
+        $arrMenu[] = ['class' => 'user-index', 'link' => URL::createLink('backend', 'index', 'index'), 'name' => 'Trang quản lý'];
+    }
+    if ($userObj == true) {
+        $arrMenu[] = ['class' => 'index-profile', 'link' => URL::createLink($this->arrParams['module'], 'user', 'profile'), 'name' => 'Tài khoản của tôi'];
+        $arrMenu[] = ['class' => 'index-logout', 'link' => URL::createLink($this->arrParams['module'], 'index', 'logout'), 'name' => 'Đăng xuất'];
+    } else {
+        $arrMenu[] = ['class' => 'index-login', 'link' => URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'login'), 'name' => 'Đăng nhập'];
+        $arrMenu[] = ['class' => 'index-register', 'link' => URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'register'), 'name' => 'Đăng ký'];
+    }
+
+    $xhtml = '<ul class="onhover-show-div">';
+    foreach ($arrMenu as $key => $value) {
+        $xhtml .= '
+                <li><a href="' . $value['link'] . '" class="' . $value['class'] . '">' . $value['name'] . '</a></li>
+            ';
+    }
+    $xhtml .= '</ul>';
+
+    ?>
     <div class="mobile-fix-option"></div>
     <div class="container">
         <div class="row">
@@ -38,10 +62,9 @@
                             <ul class="header-dropdown">
                                 <li class="onhover-dropdown mobile-account">
                                     <img src="<?= $this->_pathImg ?>avatar.png" alt="avatar">
-                                    <ul class="onhover-show-div">
-                                        <li><a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'login') ?>" class="index-login">Đăng nhập</a></li>
-                                        <li><a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'register') ?>" class="index-register">Đăng ký</a></li>
-                                    </ul>
+
+                                    <?= $xhtml ?>
+
                                 </li>
                             </ul>
                         </div>
@@ -90,4 +113,5 @@
             </div>
         </div>
     </div>
+
 </header>
