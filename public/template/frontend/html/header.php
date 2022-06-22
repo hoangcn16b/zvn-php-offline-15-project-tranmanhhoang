@@ -30,7 +30,7 @@
                 <div class="main-menu">
                     <div class="menu-left">
                         <div class="brand-logo">
-                            <a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'index') ?>">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'index', 'index') ?>">
                                 <h2 class="mb-0" style="color: #5fcbc4">BookStore</h2>
                             </a>
                         </div>
@@ -43,7 +43,7 @@
                                     <li>
                                         <div class="mobile-back text-right">Back<i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
                                     </li>
-                                    <li><a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'index') ?>" class="my-menu-link index-index">Trang chủ</a></li>
+                                    <li><a href="<?= URL::createLink($this->arrParams['module'], 'index', 'index') ?>" class="my-menu-link index-index">Trang chủ</a></li>
                                     <li><a href="list.html">Sách</a></li>
                                     <li>
                                         <a href="category.html" class="index-category">Danh mục</a>

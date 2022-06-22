@@ -5,8 +5,8 @@ $arrSelect = [
     'status' => ['default' => 'Select Status', 'inactive' => 'Không kích hoạt', 'active' => 'Kích hoạt'],
     'group' => $this->listGroup
 ];
-
 $readOnly = isset($this->arrParams['id']) ? 'readonly' : '';
+
 $lblUsername = HelperForm::label('Username', true);
 $inputUserName = HelperForm::input('text', 'form[username]', $data['username'] ?? '', 'form-control', $readOnly);
 
@@ -29,6 +29,19 @@ if (isset($this->arrParams['id'])) {
     $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
     $lblPassWord = '';
     $inputPassWord = '';
+}
+
+$idUserLogged = $_SESSION['user']['info']['id'] ?? '';
+if (isset($this->arrParams['id']) && $idUserLogged == $this->arrParams['id'] ?? '') {
+    $selectStatus = HelperForm::input('text', 'form[status]', $data['status'] ?? '', 'form-control', $readOnly);
+    foreach ($this->listGroup as $key => $value) {
+        if ($idUserLogged == $key) {
+            $getNameGroup = $value;
+            break;
+        }
+    }
+    $selectGroupHidden = HelperForm::input('hidden', 'form[group_id]', $data['group_id'] ?? '', 'form-control', $readOnly);
+    $selectGroup = HelperForm::input('text', '', $getNameGroup, 'form-control', $readOnly);
 }
 
 ?>
@@ -65,7 +78,7 @@ if (isset($this->arrParams['id'])) {
                         <?= $lblStatus . $selectStatus ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblGroup . $selectGroup ?>
+                        <?= $lblGroup . $selectGroup . ($selectGroupHidden ?? '') ?>
                     </div>
                     <div class="form-group">
                         <?= $inputId ?? '' ?>
@@ -73,7 +86,7 @@ if (isset($this->arrParams['id'])) {
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success">Save</button>
-                    <a href="<?= URL::createLink('backend', 'User', 'index') ?>" class="btn btn-danger">Cancel</a>
+                    <a href="<?= URL::createLink('backend', 'user', 'index') ?>" class="btn btn-danger">Cancel</a>
                 </div>
             </div>
         </form>

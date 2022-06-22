@@ -21,7 +21,7 @@ if (!empty($this->items)) {
         $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
         $linkDelete = URL::createLink($module, $controller, 'delete', ['id' => $id]);
 
-        $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" ">';
+        $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" >';
         $xhtml .= '
                     <tr>
                         <td>' . $ckb . '</td>
@@ -94,7 +94,7 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                                     <?= $filterSearch ?>
                                     <span class="input-group-append">
                                         <button type="submit" id="submit-keyword" class="btn btn-info">Search</button>
-                                        <a href="<?= URL::createLink('backend', 'Group', 'index') ?>" name="clear-keyword" class="btn btn-danger">Clear</a>
+                                        <a href="<?= URL::createLink('backend', 'group', 'index') ?>" name="clear-keyword" class="btn btn-danger">Clear</a>
                                     </span>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                 <h3 class="card-title">List</h3>
 
                 <div class="card-tools">
-                    <a href="<?= URL::createLink('backend', 'Group', 'index') ?>" class="btn btn-tool" data-card-widget="refresh">
+                    <a href="<?= URL::createLink('backend', 'group', 'index') ?>" class="btn btn-tool" data-card-widget="refresh">
                         <i class="fas fa-sync-alt"></i>
                     </a>
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -132,12 +132,17 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                                 <span class="input-group-append">
                                     <button type="button" id="btn-bullk-action" class="btn btn-info">Apply</button>
                                 </span>
-
                             </div>
                         </div>
+
                         <div>
-                            <a href="<?= URL::createLink('backend', 'Group', 'form') ?>" class="btn btn-info"><i class="fas fa-plus"></i> Add New</a>
+                            <?php
+                            if ($this->showButtonAddGroup) {
+                                echo Helper::cmsButton(URL::createLink('backend', 'group', 'form'), '<i class="fas fa-plus"></i> Add New', 'btn btn-info');
+                            }
+                            ?>
                         </div>
+
                     </div>
                 </div>
                 <span>

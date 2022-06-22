@@ -29,14 +29,19 @@ class Bootstrap
 			$controller = $this->_params['controller'];
 			$action = $this->_params['action'];
 			$userInfor = Session::get('user');
+			$requestURL = "$module-$controller-$action";
 			// Session::unset('user');
-
 			$logged = (($userInfor['login'] ?? false) == true && ((($userInfor['time'] ?? '') + TIME_LOGIN) >= time()));
 			// $pageLogin = ($controller == 'index' && $action == 'login');
 			if ($module == 'backend') {
 				if ($logged == true) {
 					if ($userInfor['group_acp'] == 1) {
-						$this->_controllerObject->$actionName();
+						if (in_array($requestURL, $userInfor['info']['privilege']) == true) {
+							$this->_controllerObject->$actionName();
+						} else {
+							// Session::unset('user');
+							URL::redirectLink('frontend', 'index', 'error', ['type' => 'decline']);
+						}
 						// if ($pageLogin == true) URL::redirectLink('backend', 'index', 'index');
 						// if ($pageLogin == false) $this->_controllerObject->$actionName();
 					} else {
@@ -44,17 +49,18 @@ class Bootstrap
 						URL::redirectLink('frontend', 'index', 'error', ['type' => 'decline']);
 					}
 				} else {
-					Session::unset('user');
+					// Session::unset('user');
 					$this->callLoginAction($module);
 					// if ($pageLogin == true) $this->_controllerObject->$actionName();
 					// if ($pageLogin == false) URL::redirectLink($module, 'index', 'login');
 				}
 			} elseif ($module == 'frontend') {
+
 				if ($controller == 'user') {
 					if ($logged == true) {
 						$this->_controllerObject->$actionName();
 					} else {
-						Session::unset('user');
+						// Session::unset('user');
 						$this->callLoginAction($module);
 					}
 				}
@@ -78,6 +84,7 @@ class Bootstrap
 	// CALL ACTION LOGIN
 	private function callLoginAction($module = 'frontend')
 	{
+		Session::unset('user');
 		require_once APPLICATION_PATH . $module . DS . 'controllers' . DS  . 'IndexController.php';
 		$indexController = new IndexController($this->_params);
 		$indexController->loginAction();

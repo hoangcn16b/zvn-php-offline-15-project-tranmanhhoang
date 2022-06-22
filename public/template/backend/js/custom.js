@@ -150,8 +150,6 @@ $(document).ready(function () {
         return result;
     }
 
-
-
 });
 
 function getUrlVar(key) {
@@ -163,7 +161,6 @@ $(document).ready(function () {
     // var action = (getUrlVar('action') == '') ? 'index' : getUrlVar('action');
     var action = 'index';
     var classActive = controller + '-' + action;
-    console.log(classActive);
     $('.' + classActive).addClass('active');
 });
 

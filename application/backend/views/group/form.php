@@ -49,7 +49,7 @@ if (isset($this->arrParams['id'])) {
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success">Save</button>
-                    <a href="<?= URL::createLink('backend', 'Group', 'index') ?>" class="btn btn-danger">Cancel</a>
+                    <a href="<?= URL::createLink('backend', 'group', 'index') ?>" class="btn btn-danger">Cancel</a>
                 </div>
             </div>
         </form>

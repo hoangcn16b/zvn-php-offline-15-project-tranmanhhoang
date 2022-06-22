@@ -37,6 +37,7 @@ class UserModel extends Model
 
 	public function listItems($arrParams, $option = null)
 	{
+		// $exceptId = $_SESSION['user']['info']['id'];			//`u`.`id` != $exceptId
 		$query[] = "SELECT u.id, u.username, u.email, u.fullname, u.created, u.created_by, u.modified, u.modified_by, u.status, u.group_id, g.name AS `group_name`";
 		$query[] = "FROM `user` AS `u`, `group` AS `g`";
 		$query[] = "WHERE 1 AND `u`.`group_id` = `g`.`id`";
@@ -52,6 +53,7 @@ class UserModel extends Model
 		$query = implode(" ", $query);
 		$result = $this->listRecord($query);
 		return $result;
+
 	}
 
 	public function changeStatus($params)

@@ -201,4 +201,13 @@ class Helper
         }
         return $xhtml;
     }
+
+    public static function cmsButton($link, $name, $class)
+    {
+        $xhtml = '';
+        $xhtml .= '
+                    <a href="' . $link . '" class="' . $class . '">' . $name . '</a>
+                ';
+        return $xhtml;
+    }
 }

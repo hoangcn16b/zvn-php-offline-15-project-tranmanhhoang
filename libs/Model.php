@@ -223,6 +223,51 @@ class Model
 		return $result;
 	}
 
+	// LIST RECORD
+	public function fetchAll($query)
+	{
+		$result = array();
+		if (!empty($query)) {
+			$resultQuery = $this->query($query);
+			if (mysqli_num_rows($resultQuery) > 0) {
+				while ($row = mysqli_fetch_assoc($resultQuery)) {
+					$result[] = $row;
+				}
+				mysqli_free_result($resultQuery);
+			}
+		}
+		return $result;
+	}
+
+	// LIST RECORD
+	public function fetchPairs($query)
+	{
+		$result = array();
+		if (!empty($query)) {
+			$resultQuery = $this->query($query);
+			if (mysqli_num_rows($resultQuery) > 0) {
+				while ($row = mysqli_fetch_assoc($resultQuery)) {
+					$result[$row['id']] = $row['name'];
+				}
+				mysqli_free_result($resultQuery);
+			}
+		}
+		return $result;
+	}
+
+	// SINGLE RECORD
+	public function fetchRow($query)
+	{
+		$result = array();
+		if (!empty($query)) {
+			$resultQuery = $this->query($query);
+			if (mysqli_num_rows($resultQuery) > 0) {
+				$result = mysqli_fetch_assoc($resultQuery);
+			}
+			mysqli_free_result($resultQuery);
+		}
+		return $result;
+	}
 	// EXIST
 	public function isExist($query)
 	{

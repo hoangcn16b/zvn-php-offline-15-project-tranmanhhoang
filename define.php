@@ -27,4 +27,5 @@
 	define ('DB_NAME'			, 'php-offline-project');						
 	define ('DB_TABLE'			, 'user');						
 	define ('TABLE_USER'		, 'user');						
-	define ('TABLE_GROUP'			, 'group');						
+	define ('TABLE_GROUP'		, 'group');						
+	define ('TABLE_PRIVILEGE'	, 'privilege');						

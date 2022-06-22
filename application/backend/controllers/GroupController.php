@@ -6,7 +6,7 @@ class GroupController extends Controller
 	{
 		$userInfor = Session::get('user');
 		$logged = (($userInfor['login'] ?? false) == true && ((($userInfor['time'] ?? '') + TIME_LOGIN) >= time()));
-		if ($logged == false)  {
+		if ($logged == false) {
 			URL::redirectLink('backend', 'index', 'login');
 		}
 		parent::__construct($arrParams);
@@ -18,7 +18,10 @@ class GroupController extends Controller
 
 	public function indexAction()
 	{
-		$configPagination = ['totalItemsPerPage' => 2, 'pageRange' => 2];
+		$userInfor = Session::get('user');
+		$requestURL = "backend-group-form";
+		$this->_view->showButtonAddGroup = (in_array($requestURL, $userInfor['info']['privilege']) == true) ? true : false;
+		$configPagination = ['totalItemsPerPage' => 3, 'pageRange' => 3];
 		$this->setPagination($configPagination);
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
@@ -38,7 +41,7 @@ class GroupController extends Controller
 
 	public function ajaxGroupAcpAction()
 	{
-
+		
 		$result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'changeGroupAcp']);
 		echo $result;
 		// echo json_encode($result);

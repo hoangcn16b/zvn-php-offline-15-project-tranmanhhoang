@@ -4,6 +4,8 @@ $module = $this->arrParams['module'];
 $controller = $this->arrParams['controller'];
 $action = $this->arrParams['action'];
 $xhtml = '';
+$idUserLogged = $_SESSION['user']['info']['id'];
+
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
         $id = $item['id'];
@@ -20,10 +22,13 @@ if (!empty($this->items)) {
         $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
 
         $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
+
         $linkDelete = URL::createLink($module, $controller, 'delete', ['id' => $id]);
+        $cmsButtonDelete = Helper::cmsButton($linkDelete, '<i class="fas fa-trash "></i>', 'btn btn-danger btn-sm rounded-circle btn-acpt-delete');
+        $cmsButtonDelete = ($idUserLogged == $id) ? '' : $cmsButtonDelete;
         $linkPassword = URL::createLink($module, $controller, 'changePassword', ['id' => $id]);
         $groupName = lcfirst($item['group_name']);
-        $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" ">';
+        $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" >';
         $xhtml .= '
             <tr>
                 <td>' . $ckb . '</td>
@@ -40,7 +45,7 @@ if (!empty($this->items)) {
                 <td>
                     <a href="' . $linkPassword . '" class="btn btn-secondary btn-sm rounded-circle"><i class="fas fa-key"></i></a>
                     <a href="' . $linkEdit . '" class="btn btn-info btn-sm rounded-circle"><i class="fas fa-pen"></i></a>
-                    <a href="' . $linkDelete . '" class="btn btn-danger btn-sm rounded-circle btn-acpt-delete"><i class="fas fa-trash "></i></a>
+                    ' . $cmsButtonDelete . '
                 </td>
             </tr>
         ';
@@ -98,7 +103,7 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
 
                                     <span class="input-group-append">
                                         <button type="submit" id="submit-keyword" class="btn btn-info">Search</button>
-                                        <a href="<?= URL::createLink('backend', 'User', 'index') ?>" name="clear-keyword" class="btn btn-danger">Clear</a>
+                                        <a href="<?= URL::createLink('backend', 'user', 'index') ?>" name="clear-keyword" class="btn btn-danger">Clear</a>
                                     </span>
                                 </div>
                             </div>
@@ -151,10 +156,10 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                         ?>
                 </span>
                 <div class="table-responsive">
-                    <table class="table align-middle text-center table-bordered">
+                    <table class="table align-middle text-center table-bordered" id="mainOutput" name="mainOutput">
                         <thead>
                             <tr>
-                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox" name="checkall"></th>
                                 <th>ID</th>
                                 <th class="text-left">Info</th>
                                 <th>Group</th>

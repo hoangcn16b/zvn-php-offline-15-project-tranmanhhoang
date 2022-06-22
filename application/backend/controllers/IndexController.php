@@ -52,6 +52,8 @@ class IndexController extends Controller
 		$this->_templateObj->setFileTemplate('index.php');
 		$this->_templateObj->load();
 		$this->_view->total = $this->_model->countTotalToIndex();
+
+
 		$this->_view->render($this->_arrParam['controller'] . '/index');
 	}
 
@@ -61,8 +63,13 @@ class IndexController extends Controller
 	// }
 	public function profileAction()
 	{
+		$this->_view->setTitleForm = 'Profile User';
+		$userInfor = Session::get('user');
+		$this->_view->profileUser = $userInfor['info'];
+
 		$this->_templateObj->setFileTemplate('index.php');
 		$this->_templateObj->load();
+
 		$this->_view->render('index/profile');
 	}
 

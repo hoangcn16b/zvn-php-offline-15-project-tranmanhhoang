@@ -13,6 +13,7 @@ class IndexController extends Controller
 
 	public function indexAction()
 	{
+		$userInfor = Session::get('user');
 		$this->_view->render($this->_arrParam['controller'] . '/index');
 	}
 

@@ -6,7 +6,7 @@ class UserController extends Controller
 	{
 		$userInfor = Session::get('user');
 		$logged = (($userInfor['login'] ?? false) == true && ((($userInfor['time'] ?? '') + TIME_LOGIN) >= time()));
-		if ($logged == false)  {
+		if ($logged == false) {
 			URL::redirectLink('backend', 'index', 'login');
 		}
 		parent::__construct($arrParams);
@@ -18,7 +18,7 @@ class UserController extends Controller
 
 	public function indexAction()
 	{
-		$configPagination = ['totalItemsPerPage' => 2, 'pageRange' => 2];
+		$configPagination = ['totalItemsPerPage' => 4, 'pageRange' => 3];
 		$this->setPagination($configPagination);
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
@@ -36,10 +36,11 @@ class UserController extends Controller
 		echo $result;
 		// echo json_encode($result);
 	}
-	
+
 	public function ajaxGroupAction()
 	{
-		$this->_model->changeGroupUser($this->_arrParam);
+		$result = $this->_model->changeGroupUser($this->_arrParam);
+		echo $result;
 	}
 
 	public function deleteAction()

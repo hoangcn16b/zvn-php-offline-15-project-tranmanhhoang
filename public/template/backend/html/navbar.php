@@ -2,7 +2,8 @@
 $linkLogOut = URL::createLink($this->arrParams['module'], 'index', 'logout');
 $linkViewSite = URL::createLink('frontend', 'index', 'index');
 $linkProfile = URL::createLink($this->arrParams['module'], 'index', 'profile');
-
+$userInfor = Session::get('user');
+$fullName = $userInfor['info']['fullname'];
 
 ?>
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -32,8 +33,8 @@ $linkProfile = URL::createLink($this->arrParams['module'], 'index', 'profile');
                     <img src="<?= $this->_pathImg ?>avatar.jpg" class="img-circle elevation-2" alt="User Image">
 
                     <p>
-                        ZendVN - Web Developer
-                        <small>admin</small>
+                        <!-- ZendVN - Web Developer -->
+                        <small><?= $fullName ?></small>
                     </p>
                 </li>
                 <!-- Menu Footer-->
