@@ -5,6 +5,7 @@ class UserModel extends Model
 	{
 		parent::__construct();
 		$this->setTable('user');
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
 	}
 
 	public function createQuery($arrParams, $total = 3, $options = ['username', 'fullname', 'email'])
@@ -53,14 +54,14 @@ class UserModel extends Model
 		$query = implode(" ", $query);
 		$result = $this->listRecord($query);
 		return $result;
-
 	}
 
 	public function changeStatus($params)
 	{
 		$id = $params['id'];
+		$modified = date("Y-m-d H:i:s");
 		$status = $params['status'] == 'active' ? 'inactive' : 'active';
-		$query = "UPDATE `$this->table` SET `status` = '$status' where `id` = '$id'";
+		$query = "UPDATE `$this->table` SET `status` = '$status', `modified` = '$modified' where `id` = '$id'";
 		$url = URL::createLink($params['module'], $params['controller'], 'ajaxStatus', ['id' => $id, 'status' => $status]);
 		$result = Helper::cmsStatus($status, $url, $id);
 		$this->query($query);
@@ -126,7 +127,6 @@ class UserModel extends Model
 
 	public function saveItem($params, $options = null)
 	{
-		date_default_timezone_set('Asia/Ho_Chi_Minh');
 		if ($options['task'] == 'add') {
 			$params['created'] = date("Y-m-d H:i:s");
 			$params['password'] = md5($params['password']);
@@ -178,8 +178,9 @@ class UserModel extends Model
 	public function changeGroupUser($params)
 	{
 		$id = $params['id'];
+		$modified = date("Y-m-d H:i:s");
 		$groupId = $params['group_id'];
-		$query = "UPDATE `$this->table` SET `group_id` = '$groupId' WHERE `id` = '$id'";
+		$query = "UPDATE `$this->table` SET `group_id` = '$groupId', `modified` = '$modified' WHERE `id` = '$id'";
 		$this->query($query);
 	}
 
@@ -216,7 +217,6 @@ class UserModel extends Model
 
 	public function savePassword($params, $options = null)
 	{
-		date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 		$params['modified'] = date("Y-m-d H:i:s");
 		$params['password'] = md5($params['password']);

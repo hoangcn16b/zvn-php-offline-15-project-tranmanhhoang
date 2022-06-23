@@ -41,7 +41,6 @@ class GroupController extends Controller
 
 	public function ajaxGroupAcpAction()
 	{
-		
 		$result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'changeGroupAcp']);
 		echo $result;
 		// echo json_encode($result);

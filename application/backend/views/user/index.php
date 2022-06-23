@@ -38,7 +38,7 @@ if (!empty($this->items)) {
                     <p class="mb-0">FullName: ' . $fullName . '</p>
                     <p class="mb-0">Email: ' . $email . '</p>
                 </td>
-                <td> ' . $group . ' </td>
+                <td class ="position-relative"> ' . $group . ' </td>
                 <td class ="position-relative"> ' . $status . ' </td>
                 <td>' . $createdBy . '</td>
                 <td> ' . $modifiedBy . '</td>

@@ -17,6 +17,7 @@ class IndexModel extends Model
 
 		return $result;
 	}
+
 	public function saveItem($params, $options = null)
 	{
 		date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -28,7 +29,8 @@ class IndexModel extends Model
 			$params['status'] = 'active';
 			$groupId = $this->getGroupId('Customer');
 			$params['group_id'] = $groupId['id'];
-			$this->insert($params);
+			$result = $this->insert($params);
+			
 			// Session::set('messageForm', ['class' => 'success', 'content' => ADD_SUCCESS]);
 		}
 	}

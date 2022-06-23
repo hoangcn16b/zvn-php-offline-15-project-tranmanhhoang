@@ -107,10 +107,12 @@ $(document).ready(function () {
         var value = $(this).val();
         var url = $(this).data('geturl');
         url = url.replace('value_new', value);
+        var parent = $(this).parent();
         $.ajax({
             type: "GET",
             url: url,
             success: function (response) {
+                parent.find('.select-group').notify("Success!", { className: 'success', position: 'top-center' });
             }
         });
     });
@@ -138,7 +140,7 @@ $(document).ready(function () {
         })
     });
 
-    document.getElementById('random-password').value = make_password(5);
+    // document.getElementById('random-password').value = make_password(5);
     function make_password(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

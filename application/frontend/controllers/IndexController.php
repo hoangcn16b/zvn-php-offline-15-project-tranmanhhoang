@@ -75,8 +75,8 @@ class IndexController extends Controller
 			$queryEmail = "SELECT * FROM `user` WHERE `email` = '$email'";
 
 			$validate
-				->addRule('username', 'string-notExistRecord', ['min' => 4, 'max' => 20, 'database' => $this->_model, 'query' => $queryUser])
-				->addRule('email', 'email-notExistRecord', ['database' => $this->_model, 'query' => $queryEmail])
+				->addRule('username', 'string-notExistRecord', ['min' => 4, 'max' => 20, 'database' => $this->_model, 'query' => $queryUser, 'required' => true])
+				->addRule('email', 'email-notExistRecord', ['database' => $this->_model, 'query' => $queryEmail, 'required' => true])
 				->addRule('password', 'password', ['action' => 'add']);
 
 			$validate->run();
@@ -89,6 +89,7 @@ class IndexController extends Controller
 				$this->_view->errors = $validate->showErrors();
 			}
 		}
+		$data['password'] = '';
 		$this->_view->outPut = $data;
 		$this->_view->render($this->_arrParam['controller'] . '/register');
 	}

@@ -41,7 +41,8 @@ class IndexController extends Controller
 				Session::set('user', $arrSession);
 				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 			} else {
-				$this->_view->errors = $validate->showErrors();
+				// $errors = $validate->showErrors();
+				$this->_view->errors = 'Email or password is invalid!';
 			}
 		}
 		$this->_view->render($this->_arrParam['controller'] . '/login');

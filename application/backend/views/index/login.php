@@ -5,7 +5,8 @@ $inputPassword = HelperForm::input('password', 'form[password]', $data['name'] ?
 
 $linkAction = URL::createLink($this->arrParams['module'], $this->arrParams['controller'], $this->arrParams['action'])
 ?>
-<?= $this->errors ?? '' ?>
+
+<?= Helper::cmsError($this->errors ?? '') ?>
 <form action="<?= $linkAction ?>" method="post">
     <div class="input-group mb-3">
         <?= $inputEmail ?>
