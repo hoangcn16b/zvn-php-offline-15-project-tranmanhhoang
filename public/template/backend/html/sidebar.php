@@ -120,6 +120,14 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item user-myPassword">
+                    <a href="<?= URL::createLink('backend', 'user', 'myPassword') ?>" class="nav-link user-myPassword">
+                        <i class="nav-icon fas fa-key"></i>
+                        <p>
+                            Change My Password
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

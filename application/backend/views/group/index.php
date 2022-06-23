@@ -137,9 +137,7 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
 
                         <div>
                             <?php
-                            if ($this->showButtonAddGroup) {
-                                echo Helper::cmsButton(URL::createLink('backend', 'group', 'form'), '<i class="fas fa-plus"></i> Add New', 'btn btn-info');
-                            }
+                            echo Helper::cmsButton(URL::createLink('backend', 'group', 'form'), '<i class="fas fa-plus"></i> Add New', 'btn btn-info');
                             ?>
                         </div>
 

@@ -6,14 +6,14 @@ $arrSelect = [
     'status' => ['default' => 'Select Status', 'inactive' => 'Không kích hoạt', 'active' => 'Kích hoạt']
 ];
 
-$lblName = HelperForm::label('Name',true);
+$lblName = HelperForm::label('Name', true);
 $inputName = HelperForm::input('text', 'form[name]', $data['name'] ?? '', 'form-control');
 
-$lblGroupAcp = HelperForm::label('Group ACP',true);
+$lblGroupAcp = HelperForm::label('Group ACP', true);
 
 $selectGroupAcp = HelperForm::selectBox($arrSelect['group_acp'], 'form[group_acp]', $data['group_acp'] ?? 2);
 
-$lblStatus = HelperForm::label('Status',true);
+$lblStatus = HelperForm::label('Status', true);
 $selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'default');
 
 if (isset($this->arrParams['id'])) {
@@ -49,7 +49,9 @@ if (isset($this->arrParams['id'])) {
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success">Save</button>
-                    <a href="<?= URL::createLink('backend', 'group', 'index') ?>" class="btn btn-danger">Cancel</a>
+                    <?php
+                    echo Helper::cmsButton(URL::createLink('backend', 'group', 'index'), 'Cancel', 'btn btn-danger');
+                    ?>
                 </div>
             </div>
         </form>

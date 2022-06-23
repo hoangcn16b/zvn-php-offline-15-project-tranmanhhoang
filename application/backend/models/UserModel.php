@@ -229,4 +229,22 @@ class UserModel extends Model
 		$this->update($params, [['id', $id]]);
 		Session::set('messageForm', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
 	}
+
+	public function changeMyPassword($params, $options = null)
+	{
+		$params['modified'] = date("Y-m-d H:i:s");
+		$params['password'] = md5($params['new password']);
+		$id = $params['id'];
+		unset($params['id']);
+		unset($params['new password']);
+		$query = "UPDATE `" . TABLE_USER . "` SET `password` = '{$params['password']}', `modified` = '{$params['modified']}', `modified_by` = '$id' WHERE `id` = '$id'";
+		$result = $this->query($query);
+		if ($result) {
+			return true;
+		} else {
+			return false;
+		}
+		// $where = [['id', $id]];
+		// $this->update($params, [['id', $id]]);
+	}
 }

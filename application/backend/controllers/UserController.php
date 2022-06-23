@@ -129,6 +129,62 @@ class UserController extends Controller
 		$this->_view->outPut = $data;
 		$this->_view->render($this->_arrParam['controller'] . '/form-password');
 	}
+
+	public function myPasswordAction()
+	{
+		$outPut = Session::get('user');
+		$this->_view->outPut = $outPut['info'];
+		$this->_view->setTitleForm = 'Change My Password';
+		$data = [];
+
+		if (!empty($this->_arrParam['form'])) {
+			$data = $this->_arrParam['form'];
+			$password = md5($data['password']);
+			$queryPass = "SELECT `id` FROM `" . TABLE_USER . "` WHERE `id` = '" . $data['id'] . "' AND `password` = '" . $password . "'";
+			$validate = new Validate($data);
+
+			$errorsPassword = '';
+			if (empty($data['password']) || empty($data['new password']) || empty($data['new password confirm'])) {
+				$errorsPassword = 'Không được phép bỏ trống các trường!';
+			} else {
+				if (($data['new password'] == $data['new password confirm'])) {
+					if (($data['password'] == $data['new password']) || ($data['password'] == $data['new password confirm'])) {
+						$errorsPassword = 'Mật khẩu cũ và mới không được phép trùng!';
+					}
+				} else {
+					$errorsPassword = 'Nhập lại mật khẩu không trùng khớp!';
+				}
+			}
+			if (empty($errorsPassword)) {
+				$validate->addRule('password', 'string-existRecord', ['min' => 4, 'max' => 20, 'database' => $this->_model, 'query' => $queryPass, 'required' => true]);
+				$validate->addRule('new password', 'password', ['action' => 'add'])
+					->addRule('new password confirm', 'password', ['action' => 'add']);
+				$validate->run();
+				$errorsPassword = $validate->showErrors();
+			}
+			if ($validate->isValid() && empty($errorsPassword)) {
+				unset($data['password']);
+				unset($data['new password confirm']);
+				$result = $this->_model->changeMyPassword($data);
+				if ($result) {
+					Session::set('messageChangePass', ['class' => 'success', 'content' => CHANGEPASS_SUCCESS]);
+					Session::unset('user');
+					URL::redirectLink($this->_arrParam['module'], 'index', 'login');
+				}
+			} else {
+				$this->_view->errors = $errorsPassword;
+			}
+		}
+		$data['password'] = '';
+		$this->_view->render($this->_arrParam['controller'] . '/chang-my-password');
+	}
+
+	// if (($data['password'] == $data['new password']) || ($data['password'] !== $data['new password confirm'])) {
+	// 	$errorsPassword = 'Mật khẩu cũ và mới không được phép trùng!';
+	// } elseif ($data['new password'] !== $data['new password confirm']) {
+	// 	$errorsPassword = 'Nhập lại mật khẩu không trùng khớp!';
+	// }
+
 	// public function clearAction()
 	// {
 	// 	// Session::unset('keyword');

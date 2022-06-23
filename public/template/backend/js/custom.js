@@ -140,7 +140,7 @@ $(document).ready(function () {
         })
     });
 
-    // document.getElementById('random-password').value = make_password(5);
+    document.getElementById('random-password').value = make_password(5);
     function make_password(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -162,9 +162,13 @@ $(document).ready(function () {
     var controller = (getUrlVar('controller') == '') ? 'index' : getUrlVar('controller');
     // var action = (getUrlVar('action') == '') ? 'index' : getUrlVar('action');
     var action = 'index';
+    if (getUrlVar('action') == 'myPassword') {
+        var action = 'myPassword';
+    }
     var classActive = controller + '-' + action;
     $('.' + classActive).addClass('active');
 });
+
 
 
 

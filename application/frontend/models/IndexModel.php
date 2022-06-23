@@ -47,19 +47,19 @@ class IndexModel extends Model
 			$query = implode(" ", $query);
 			$result = $this->singleRecord($query);
 
-			if ($result['group_acp'] == 1) {
-				$arrPrivilege = explode(',', $result['privilege_id']);
-				$strPrivilegeId = '';
-				foreach ($arrPrivilege as $privilegeId) {
-					$strPrivilegeId .= "'$privilegeId',";
-				}
+			// if ($result['group_acp'] == 1) {
+			// 	$arrPrivilege = explode(',', $result['privilege_id']);
+			// 	$strPrivilegeId = '';
+			// 	foreach ($arrPrivilege as $privilegeId) {
+			// 		$strPrivilegeId .= "'$privilegeId',";
+			// 	}
 
-				$queryP[] = "SELECT `id`, CONCAT(`module`, '-',`controller`,'-', `action`) AS `name`";
-				$queryP[] = "FROM `" . TABLE_PRIVILEGE . "` AS `p`";
-				$queryP[] = "WHERE id IN ($strPrivilegeId'0') ";
-				$queryP = implode(" ", $queryP);
-				$result['privilege'] = $this->fetchPairs($queryP);
-			}
+			// 	$queryP[] = "SELECT `id`, CONCAT(`module`, '-',`controller`,'-', `action`) AS `name`";
+			// 	$queryP[] = "FROM `" . TABLE_PRIVILEGE . "` AS `p`";
+			// 	$queryP[] = "WHERE id IN ($strPrivilegeId'0') ";
+			// 	$queryP = implode(" ", $queryP);
+			// 	$result['privilege'] = $this->fetchPairs($queryP);
+			// }
 
 			return $result;
 		}

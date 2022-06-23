@@ -25,7 +25,7 @@ $fullName = $userInfor['info']['fullname'];
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <img src="<?= $this->_pathImg ?>avatar.jpg" class="user-image img-circle elevation-2" alt="User Image">
-                <span class="d-none d-md-inline">ZendVN</span>
+                <span class="d-none d-md-inline"><?= $fullName ?></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
                 <!-- User image -->

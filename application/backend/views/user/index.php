@@ -25,7 +25,7 @@ if (!empty($this->items)) {
 
         $linkDelete = URL::createLink($module, $controller, 'delete', ['id' => $id]);
         $cmsButtonDelete = Helper::cmsButton($linkDelete, '<i class="fas fa-trash "></i>', 'btn btn-danger btn-sm rounded-circle btn-acpt-delete');
-        $cmsButtonDelete = ($idUserLogged == $id) ? '' : $cmsButtonDelete;
+        // $cmsButtonDelete = ($idUserLogged == $id) ? '' : $cmsButtonDelete;
         $linkPassword = URL::createLink($module, $controller, 'changePassword', ['id' => $id]);
         $groupName = lcfirst($item['group_name']);
         $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" >';
@@ -144,7 +144,10 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                             </div>
                         </div>
                         <div>
-                            <a href="<?= URL::createLink($module, $controller, 'form') ?>" class="btn btn-info"><i class="fas fa-plus"></i> Add New</a>
+                            <?php
+                            echo Helper::cmsButton(URL::createLink($module, $controller, 'form'), '<i class="fas fa-plus"></i> Add New', 'btn btn-info');
+                            ?>
+                            
                         </div>
                     </div>
                 </div>

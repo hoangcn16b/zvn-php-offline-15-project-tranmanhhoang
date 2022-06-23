@@ -57,7 +57,9 @@ $inputFullName = HelperForm::input('text', 'form[fullname]', $data['fullname'] ?
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success">Save</button>
-                    <a href="<?= URL::createLink('backend', 'user', 'index') ?>" class="btn btn-danger">Cancel</a>
+                    <?php
+                    echo Helper::cmsButton(URL::createLink('backend', 'user', 'index'), 'Cancel', 'btn btn-danger');
+                    ?>
                 </div>
             </div>
         </form>
