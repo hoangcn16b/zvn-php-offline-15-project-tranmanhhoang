@@ -21,7 +21,7 @@ class GroupController extends Controller
         // $requestURL = "backend-group-form";
         // $this->_view->showButtonAddGroup = (in_array($requestURL, $userInfor['info']['privilege']) == true) ? true : false;
 
-        $configPagination = ['totalItemsPerPage' => 3, 'pageRange' => 3];
+        $configPagination = ['totalItemsPerPage' => 5, 'pageRange' => 3];
         $this->setPagination($configPagination);
         $this->_view->items = $this->_model->listItems($this->_arrParam);
         $this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
@@ -56,6 +56,10 @@ class GroupController extends Controller
 
     public function formAction()
     {
+        if ($this->_arrParam['idLogged'] !== 1) {
+            Session::set('messageFormGroup', ['class' => 'warning', 'content' => 'Bạn không đủ quyền để thực hiện']);
+            URL::redirectLink($this->_arrParam['module'], 'index', 'index');
+        }
         $this->_view->setTitleForm = 'Add Group Admin';
         $data = null;
         $task = 'add';

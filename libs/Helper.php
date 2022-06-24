@@ -67,22 +67,31 @@ class Helper
     //             ';
     //     return $xhtml;
     // }
-    public static function cmsStatus($statusVal, $link, $id)
+    public static function cmsStatus($statusVal, $link, $id, $jsClass = 'ajax-status')
     {
         $status = ($statusVal == 'active') ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
         $xhtml = '
-                    <a id = "status-' . $id . '" href="' . $link . '" class="' . $status . ' ajax-status">
+                    <a id = "status-' . $id . '" href="' . $link . '" class="' . $status . ' ' . $jsClass . '">
                         <span ><i class="fas fa-check"></i></span>
                     </a>
                 ';
         return $xhtml;
     }
 
-    public static function cmsGroupAcp($groupAcpVal, $link, $id)
+    public static function cmsRedirectStatus($statusVal)
+    {
+        $status = ($statusVal == 'active') ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
+        $xhtml = '
+                    <span class="' . $status . '><i class="fas fa-check"></i></span>
+                ';
+        return $xhtml;
+    }
+
+    public static function cmsGroupAcp($groupAcpVal, $link, $id, $jsClass = 'ajax-group-acp')
     {
         $groupAcp = ($groupAcpVal == 1) ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
         $xhtml = '
-                    <a id = "groupAcp-' . $id . '" href="' . $link . '" class="' . $groupAcp . ' ajax-group-acp">
+                    <a id = "groupAcp-' . $id . '" href="' . $link . '" class="' . $groupAcp . ' ' . $jsClass . '">
                         <span ><i class="fas fa-check"></i></span>
                     </a>
                 ';
@@ -202,11 +211,11 @@ class Helper
         return $xhtml;
     }
 
-    public static function cmsButton($link, $name, $class)
+    public static function cmsButton($link, $value, $class)
     {
         $xhtml = '';
         $xhtml .= '
-                    <a href="' . $link . '" class="' . $class . '">' . $name . '</a>
+                    <a href="' . $link . '" class="' . $class . '">' . $value . '</a>
                 ';
         return $xhtml;
     }

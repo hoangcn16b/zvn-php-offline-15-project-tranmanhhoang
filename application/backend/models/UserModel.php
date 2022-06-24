@@ -39,7 +39,7 @@ class UserModel extends Model
 	public function listItems($arrParams, $option = null)
 	{
 		// $exceptId = $_SESSION['user']['info']['id'];			//`u`.`id` != $exceptId
-		$query[] = "SELECT u.id, u.username, u.email, u.fullname, u.created, u.created_by, u.modified, u.modified_by, u.status, u.group_id, g.name AS `group_name`";
+		$query[] = "SELECT u.id, u.username, u.email, u.fullname, u.created, u.created_by, u.modified, u.modified_by, u.status, u.group_id, g.name AS `group_name`, g.group_acp ";
 		$query[] = "FROM `user` AS `u`, `group` AS `g`";
 		$query[] = "WHERE 1 AND `u`.`id` <> {$arrParams['idLogged']} AND `u`.`group_id` = `g`.`id`";
 		$query[] = $this->createQuery($arrParams, 3);
@@ -101,9 +101,21 @@ class UserModel extends Model
 		return $result;
 	}
 
-	public function getGroupAdmin($hasDefault = false)
+	public function getGroupAdmin($hasDefault = false, $params = null)
 	{
-		$query = 'SELECT `id`, `name` FROM `group`';
+		$query[] = "SELECT `id`, `name`, `group_acp`";
+		$query[] = "FROM `group`";
+		$query[] = "WHERE 1";
+
+		if (!empty($params['idLogged'])) {
+			if ($params['idLogged'] == 1) {
+				$query[] = "AND `id` <> 1";
+			} elseif ($params['idLogged'] !== 1) {
+				$query[] = " AND `id` <> 1";
+			}
+		}
+
+		$query = implode(" ", $query);
 		$list = $this->listRecord($query);
 		$result = [];
 		if ($hasDefault) $result['default'] = 'Select Group';
@@ -113,17 +125,17 @@ class UserModel extends Model
 		return $result;
 	}
 
-	public function getGroupId($name = null)
-	{
-		$query[] = "SELECT DISTINCT g.`name`, u.`group_id`";
-		$query[] = "FROM `user` AS `u`, `group` AS `g`";
-		$query[] = "WHERE `u`.`group_id` = `g`.`id`";
-		$query[] = ($name != null) ? "AND `g`.`name` = '$name'" : '';
-		$query = implode(" ", $query);
-		$result = $this->singleRecord($query);
+	// public function getGroupId($name = null)
+	// {
+	// 	$query[] = "SELECT DISTINCT g.`name`, u.`group_id`";
+	// 	$query[] = "FROM `user` AS `u`, `group` AS `g`";
+	// 	$query[] = "WHERE `u`.`group_id` = `g`.`id`";
+	// 	$query[] = ($name != null) ? "AND `g`.`name` = '$name'" : '';
+	// 	$query = implode(" ", $query);
+	// 	$result = $this->singleRecord($query);
 
-		return $result;
-	}
+	// 	return $result;
+	// }
 
 	public function saveItem($params, $options = null)
 	{
@@ -154,17 +166,17 @@ class UserModel extends Model
 		return $result;
 	}
 
-	public function getNameByGroupId($option = null)
-	{
-		$query[] = "SELECT DISTINCT g.`name`, u.`group_id`";
-		$query[] = "FROM `user`AS `u`, `group` AS `g`";
-		$query[] = "WHERE u.`group_id` = g.`id`";
-		$query[] = ($option != null) ? "AND u.`group_id` = '{$option}'" : '';
-		$query = implode(" ", $query);
-		$result = $this->singleRecord($query);
+	// public function getNameByGroupId($option = null)
+	// {
+	// 	$query[] = "SELECT DISTINCT g.`name`, u.`group_id`";
+	// 	$query[] = "FROM `user`AS `u`, `group` AS `g`";
+	// 	$query[] = "WHERE u.`group_id` = g.`id`";
+	// 	$query[] = ($option != null) ? "AND u.`group_id` = '{$option}'" : '';
+	// 	$query = implode(" ", $query);
+	// 	$result = $this->singleRecord($query);
 
-		return $result;
-	}
+	// 	return $result;
+	// }
 
 	public function checkUserNameEmail($params)
 	{
@@ -247,5 +259,26 @@ class UserModel extends Model
 		}
 		// $where = [['id', $id]];
 		// $this->update($params, [['id', $id]]);
+	}
+
+	public function getAdminAcp($params = null)
+	{
+		$query[] = "SELECT `id`, `name`, `group_acp`";
+		$query[] = "FROM `group`";
+		$query[] = "WHERE 1 AND `group_acp` <> 1";
+		if (!empty($params['idLogged'])) {
+			if ($params['idLogged'] == 1) {
+				$query[] = "AND `id` <> 1";
+			} elseif ($params['idLogged'] !== 1) {
+				$query[] = " AND `id` <> 1";
+			}
+		}
+		$query = implode(" ", $query);
+		$list = $this->listRecord($query);
+		$result = [];
+		foreach ($list as $key => $value) {
+			$result[$value['id']] = $value['name'];
+		}
+		return $result;
 	}
 }

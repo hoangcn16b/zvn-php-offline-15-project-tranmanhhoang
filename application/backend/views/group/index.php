@@ -4,6 +4,7 @@ $module = $this->arrParams['module'];
 $controller = $this->arrParams['controller'];
 $action = $this->arrParams['action'];
 $xhtml = '';
+
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
         $id = $item['id'];
@@ -19,9 +20,20 @@ if (!empty($this->items)) {
         $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
 
         $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
+        $cmsButtonEdit = Helper::cmsButton($linkEdit, '<i class="fas fa-pen "></i>', 'btn btn-info btn-sm rounded-circle');
+
         $linkDelete = URL::createLink($module, $controller, 'delete', ['id' => $id]);
+        $cmsButtonDelete = Helper::cmsButton($linkDelete, '<i class="fas fa-trash"></i>', 'btn btn-danger btn-sm rounded-circle  btn-acpt-delete');
 
         $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" >';
+        if ($this->arrParams['idLogged'] != 1) {
+            $groupAcp = Helper::cmsGroupAcp($item['group_acp'], '', $id, 'ajax-notice-false');
+            $status = Helper::cmsStatus($item['status'], '', $id, 'ajax-notice-false');
+            $cmsButtonEdit = 'Bạn không có đủ quyền';
+            $cmsButtonPassword = '';
+            $cmsButtonDelete = '';
+            $ckb = '';
+        }
         $xhtml .= '
                     <tr>
                         <td>' . $ckb . '</td>
@@ -32,8 +44,8 @@ if (!empty($this->items)) {
                         <td>' . $createdBy . '</td>
                         <td>' . $modifiedBy . '</td>
                         <td>
-                            <a href="' . $linkEdit . '" class="btn btn-info btn-sm rounded-circle"><i class="fas fa-pen"></i></a>
-                            <a href="' . $linkDelete . '" id="dialog-confirm" class="btn btn-danger btn-sm rounded-circle btn-acpt-delete"><i class="fas fa-trash "></i></a>
+                            ' . $cmsButtonEdit . '
+                            ' . $cmsButtonDelete . '
                         </td>
                     </tr>
                 ';
@@ -137,7 +149,10 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
 
                         <div>
                             <?php
-                            echo Helper::cmsButton(URL::createLink('backend', 'group', 'form'), '<i class="fas fa-plus"></i> Add New', 'btn btn-info');
+                            if ($this->arrParams['idLogged'] == 1) {
+                                echo Helper::cmsButton(URL::createLink('backend', 'group', 'form'), '<i class="fas fa-plus"></i> Add New', 'btn btn-info');
+                            }
+
                             ?>
                         </div>
 

@@ -18,9 +18,9 @@ class Controller
 		'totalItemsPerPage' => 2,
 		'pageRange' => 2
 	];
-	
-	protected $_idLogged;
 
+	protected $_idLogged;
+	protected $_groupAcpLogged;
 	protected $_userLogged;
 
 	public function __construct($arrParams)
@@ -32,6 +32,7 @@ class Controller
 		$this->_pagination['currentPage'] = (isset($arrParams['page'])) ? $arrParams['page'] : 1;
 		$arrParams['pagination'] = $this->_pagination;
 		$arrParams['idLogged'] = $this->_idLogged;
+		$arrParams['groupAcpLogged'] = $this->_groupAcpLogged;
 		$arrParams['userLogged'] = $this->_userLogged;
 		$this->setParams($arrParams);
 		$this->_view->arrParams = $this->_arrParam;
@@ -104,6 +105,7 @@ class Controller
 		if (Session::get('user')) {
 			$userInfor = Session::get('user');
 			$id = $userInfor['info']['id'];
+			$groupAcp = $userInfor['info']['group_acp'];
 			$query[] = "SELECT `id`, `fullname`, `username`, `email`, `birthday`, `address`, `phone`";
 			$query[] = "FROM `user`";
 			$query[] = "WHERE `id` = $id";
@@ -113,6 +115,7 @@ class Controller
 				$result = $this->_model->singleRecord($query);
 			}
 			$this->_idLogged = $id;
+			$this->_groupAcpLogged = $groupAcp;
 			$this->_userLogged = $result;
 		}
 	}

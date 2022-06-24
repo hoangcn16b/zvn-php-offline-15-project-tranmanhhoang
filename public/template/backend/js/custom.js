@@ -82,7 +82,21 @@ $(document).ready(function () {
             // dataType: "dataType",
             success: function (response) {
                 parent.html(response);
+                console.log(123);
                 parent.find('.ajax-status').notify("Success!", { className: 'success', position: 'top-center' });
+
+            }
+            
+        });
+    });
+
+    $(document).on('click', '.ajax-notice-false', function (e) {
+        e.preventDefault();
+        var parent = $(this).parent();
+        $.ajax({
+            // type: "GET",
+            success: function (response) {
+                parent.find('.ajax-notice-false').notify("False!", { className: 'warning', position: 'top-center' });
             }
         });
     });

@@ -23,8 +23,8 @@ class UserController extends Controller
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
 		$this->_view->filterGroupUser = $this->_model->getGroupAdmin(true);
-		$this->_view->listGroup = $this->_model->getGroupAdmin();
-
+		$this->_view->listGroup = $this->_model->getGroupAdmin(false, $this->_arrParam);
+		$this->_view->GroupAdminAcp = $this->_model->getAdminAcp($this->_arrParam);
 		$this->totalItems = $this->_model->countItem($this->_arrParam);
 		$this->_view->pagination = new Pagination($this->totalItems, $this->_pagination);
 		$this->_view->render($this->_arrParam['controller'] . '/index');
@@ -78,7 +78,8 @@ class UserController extends Controller
 			$query[] = "WHERE `username` = '{$data['username']}' OR `email` = '{$data['email']}'";
 			$query = implode(" ", $query);
 			$required = $task == 'add' ? true : false;
-			$validate->addRule('username', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => $required])
+			$validate->addRule('fullname', 'string', ['min' => 0, 'max' => 30], false)
+				->addRule('username', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => $required])
 				->addRule('email', 'email-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => $required])
 				->addRule('status', 'select')
 				->addRule('group_id', 'select');

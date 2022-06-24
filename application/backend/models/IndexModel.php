@@ -50,9 +50,8 @@ class IndexModel extends Model
 	public function saveProfile($params, $options = null)
 	{
 		$id = $params['id'];
-
 		$params['modified'] = date("Y-m-d H:i:s");
-		$params['modified_by'] = $id;
+		$params['modified_by'] = $params['userLogged']['username'];
 		unset($params['username']);
 		unset($params['email']);
 		unset($params['id']);

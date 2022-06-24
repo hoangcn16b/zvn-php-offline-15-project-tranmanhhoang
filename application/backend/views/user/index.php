@@ -4,11 +4,16 @@ $module = $this->arrParams['module'];
 $controller = $this->arrParams['controller'];
 $action = $this->arrParams['action'];
 $xhtml = '';
-$idUserLogged = $_SESSION['user']['info']['id'];
 
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
         $id = $item['id'];
+        foreach ($this->listGroup as $key => $value) {
+            if ($key == $item['group_id']) {
+                $nameGroupAdmin = $value;
+                break;
+            }
+        }
         $userName = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['username']);
         $fullName = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['fullname']);
         $email = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['email']);
@@ -16,19 +21,33 @@ if (!empty($this->items)) {
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
         $ajaxLinkGroup = URL::createLink($module, $controller, 'ajaxGroup', ['id' => $id, 'group_id' => 'value_new']);
         $attr = 'data-geturl = "' . $ajaxLinkGroup . '"';
-        $group = HelperForm::selectBox($this->listGroup, '', $item['group_id'], 'w-auto select-group', $attr);
+        $group = HelperForm::selectBox($this->GroupAdminAcp, '', $item['group_id'], 'w-auto select-group', $attr);
 
         $createdBy = Helper::createdBy($item['created_by'], $item['created']);
         $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
 
         $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
+        $cmsButtonEdit = Helper::cmsButton($linkEdit, '<i class="fas fa-pen "></i>', 'btn btn-info btn-sm rounded-circle');
 
         $linkDelete = URL::createLink($module, $controller, 'delete', ['id' => $id]);
-        $cmsButtonDelete = Helper::cmsButton($linkDelete, '<i class="fas fa-trash "></i>', 'btn btn-danger btn-sm rounded-circle btn-acpt-delete');
-        // $cmsButtonDelete = ($idUserLogged == $id) ? '' : $cmsButtonDelete;
+        $cmsButtonDelete = Helper::cmsButton($linkDelete, '<i class="fas fa-trash"></i>', 'btn btn-danger btn-sm rounded-circle  btn-acpt-delete');
+
         $linkPassword = URL::createLink($module, $controller, 'changePassword', ['id' => $id]);
+        $cmsButtonPassword = Helper::cmsButton($linkPassword, '<i class="fas fa-key"></i>', 'btn btn-secondary btn-sm rounded-circle');
         $groupName = lcfirst($item['group_name']);
+
         $ckb = '<input type="checkbox" name = "cid[]" value="' . $id . '" >';
+
+        if ($this->arrParams['idLogged'] != 1) {
+            if ($item['group_acp'] == 1) {
+                $status = Helper::cmsStatus($item['status'], '', $id, 'ajax-notice-false');
+                $group = HelperForm::label($nameGroupAdmin, false);
+                $cmsButtonEdit = 'Bạn không có đủ quyền';
+                $cmsButtonPassword = '';
+                $cmsButtonDelete = '';
+                $ckb = '';
+            }
+        }
         $xhtml .= '
             <tr>
                 <td>' . $ckb . '</td>
@@ -43,8 +62,8 @@ if (!empty($this->items)) {
                 <td>' . $createdBy . '</td>
                 <td> ' . $modifiedBy . '</td>
                 <td>
-                    <a href="' . $linkPassword . '" class="btn btn-secondary btn-sm rounded-circle"><i class="fas fa-key"></i></a>
-                    <a href="' . $linkEdit . '" class="btn btn-info btn-sm rounded-circle"><i class="fas fa-pen"></i></a>
+                    ' . $cmsButtonPassword . '
+                    ' . $cmsButtonEdit . '
                     ' . $cmsButtonDelete . '
                 </td>
             </tr>
@@ -147,7 +166,7 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                             <?php
                             echo Helper::cmsButton(URL::createLink($module, $controller, 'form'), '<i class="fas fa-plus"></i> Add New', 'btn btn-info');
                             ?>
-                            
+
                         </div>
                     </div>
                 </div>
