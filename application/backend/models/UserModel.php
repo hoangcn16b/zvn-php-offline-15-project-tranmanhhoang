@@ -41,7 +41,7 @@ class UserModel extends Model
 		// $exceptId = $_SESSION['user']['info']['id'];			//`u`.`id` != $exceptId
 		$query[] = "SELECT u.id, u.username, u.email, u.fullname, u.created, u.created_by, u.modified, u.modified_by, u.status, u.group_id, g.name AS `group_name`";
 		$query[] = "FROM `user` AS `u`, `group` AS `g`";
-		$query[] = "WHERE 1 AND `u`.`group_id` = `g`.`id`";
+		$query[] = "WHERE 1 AND `u`.`id` <> {$arrParams['idLogged']} AND `u`.`group_id` = `g`.`id`";
 		$query[] = $this->createQuery($arrParams, 3);
 
 		$query[] = "ORDER BY `u`.`id` DESC";
@@ -80,7 +80,7 @@ class UserModel extends Model
 		$result = [];
 		$query[] = "SELECT COUNT(`status`) as `all`, SUM(`status` = 'active') as `active`, SUM(`status` = 'inactive') as `inactive`";
 		$query[] = "FROM `$this->table`";
-		$query[] = "WHERE 1 ";
+		$query[] = "WHERE 1 AND `id` <> {$arrParams['idLogged']}";
 		$i = 0;
 		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
 			$query[] = "AND (";
@@ -189,7 +189,7 @@ class UserModel extends Model
 		$result = [];
 		$query[] = "SELECT COUNT(`id`) AS `all`";
 		$query[] = "FROM `$this->table`";
-		$query[] = "WHERE 1";
+		$query[] = "WHERE 1 AND `id` <> {$arrParams['idLogged']}";
 		$i = 0;
 		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
 			$query[] = "AND (";
@@ -215,7 +215,7 @@ class UserModel extends Model
 		return $result['all'];
 	}
 
-	public function savePassword($params, $options = null)
+	public function savePassword($params)
 	{
 
 		$params['modified'] = date("Y-m-d H:i:s");
@@ -234,10 +234,11 @@ class UserModel extends Model
 	{
 		$params['modified'] = date("Y-m-d H:i:s");
 		$params['password'] = md5($params['new password']);
+		$modifiedBy = $params['userLogged']['username'];
 		$id = $params['id'];
 		unset($params['id']);
 		unset($params['new password']);
-		$query = "UPDATE `" . TABLE_USER . "` SET `password` = '{$params['password']}', `modified` = '{$params['modified']}', `modified_by` = '$id' WHERE `id` = '$id'";
+		$query = "UPDATE `" . TABLE_USER . "` SET `password` = '{$params['password']}', `modified` = '{$params['modified']}', `modified_by` = '$modifiedBy' WHERE `id` = '$id'";
 		$result = $this->query($query);
 		if ($result) {
 			return true;

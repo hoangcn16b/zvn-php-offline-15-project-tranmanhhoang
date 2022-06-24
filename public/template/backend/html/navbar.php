@@ -3,7 +3,7 @@ $linkLogOut = URL::createLink($this->arrParams['module'], 'index', 'logout');
 $linkViewSite = URL::createLink('frontend', 'index', 'index');
 $linkProfile = URL::createLink($this->arrParams['module'], 'index', 'profile');
 $userInfor = Session::get('user');
-$fullName = $userInfor['info']['fullname'];
+$fullName = $this->arrParams['userLogged']['fullname'];
 
 ?>
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">

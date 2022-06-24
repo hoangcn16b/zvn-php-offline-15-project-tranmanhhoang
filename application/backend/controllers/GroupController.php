@@ -1,7 +1,6 @@
 <?php
 class GroupController extends Controller
 {
-
     public function __construct($arrParams)
     {
         $userInfor = Session::get('user');
@@ -21,6 +20,7 @@ class GroupController extends Controller
         $userInfor = Session::get('user');
         // $requestURL = "backend-group-form";
         // $this->_view->showButtonAddGroup = (in_array($requestURL, $userInfor['info']['privilege']) == true) ? true : false;
+
         $configPagination = ['totalItemsPerPage' => 3, 'pageRange' => 3];
         $this->setPagination($configPagination);
         $this->_view->items = $this->_model->listItems($this->_arrParam);
@@ -70,30 +70,27 @@ class GroupController extends Controller
 
         if (!empty($this->_arrParam['form'])) {
             $data = $this->_arrParam['form'];
+            if ($task == 'edit') {
+                $data['modified_by'] = $this->_arrParam['userLogged']['username'];
+            }
             $validate = new Validate($data);
-            // $nameGroup = $this->_model->checkNameGroup($this->_arrParam['form']);
-            // $flag = false;
-            // if ($this->_model->checkNameGroup($data) == 1) {
-            // 	$validate->setError('name', 'Name Group is exist');
-            // 	$flag = true;
-            // }
             $required = $task == 'add' ? true : false;
-            $name	= $data['name'];
+            $name    = $data['name'];
             $query[] = "SELECT * FROM `group`";
             if (isset($this->_arrParam['id'])) {
-                $query[] = "WHERE `id` != " . $this->_arrParam['id'] . " AND `name` = '" . $data['name'] . "'";
+                $query[] = "WHERE `id` <> " . $this->_arrParam['id'] . " AND `name` = '" . $name . "'";
             } else {
-                $query[] = "WHERE `name` = '" . $data['name'] . "'";
+                $query[] = "WHERE `name` = '" . $name . "'";
             }
             $query = implode(" ", $query);
-            $validate->addRule('name', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => $required])
+            $validate->addRule('name', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => true])
                 ->addRule('group_acp', 'groupAcp')
                 ->addRule('status', 'status');
             $validate->run();
             $data = $validate->getResult();
             // $data['name'] = ($flag == true) ? '' : ($data['name'] ?? '');
             if ($validate->isValid()) {
-                $this->_model->saveItem($data, ['task' => $task]);
+                $this->_model->saveItem($data, ['task' => $task], $this->_userLogged);
                 URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
             } else {
                 $this->_view->errors = $validate->showErrors();

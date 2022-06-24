@@ -5,6 +5,7 @@ class IndexModel extends Model
 	{
 		parent::__construct();
 		// $this->setTable('user');
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
 	}
 
 	public function countTotalToIndex()
@@ -42,8 +43,21 @@ class IndexModel extends Model
 			// 	$queryP = implode(" ", $queryP);
 			// 	$result['privilege'] = $this->fetchPairs($queryP);
 			// }
-
 			return $result;
 		}
+	}
+
+	public function saveProfile($params, $options = null)
+	{
+		$id = $params['id'];
+
+		$params['modified'] = date("Y-m-d H:i:s");
+		$params['modified_by'] = $id;
+		unset($params['username']);
+		unset($params['email']);
+		unset($params['id']);
+		$where = [['id', $id]];
+		$this->update($params, [['id', $id]]);
+		Session::set('messageProfile', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
 	}
 }

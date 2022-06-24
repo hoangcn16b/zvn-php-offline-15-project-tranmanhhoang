@@ -65,10 +65,13 @@ class Validate
 			} else {
 				switch ($value['type']) {
 					case 'int':
-						$this->validateInt($element, $value['options']['min'], $value['options']['max']);
+						$this->validateInt($element, $value['options']['min'], $value['options']['max'], $value['options']['required'] = true);
+						break;
+					case 'phone':
+						$this->validatePhone($element, $value['options']['required'] = true);
 						break;
 					case 'string':
-						$this->validateString($element, $value['options']['min'], $value['options']['max']);
+						$this->validateString($element, $value['options']['min'], $value['options']['max'], $value['options']['required'] = true);
 						break;
 					case 'username':
 						$this->validateUserName($element, $value['options']['min'], $value['options']['max']);
@@ -133,28 +136,47 @@ class Validate
 	}
 
 	// Validate Integer
-	private function validateInt($element, $min = 0, $max = 0)
+	private function validateInt($element, $min = 0, $max = 0, $required = true)
 	{
-		if (!filter_var($this->source[$element], FILTER_VALIDATE_INT, array("options" => array("min_range" => $min, "max_range" => $max)))) {
-			$this->setError($element, 'is an invalid number');
+		if ($required == true) {
+			if ($min > 0) {
+				if (!filter_var($this->source[$element], FILTER_VALIDATE_INT, array("options" => array("min_range" => $min, "max_range" => $max)))) {
+					$this->setError($element, 'is an invalid number');
+				}
+			}
+		}
+	}
+
+	private function validatePhone($element, $required = true)
+	{
+		if ($required == true) {
+			if ((!empty($this->source[$element]))) {
+				if (!preg_match('/^[0-9]{10}+$/', $this->source[$element])) {
+					$this->setError($element, "is an invalid Phone Number");
+				}
+			}
 		}
 	}
 
 	// Validate String
-	private function validateString($element, $min = 0, $max = 0)
+	private function validateString($element, $min = 0, $max = 0, $required = true)
 	{
-		$length = strlen($this->source[$element]);
-		if ($length < $min) {
-			$this->setError($element, 'is too short');
-		} elseif ($length > $max) {
-			$this->setError($element, 'is too long');
-		} elseif (!is_string($this->source[$element])) {
-			$this->setError($element, 'is an invalid string');
+		if ($required == true) {
+			$length = strlen($this->source[$element]);
+			if ($length < $min) {
+				$this->setError($element, 'is too short');
+			} elseif ($length > $max) {
+				$this->setError($element, 'is too long');
+			} elseif (!is_string($this->source[$element])) {
+				$this->setError($element, 'is an invalid string');
+			}
+			if ($min > 0) {
+				$pattern = '"^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"';
+				if (!preg_match($pattern, $this->source[$element])) {
+					$this->setError($element, 'is an invalid string');
+				};
+			}
 		}
-		$pattern = '"^(?=.{0,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"';
-		if (!preg_match($pattern, $this->source[$element])) {
-			$this->setError($element, 'is an invalid string');
-		};
 	}
 
 	// Validate URL
@@ -277,15 +299,15 @@ class Validate
 	private function validateDate($element, $start, $end)
 	{
 		// Start
-		$arrDateStart 	= date_parse_from_format('d/m/Y', $start);
+		$arrDateStart 	= date_parse_from_format('Y-m-d', $start);
 		$tsStart		= mktime(0, 0, 0, $arrDateStart['month'], $arrDateStart['day'], $arrDateStart['year']);
 
 		// End
-		$arrDateEnd 	= date_parse_from_format('d/m/Y', $end);
+		$arrDateEnd 	= date_parse_from_format('Y-m-d', $end);
 		$tsEnd			= mktime(0, 0, 0, $arrDateEnd['month'], $arrDateEnd['day'], $arrDateEnd['year']);
 
 		// Current
-		$arrDateCurrent	= date_parse_from_format('d/m/Y', $this->source[$element]);
+		$arrDateCurrent	= date_parse_from_format('Y-m-d', $this->source[$element]);
 		$tsCurrent		= mktime(0, 0, 0, $arrDateCurrent['month'], $arrDateCurrent['day'], $arrDateCurrent['year']);
 
 		if ($tsCurrent < $tsStart || $tsCurrent > $tsEnd) {

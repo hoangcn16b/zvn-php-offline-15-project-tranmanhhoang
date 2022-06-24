@@ -1,6 +1,6 @@
 <?php
 
-$data = $this->profileUser;
+$data = $this->outPut;
 $readOnly = 'readonly';
 
 $lblId = HelperForm::label('ID');
@@ -15,14 +15,16 @@ $inputEmail = HelperForm::input('text', 'form[email]', $data['email'] ?? '', 'fo
 $lblFullName = HelperForm::label('Fullname');
 $inputFullName = HelperForm::input('text', 'form[fullname]', $data['fullname'] ?? '', 'form-control');
 
-$lblDate = HelperForm::label('Your Birthday');;
+$lblDate = HelperForm::label('Your Birthday(Month/Day/Year)');;
 $inputDate = HelperForm::input('date', 'form[birthday]', $data['birthday'] ?? '', 'form-control');
+
+$lblPhone = HelperForm::label('Phone number');
+$inputPhone = HelperForm::input('text', 'form[phone]', $data['phone'] ?? '', 'form-control');
 
 $lblAddress = HelperForm::label('Address');
 $inputAddress = HelperForm::input('text', 'form[address]', $data['address'] ?? '', 'form-control');
 
-$lblPhone = HelperForm::label('Email');
-$inputPhone = HelperForm::input('text', 'form[phone]', $data['phone'] ?? '', 'form-control');
+
 ?>
 
 <div class="row">
@@ -30,10 +32,14 @@ $inputPhone = HelperForm::input('text', 'form[phone]', $data['phone'] ?? '', 'fo
         <form action="" method="POST">
             <div class="card card-outline card-info">
                 <div class="card-body">
+                    <?php
+                    echo Helper::cmsError($this->errors ?? '');
+                    echo Helper::cmsSuccess($_SESSION['messageProfile'] ?? '');
+                    Session::unset('messageProfile');
+                    ?>
                     <div class="form-group">
                         <?= $lblId . $inputId ?>
                     </div>
-
                     <div class="form-group">
                         <?= $lblUsername . $inputUserName ?>
                     </div>
@@ -47,10 +53,10 @@ $inputPhone = HelperForm::input('text', 'form[phone]', $data['phone'] ?? '', 'fo
                         <?= $lblDate . $inputDate ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblAddress . $inputAddress ?>
+                        <?= $lblPhone . $inputPhone ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblPhone . $inputPhone ?>
+                        <?= $lblAddress . $inputAddress ?>
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success">Save</button>

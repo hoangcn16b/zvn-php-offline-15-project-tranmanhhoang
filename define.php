@@ -18,7 +18,7 @@
 	define	('DEFAULT_ACTION'		, 'index');
 
 	// config
-	define('TIME_LOGIN' 		, 500);
+	define('TIME_LOGIN' 		, 5000);
 
 	// ====================== DATABASE ===========================
 	define ('DB_HOST'			, 'localhost');

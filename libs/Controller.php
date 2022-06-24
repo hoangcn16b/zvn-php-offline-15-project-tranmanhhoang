@@ -18,15 +18,21 @@ class Controller
 		'totalItemsPerPage' => 2,
 		'pageRange' => 2
 	];
+	
+	protected $_idLogged;
+
+	protected $_userLogged;
 
 	public function __construct($arrParams)
 	{
 		$this->setModel($arrParams['module'], $arrParams['controller']);
 		$this->setTemplate($this);
 		$this->setView($arrParams['module']);
-
+		$this->setUserLogged();
 		$this->_pagination['currentPage'] = (isset($arrParams['page'])) ? $arrParams['page'] : 1;
 		$arrParams['pagination'] = $this->_pagination;
+		$arrParams['idLogged'] = $this->_idLogged;
+		$arrParams['userLogged'] = $this->_userLogged;
 		$this->setParams($arrParams);
 		$this->_view->arrParams = $this->_arrParam;
 	}
@@ -72,7 +78,7 @@ class Controller
 		return $this->_templateObj;
 	}
 
-	// GET PARAMS
+	// SET PARAMS
 	public function setParams($arrParam)
 	{
 		$this->_arrParam = $arrParam;
@@ -91,5 +97,23 @@ class Controller
 		$this->_pagination['pageRange'] = $config['pageRange'];
 		$this->_arrParam['pagination'] = $this->_pagination;
 		$this->_view->arrParams = $this->_arrParam;
+	}
+
+	public function setUserLogged()
+	{
+		if (Session::get('user')) {
+			$userInfor = Session::get('user');
+			$id = $userInfor['info']['id'];
+			$query[] = "SELECT `id`, `fullname`, `username`, `email`, `birthday`, `address`, `phone`";
+			$query[] = "FROM `user`";
+			$query[] = "WHERE `id` = $id";
+			$query = implode(" ", $query);
+			// $result = $this->_model->singleRecord($query);
+			if ($this->_model->query($query)) {
+				$result = $this->_model->singleRecord($query);
+			}
+			$this->_idLogged = $id;
+			$this->_userLogged = $result;
+		}
 	}
 }

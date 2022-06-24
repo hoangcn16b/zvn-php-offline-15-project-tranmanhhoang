@@ -59,10 +59,29 @@ class IndexController extends Controller
 	public function profileAction()
 	{
 		$this->_view->setTitleForm = 'Profile User';
-		$userInfor = Session::get('user');
-		$this->_view->profileUser = $userInfor['info'];
+		
+		$this->_view->profileUser = $this->_userLogged;
 		$this->_templateObj->setFileTemplate('index.php');
 		$this->_templateObj->load();
+		$data = $this->_userLogged;
+		if (!empty($this->_arrParam['form'])) {
+			$data = $this->_arrParam['form'];
+			$validate = new Validate($data);
+			$nowDate = date('Y-m-d', time());
+			$validate->addRule('fullname', 'string', ['min' => 0, 'max' => 30], false)
+				->addRule('birthday', 'date', ['start' => '1900-01-01', 'end' => $nowDate], false)
+				->addRule('phone', 'phone', ['required' => true], false)
+				->addRule('address', 'string', ['min' => 0, 'max' => 255], false);
+			$validate->run();
+			$data = $validate->getResult();
+			if ($validate->isValid()) {
+				$this->_model->saveProfile($data);
+				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'profile');
+			} else {
+				$this->_view->errors = $validate->showErrors();
+			}
+		}
+		$this->_view->outPut = $data;
 		$this->_view->render('index/profile');
 	}
 

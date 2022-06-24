@@ -78,16 +78,18 @@ class GroupModel extends Model
 
 	public function changeStatusAndAcp($params, $option = null)
 	{
-		$modified = date("Y-m-d H:i:s");
 		$id = $params['id'];
+		$modified = date("Y-m-d H:i:s");
+		// $modifiedBy = $params['idLogged'];
+		$userName = $params['userLogged']['username'];
 		if ($option['task'] == 'changeStatus') {
 			$status = $params['status'] == 'active' ? 'inactive' : 'active';
-			$query = "UPDATE `$this->table` SET `status` = '$status', `modified` = '$modified' where `id` = '$id'";
+			$query = "UPDATE `$this->table` SET `status` = '$status', `modified` = '$modified', `modified_by` = '$userName' where `id` = '$id'";
 			$url = URL::createLink($params['module'], $params['controller'], 'ajaxStatus', ['id' => $id, 'status' => $status]);
 			$result = Helper::cmsStatus($status, $url, $id);
 		} else if ($option['task'] == 'changeGroupAcp') {
 			$groupAcp = $params['group_acp'] == 1 ? 0 : 1;
-			$query = "UPDATE `$this->table` SET `group_acp` = '$groupAcp', `modified` = '$modified' where `id` = '$id'";
+			$query = "UPDATE `$this->table` SET `group_acp` = '$groupAcp', `modified` = '$modified', `modified_by` = '$userName' where `id` = '$id'";
 			$url = URL::createLink($params['module'], $params['controller'], 'ajaxGroupAcp', ['id' => $id, 'group_acp' => $groupAcp]);
 			$result = Helper::cmsGroupAcp($groupAcp, $url, $id);
 		}
@@ -121,8 +123,9 @@ class GroupModel extends Model
 		return $result;
 	}
 
-	public function saveItem($params, $options = null)
+	public function saveItem($params, $options = null, $userChanged)
 	{
+
 		if ($options['task'] == 'add') {
 			$params['created'] = date("Y-m-d H:i:s");
 			$this->insert($params);

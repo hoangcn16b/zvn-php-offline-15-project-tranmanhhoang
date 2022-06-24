@@ -272,6 +272,7 @@ class Model
 	public function isExist($query)
 	{
 		if ($query != null) {
+			$query;
 			$this->resultQuery = $this->query($query);
 		}
 		if (mysqli_num_rows($this->resultQuery) > 0) return true;

@@ -114,6 +114,7 @@ class UserController extends Controller
 		}
 		if (!empty($this->_arrParam['form'])) {
 			$data = $this->_arrParam['form'];
+			$data['modified_by'] = $this->_arrParam['userLogged']['username'];
 			$validate = new Validate($data);
 			$validate->addRule('password', 'password', ['action' => 'add']);
 			$validate->run();
