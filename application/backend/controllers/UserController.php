@@ -24,7 +24,7 @@ class UserController extends Controller
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
 		$this->_view->filterGroupUser = $this->_model->getGroupAdmin(true);
 		$this->_view->listGroup = $this->_model->getGroupAdmin(false, $this->_arrParam);
-		$this->_view->GroupAdminAcp = $this->_model->getAdminAcp($this->_arrParam);
+		$this->_view->groupAdminAcp = $this->_model->getAdminAcp($this->_arrParam);
 		$this->totalItems = $this->_model->countItem($this->_arrParam);
 		$this->_view->pagination = new Pagination($this->totalItems, $this->_pagination);
 		$this->_view->render($this->_arrParam['controller'] . '/index');
@@ -72,6 +72,11 @@ class UserController extends Controller
 		}
 		if (!empty($this->_arrParam['form'])) {
 			$data = $this->_arrParam['form'];
+			if ($task = 'edit') {
+				$data['modified_by'] = $this->_arrParam['userLogged']['username'];
+			} else {
+				$data['created'] = $this->_arrParam['userLogged']['username'];
+			}
 			$validate = new Validate($data);
 
 			$query[] = "SELECT `username`, `email` from `user` ";
@@ -86,20 +91,23 @@ class UserController extends Controller
 			if (isset($data['password'])) {
 				$validate->addRule('password', 'password', ['action' => $task]);
 			}
-			// if ($task == 'add') {
-			// 	if ($this->_model->checkUserNameEmail($data) == 1) {
-			// 		$validate->setError('Errors', 'UserName or Email is exist');
-			// 	}
-			// }
 			$validate->run();
 			$data = $validate->getResult();
 			if ($validate->isValid()) {
-				$this->_model->saveItem($data, ['task' => $task]);
-				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
+
+				// $this->_model->saveItem($data, ['task' => $task]);
+				// URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 			} else {
 				$this->_view->errors = $validate->showErrors();
 			}
 		}
+		echo '<pre>';
+		print_r($data);
+		echo '</pre>';
+
+		echo '<pre>';
+		print_r($this->_arrParam);
+		echo '</pre>';
 		$this->_view->outPut = $data;
 		$this->_view->render($this->_arrParam['controller'] . '/form');
 	}

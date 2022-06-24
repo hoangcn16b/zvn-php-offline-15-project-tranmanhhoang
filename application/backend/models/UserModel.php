@@ -60,14 +60,23 @@ class UserModel extends Model
 	{
 		$id = $params['id'];
 		$modified = date("Y-m-d H:i:s");
+		$modifiedBy = $params['userLogged']['username'];
 		$status = $params['status'] == 'active' ? 'inactive' : 'active';
-		$query = "UPDATE `$this->table` SET `status` = '$status', `modified` = '$modified' where `id` = '$id'";
+		$query = "UPDATE `$this->table` SET `status` = '$status', `modified` = '$modified', `modified_by` = '$modifiedBy' where `id` = '$id'";
 		$url = URL::createLink($params['module'], $params['controller'], 'ajaxStatus', ['id' => $id, 'status' => $status]);
 		$result = Helper::cmsStatus($status, $url, $id);
 		$this->query($query);
 		return $result;
 	}
-
+	public function changeGroupUser($params)
+	{
+		$id = $params['id'];
+		$modified = date("Y-m-d H:i:s");
+		$modifiedBy = $params['userLogged']['username'];
+		$groupId = $params['group_id'];
+		$query = "UPDATE `$this->table` SET `group_id` = '$groupId', `modified` = '$modified', `modified_by` = '$modifiedBy' WHERE `id` = '$id'";
+		$this->query($query);
+	}
 	public function deleteItem($id = '')
 	{
 		$query = "DELETE FROM `$this->table` WHERE `id` = " . mysqli_real_escape_string($this->connect, $id);
@@ -106,14 +115,13 @@ class UserModel extends Model
 		$query[] = "SELECT `id`, `name`, `group_acp`";
 		$query[] = "FROM `group`";
 		$query[] = "WHERE 1";
-
-		if (!empty($params['idLogged'])) {
-			if ($params['idLogged'] == 1) {
-				$query[] = "AND `id` <> 1";
-			} elseif ($params['idLogged'] !== 1) {
-				$query[] = " AND `id` <> 1";
-			}
-		}
+		// if (!empty($params['idLogged'])) {
+		// 	if ($params['idLogged'] == 1) {
+		// 		$query[] = "AND `id` <> 1";
+		// 	} elseif ($params['idLogged'] !== 1) {
+		// 		$query[] = " AND `id` <> 1";
+		// 	}
+		// }
 
 		$query = implode(" ", $query);
 		$list = $this->listRecord($query);
@@ -125,6 +133,26 @@ class UserModel extends Model
 		return $result;
 	}
 
+	public function getAdminAcp($params = null)
+	{
+		$query[] = "SELECT `id`, `name`, `group_acp`";
+		$query[] = "FROM `group`";
+		$query[] = "WHERE 1";
+		if (!empty($params['idLogged'])) {
+			if ($params['idLogged'] == 1) {
+				$query[] = "AND `id` <> 1";
+			} elseif ($params['idLogged'] != 1) {
+				$query[] = " AND `id` <> 1";
+			}
+		}
+		$query = implode(" ", $query);
+		$list = $this->listRecord($query);
+		$result = [];
+		foreach ($list as $key => $value) {
+			$result[$value['id']] = $value['name'];
+		}
+		return $result;
+	}
 	// public function getGroupId($name = null)
 	// {
 	// 	$query[] = "SELECT DISTINCT g.`name`, u.`group_id`";
@@ -151,6 +179,7 @@ class UserModel extends Model
 			unset($params['email']);
 			unset($params['id']);
 			$where = [['id', $id]];
+
 			$this->update($params, [['id', $id]]);
 			Session::set('messageForm', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
 		}
@@ -166,17 +195,17 @@ class UserModel extends Model
 		return $result;
 	}
 
-	// public function getNameByGroupId($option = null)
-	// {
-	// 	$query[] = "SELECT DISTINCT g.`name`, u.`group_id`";
-	// 	$query[] = "FROM `user`AS `u`, `group` AS `g`";
-	// 	$query[] = "WHERE u.`group_id` = g.`id`";
-	// 	$query[] = ($option != null) ? "AND u.`group_id` = '{$option}'" : '';
-	// 	$query = implode(" ", $query);
-	// 	$result = $this->singleRecord($query);
+	public function getNameByGroupId($option = null)
+	{
+		$query[] = "SELECT DISTINCT g.`name`, u.`group_id`";
+		$query[] = "FROM `user`AS `u`, `group` AS `g`";
+		$query[] = "WHERE u.`group_id` = g.`id`";
+		$query[] = ($option != null) ? "AND u.`group_id` = '{$option}'" : '';
+		$query = implode(" ", $query);
+		$result = $this->singleRecord($query);
 
-	// 	return $result;
-	// }
+		return $result;
+	}
 
 	public function checkUserNameEmail($params)
 	{
@@ -187,14 +216,7 @@ class UserModel extends Model
 		return $result;
 	}
 
-	public function changeGroupUser($params)
-	{
-		$id = $params['id'];
-		$modified = date("Y-m-d H:i:s");
-		$groupId = $params['group_id'];
-		$query = "UPDATE `$this->table` SET `group_id` = '$groupId', `modified` = '$modified' WHERE `id` = '$id'";
-		$this->query($query);
-	}
+
 
 	public function countItem($arrParams, $total = 3, $options = ['username', 'fullname', 'email'])
 	{
@@ -259,26 +281,5 @@ class UserModel extends Model
 		}
 		// $where = [['id', $id]];
 		// $this->update($params, [['id', $id]]);
-	}
-
-	public function getAdminAcp($params = null)
-	{
-		$query[] = "SELECT `id`, `name`, `group_acp`";
-		$query[] = "FROM `group`";
-		$query[] = "WHERE 1 AND `group_acp` <> 1";
-		if (!empty($params['idLogged'])) {
-			if ($params['idLogged'] == 1) {
-				$query[] = "AND `id` <> 1";
-			} elseif ($params['idLogged'] !== 1) {
-				$query[] = " AND `id` <> 1";
-			}
-		}
-		$query = implode(" ", $query);
-		$list = $this->listRecord($query);
-		$result = [];
-		foreach ($list as $key => $value) {
-			$result[$value['id']] = $value['name'];
-		}
-		return $result;
 	}
 }

@@ -21,7 +21,7 @@ if (!empty($this->items)) {
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
         $ajaxLinkGroup = URL::createLink($module, $controller, 'ajaxGroup', ['id' => $id, 'group_id' => 'value_new']);
         $attr = 'data-geturl = "' . $ajaxLinkGroup . '"';
-        $group = HelperForm::selectBox($this->GroupAdminAcp, '', $item['group_id'], 'w-auto select-group', $attr);
+        $group = HelperForm::selectBox($this->groupAdminAcp, '', $item['group_id'], 'w-auto select-group', $attr);
 
         $createdBy = Helper::createdBy($item['created_by'], $item['created']);
         $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
