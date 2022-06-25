@@ -56,7 +56,7 @@ class GroupController extends Controller
 
     public function formAction()
     {
-        if ($this->_arrParam['idLogged'] !== 1) {
+        if ($this->_arrParam['idLogged'] != 1) {
             Session::set('messageFormGroup', ['class' => 'warning', 'content' => 'Bạn không đủ quyền để thực hiện']);
             URL::redirectLink($this->_arrParam['module'], 'index', 'index');
         }

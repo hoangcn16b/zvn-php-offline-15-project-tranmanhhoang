@@ -22,9 +22,9 @@ class UserController extends Controller
 		$this->setPagination($configPagination);
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
-		$this->_view->filterGroupUser = $this->_model->getGroupAdmin(true);
-		$this->_view->listGroup = $this->_model->getGroupAdmin(false, $this->_arrParam);
-		$this->_view->groupAdminAcp = $this->_model->getAdminAcp($this->_arrParam);
+		$this->_view->filterGroupUser = $this->_model->getAdminAcp($this->_arrParam, false, true);
+		$this->_view->listGroup = $this->_model->getAdminAcp($this->_arrParam, false, false);
+		$this->_view->listGroupExcept = $this->_model->getAdminAcp($this->_arrParam, true, false);
 		$this->totalItems = $this->_model->countItem($this->_arrParam);
 		$this->_view->pagination = new Pagination($this->totalItems, $this->_pagination);
 		$this->_view->render($this->_arrParam['controller'] . '/index');
@@ -56,7 +56,7 @@ class UserController extends Controller
 
 	public function formAction()
 	{
-		$this->_view->listGroup = $this->_model->getGroupAdmin(true);
+		$this->_view->listGroupExcept = $this->_model->getAdminAcp($this->_arrParam, true, false);
 		$this->_view->setTitleForm = 'Add User Admin';
 		$data = null;
 		$task = 'add';
@@ -95,19 +95,13 @@ class UserController extends Controller
 			$data = $validate->getResult();
 			if ($validate->isValid()) {
 
-				// $this->_model->saveItem($data, ['task' => $task]);
-				// URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
+				$this->_model->saveItem($data, ['task' => $task]);
+				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
 			} else {
 				$this->_view->errors = $validate->showErrors();
 			}
 		}
-		echo '<pre>';
-		print_r($data);
-		echo '</pre>';
 
-		echo '<pre>';
-		print_r($this->_arrParam);
-		echo '</pre>';
 		$this->_view->outPut = $data;
 		$this->_view->render($this->_arrParam['controller'] . '/form');
 	}
@@ -142,8 +136,7 @@ class UserController extends Controller
 
 	public function myPasswordAction()
 	{
-		$outPut = Session::get('user');
-		$this->_view->outPut = $outPut['info'];
+		$this->_view->outPut = $this->_arrParam['userLogged'];
 		$this->_view->setTitleForm = 'Change My Password';
 		$data = [];
 

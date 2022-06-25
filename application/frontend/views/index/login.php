@@ -28,7 +28,12 @@ $linkAction = URL::createLink($this->arrParams['module'], $this->arrParams['cont
             <div class="col-lg-6">
                 <h3>Đăng nhập</h3>
                 <div class="theme-card">
-                    <?= Helper::cmsError($this->errors ?? '') ?>
+                    <?php echo Helper::cmsError($this->errors ?? '');
+                    echo Helper::cmsSuccess($_SESSION['messageChangePass'] ?? '');
+                    echo Helper::cmsSuccess($_SESSION['messageLogin'] ?? '');
+                    Session::unset('messageChangePass');
+                    Session::unset('messageLogin');
+                    ?>
                     <form action="<?= $linkAction ?>" method="post" id="admin-form" class="theme-form">
                         <div class="form-group">
                             <?= $lblEmail . $inputEmail ?>

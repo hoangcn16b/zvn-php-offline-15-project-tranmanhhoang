@@ -5,6 +5,7 @@ class IndexModel extends Model
 	{
 		parent::__construct();
 		$this->setTable('user');
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
 	}
 
 	public function getGroupId($name = null)
@@ -20,7 +21,6 @@ class IndexModel extends Model
 
 	public function saveItem($params, $options = null)
 	{
-		date_default_timezone_set('Asia/Ho_Chi_Minh');
 		if ($options['task'] == 'add') {
 			$params['created'] = date("Y-m-d H:i:s");
 			$params['register_date'] = date("Y-m-d H:i:s");
@@ -30,7 +30,7 @@ class IndexModel extends Model
 			$groupId = $this->getGroupId('Customer');
 			$params['group_id'] = $groupId['id'];
 			$result = $this->insert($params);
-			
+
 			// Session::set('messageForm', ['class' => 'success', 'content' => ADD_SUCCESS]);
 		}
 	}
@@ -41,12 +41,16 @@ class IndexModel extends Model
 			$email = $params['email'];
 			$password = md5($params['password']);
 			// unset($params['submit']);
-			$query[] = "SELECT `u`.`id`, `u`.`fullname`, `u`.`username`, `u`.`email`, `u`.`group_id`, `g`.`group_acp`, `g`.`privilege_id`  ";
+			$query[] = "SELECT `u`.`id`, `u`.`fullname`, `u`.`username`, `u`.`email`, `u`.`group_id`, `g`.`group_acp`  ";
 			$query[] = "FROM `user` AS `u` LEFT JOIN `group` as `g` ON `u`.`group_id` = `g`.`id`";
-			$query[] = "WHERE `u`.`email` = '$email' AND `u`.`password` = '$password' ";
+			$query[] = "WHERE `u`.`email` = '$email' AND `u`.`password` = '$password' AND `u`.`status` = 'active' ";
 			$query = implode(" ", $query);
-			$result = $this->singleRecord($query);
-
+			// $result = $this->singleRecord($query);
+			if ($this->query($query)) {
+				$result = $this->singleRecord($query);
+			} else {
+				$result = false;
+			}
 			// if ($result['group_acp'] == 1) {
 			// 	$arrPrivilege = explode(',', $result['privilege_id']);
 			// 	$strPrivilegeId = '';

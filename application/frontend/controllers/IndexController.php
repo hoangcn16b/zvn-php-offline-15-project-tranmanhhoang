@@ -14,6 +14,7 @@ class IndexController extends Controller
 	public function indexAction()
 	{
 		$userInfor = Session::get('user');
+		// Session::unset('user');
 		$this->_view->render($this->_arrParam['controller'] . '/index');
 	}
 
@@ -33,13 +34,17 @@ class IndexController extends Controller
 			$email = $data['email'];
 			$password = md5($data['password']);
 			$queryEmail = "SELECT `id` FROM `" . TABLE_USER . "` WHERE `email` = '$email'";
-			$query = "SELECT `id` FROM `" . TABLE_USER . "` WHERE `email` = '$email' AND `password` = '$password' ";
+			$queryPass = "SELECT `id` FROM `" . TABLE_USER . "` WHERE `email` = '$email' AND `password` = '$password' ";
 			$validate->addRule('email', 'email-existRecord', ['database' => $this->_model, 'query' => $queryEmail, 'required' => true])
-				->addRule('password', 'string-existRecord', ['min' => 4, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => true]);
+				->addRule('password', 'string-existRecord', ['min' => 4, 'max' => 20, 'database' => $this->_model, 'query' => $queryPass, 'required' => true]);
 			$validate->run();
 			if ($validate->isValid()) {
 				unset($data['submit']);
 				$inforUser = $this->_model->inforItem($data);
+				if ($inforUser == false) {
+				Session::set('messageLogin', ['class' => 'warning', 'content' => 'Tài khoản của bạn chưa dc kích hoạt, hãy kích hoạt bằng email hoặc nhờ quản trị viên để sử dụng tính năng này!']);
+					URL::redirectLink($this->_arrParam['module'], 'index', 'login');
+				}
 				$arrSession = [
 					'login' => true,
 					'info' => $inforUser,
@@ -47,9 +52,9 @@ class IndexController extends Controller
 					'group_acp' => $inforUser['group_acp']
 				];
 				Session::set('user', $arrSession);
-				URL::redirectLink($this->_arrParam['module'], 'index', 'index');
+				URL::redirectLink($this->_arrParam['module'], 'index', 'profile');
 			} else {
-				$this->_view->errors = $validate->showErrors();
+				$this->_view->errors = 'Tài khoản hoặc mật khẩu không chính xác!';
 			}
 		}
 		$this->_view->outPut = $data;

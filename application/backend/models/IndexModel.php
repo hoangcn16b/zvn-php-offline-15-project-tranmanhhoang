@@ -51,7 +51,7 @@ class IndexModel extends Model
 	{
 		$id = $params['id'];
 		$params['modified'] = date("Y-m-d H:i:s");
-		$params['modified_by'] = $params['userLogged']['username'];
+		$params['modified_by'] = $params['username'];
 		unset($params['username']);
 		unset($params['email']);
 		unset($params['id']);

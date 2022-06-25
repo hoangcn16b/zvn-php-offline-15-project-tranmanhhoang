@@ -1,9 +1,10 @@
 <header class="my-header sticky">
     <?php
-    $userObj = Session::get('user');
+    $userObj = $this->arrParams['userLogged'] ?? '';
+
     // Session::unset('user');
     $arrMenu = [];
-    if ($userObj == true && $userObj['group_acp'] == true) {
+    if ($userObj['group_acp'] ?? '' == 1) {
         $arrMenu[] = ['class' => 'user-index', 'link' => URL::createLink('backend', 'index', 'index'), 'name' => 'Trang quản lý'];
     }
     if ($userObj == true) {

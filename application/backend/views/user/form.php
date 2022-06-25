@@ -3,7 +3,7 @@
 $data = $this->outPut;
 $arrSelect = [
     'status' => ['default' => 'Select Status', 'inactive' => 'Không kích hoạt', 'active' => 'Kích hoạt'],
-    'group' => $this->listGroup
+    'group' => $this->listGroupExcept
 ];
 $readOnly = isset($this->arrParams['id']) ? 'readonly' : '';
 
@@ -31,18 +31,17 @@ if (isset($this->arrParams['id'])) {
     $inputPassWord = '';
 }
 
-$idUserLogged = $_SESSION['user']['info']['id'] ?? '';
-if (isset($this->arrParams['id']) && $idUserLogged == $this->arrParams['id'] ?? '') {
-    $selectStatus = HelperForm::input('text', 'form[status]', $data['status'] ?? '', 'form-control', $readOnly);
-    foreach ($this->listGroup as $key => $value) {
-        if ($idUserLogged == $key) {
-            $getNameGroup = $value;
-            break;
-        }
-    }
-    $selectGroupHidden = HelperForm::input('hidden', 'form[group_id]', $data['group_id'] ?? '', 'form-control', $readOnly);
-    $selectGroup = HelperForm::input('text', '', $getNameGroup, 'form-control', $readOnly);
-}
+// if (isset($this->arrParams['id']) && $this->arrParams['idLogged'] == ($this->arrParams['id'] ?? '')) {
+//     $selectStatus = HelperForm::input('text', 'form[status]', $data['status'] ?? '', 'form-control', $readOnly);
+//     foreach ($this->listGroupExcept as $key => $value) {
+//         if ($idUserLogged == $key) {
+//             $getNameGroup = $value;
+//             break;
+//         }
+//     }
+//     $selectGroupHidden = HelperForm::input('hidden', 'form[group_id]', $data['group_id'] ?? '', 'form-control', $readOnly);
+//     $selectGroup = HelperForm::input('text', '', $getNameGroup, 'form-control', $readOnly);
+// }
 
 ?>
 

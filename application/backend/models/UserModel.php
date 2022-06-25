@@ -133,21 +133,22 @@ class UserModel extends Model
 		return $result;
 	}
 
-	public function getAdminAcp($params = null)
+	public function getAdminAcp($params = null, $required = false, $hasDefault = false)
 	{
-		$query[] = "SELECT `id`, `name`, `group_acp`";
+		$query[] = "SELECT DISTINCT `id`, `name`, `group_acp`";
 		$query[] = "FROM `group`";
 		$query[] = "WHERE 1";
-		if (!empty($params['idLogged'])) {
+		if ($required) {
 			if ($params['idLogged'] == 1) {
 				$query[] = "AND `id` <> 1";
-			} elseif ($params['idLogged'] != 1) {
-				$query[] = " AND `id` <> 1";
+			} else {
+				$query[] = "AND `id` <> 1 AND `group_acp` <> 1";
 			}
 		}
 		$query = implode(" ", $query);
 		$list = $this->listRecord($query);
 		$result = [];
+		if ($hasDefault) $result['default'] = 'Select Group';
 		foreach ($list as $key => $value) {
 			$result[$value['id']] = $value['name'];
 		}
@@ -215,8 +216,6 @@ class UserModel extends Model
 		$result = $this->isExist($query);
 		return $result;
 	}
-
-
 
 	public function countItem($arrParams, $total = 3, $options = ['username', 'fullname', 'email'])
 	{

@@ -4,7 +4,6 @@ $module = $this->arrParams['module'];
 $controller = $this->arrParams['controller'];
 $action = $this->arrParams['action'];
 $xhtml = '';
-
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
         $id = $item['id'];
@@ -14,6 +13,7 @@ if (!empty($this->items)) {
                 break;
             }
         }
+
         $userName = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['username']);
         $fullName = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['fullname']);
         $email = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['email']);
@@ -21,7 +21,7 @@ if (!empty($this->items)) {
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
         $ajaxLinkGroup = URL::createLink($module, $controller, 'ajaxGroup', ['id' => $id, 'group_id' => 'value_new']);
         $attr = 'data-geturl = "' . $ajaxLinkGroup . '"';
-        $group = HelperForm::selectBox($this->groupAdminAcp, '', $item['group_id'], 'w-auto select-group', $attr);
+        $group = HelperForm::selectBox($this->listGroupExcept, '', $item['group_id'], 'w-auto select-group', $attr);
 
         $createdBy = Helper::createdBy($item['created_by'], $item['created']);
         $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);

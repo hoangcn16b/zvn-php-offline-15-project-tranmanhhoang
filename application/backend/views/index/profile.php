@@ -19,11 +19,10 @@ $lblDate = HelperForm::label('Your Birthday(Month/Day/Year)');;
 $inputDate = HelperForm::input('date', 'form[birthday]', $data['birthday'] ?? '', 'form-control');
 
 $lblPhone = HelperForm::label('Phone number');
-$inputPhone = HelperForm::input('text', 'form[phone]', $data['phone'] ?? '', 'form-control');
+$inputPhone = HelperForm::input('number', 'form[phone]', $data['phone'] ?? '', 'form-control');
 
 $lblAddress = HelperForm::label('Address');
 $inputAddress = HelperForm::input('text', 'form[address]', $data['address'] ?? '', 'form-control');
-
 
 ?>
 

@@ -70,9 +70,11 @@ class Helper
     public static function cmsStatus($statusVal, $link, $id, $jsClass = 'ajax-status')
     {
         $status = ($statusVal == 'active') ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
+
+        $iconStatus = ($statusVal == 'active') ? 'check' : 'check';
         $xhtml = '
                     <a id = "status-' . $id . '" href="' . $link . '" class="' . $status . ' ' . $jsClass . '">
-                        <span ><i class="fas fa-check"></i></span>
+                        <span ><i class="fas fa-' . $iconStatus . '"></i></span>
                     </a>
                 ';
         return $xhtml;

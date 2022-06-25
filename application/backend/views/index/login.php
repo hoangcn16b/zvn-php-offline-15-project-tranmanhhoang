@@ -20,5 +20,9 @@ Session::unset('messageChangePass');
         <?= $inputPassword ?>
         <?= HelperForm::iconFormLogin('fa-lock') ?>
     </div>
-    <button type="submit" name="form[submit]" value="submit" class="btn btn-info btn-block">Sign In</button>
+    <div class="mb-3" style="text-align: center;">
+        <button type="submit" name="form[submit]" value="submit" class="btn btn-info ">Sign In</button>
+        <a type="button" class="btn btn-danger" href="<?= URL::createLink('frontend', 'index', 'index') ?>">Cancel</a>
+    </div>
+    <!-- <button type="submit" name="form[submit]" value="submit" class="btn btn-info btn-block">Sign In</button> -->
 </form>
