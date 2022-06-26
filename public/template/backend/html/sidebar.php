@@ -84,13 +84,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="category-list.php" class="nav-link">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'category', 'index') ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="category-form.php" class="nav-link">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'category', 'form') ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add</p>
                             </a>
@@ -107,13 +107,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="book-list.php" class="nav-link">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'book', 'index') ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="book-form.php" class="nav-link">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'book', 'form') ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add</p>
                             </a>

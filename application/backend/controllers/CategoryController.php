@@ -1,5 +1,5 @@
 <?php
-class GroupController extends Controller
+class CategoryController extends Controller
 {
     public function __construct($arrParams)
     {
@@ -17,15 +17,11 @@ class GroupController extends Controller
 
     public function indexAction()
     {
-        $userInfor = Session::get('user');
-        // $requestURL = "backend-group-form";
-        // $this->_view->showButtonAddGroup = (in_array($requestURL, $userInfor['info']['privilege']) == true) ? true : false;
 
         $configPagination = ['totalItemsPerPage' => 5, 'pageRange' => 3];
         $this->setPagination($configPagination);
         $this->_view->items = $this->_model->listItems($this->_arrParam);
         $this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
-        $this->_view->getGroupAcp = $this->_model->getGroupAcp(true);
 
         $this->totalItems = $this->_model->countItem($this->_arrParam, null);
         $this->_view->pagination = new Pagination($this->totalItems, $this->_pagination);
@@ -34,14 +30,7 @@ class GroupController extends Controller
 
     public function ajaxStatusAction()
     {
-        $result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'changeStatus']);
-        echo $result;
-        // echo json_encode($result);
-    }
-
-    public function ajaxGroupAcpAction()
-    {
-        $result = $this->_model->changeStatusAndAcp($this->_arrParam, ['task' => 'changeGroupAcp']);
+        $result = $this->_model->changeStatus($this->_arrParam, ['task' => 'changeStatus']);
         echo $result;
         // echo json_encode($result);
     }
@@ -56,15 +45,12 @@ class GroupController extends Controller
 
     public function formAction()
     {
-        if ($this->_arrParam['idLogged'] != 1) {
-            Session::set('messageFormGroup', ['class' => 'warning', 'content' => 'Bạn không đủ quyền để thực hiện']);
-            URL::redirectLink($this->_arrParam['module'], 'index', 'index');
-        }
-        $this->_view->setTitleForm = 'Add Group Admin';
+
+        $this->_view->setTitleForm = 'Add Category Book';
         $data = null;
         $task = 'add';
         if (isset($this->_arrParam['id'])) {
-            $this->_view->setTitleForm = 'Edit Group Admin';
+            $this->_view->setTitleForm = 'Edit Category Book';
             $data = $this->_model->checkItem($this->_arrParam);
             if (empty($data)) {
                 URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
@@ -76,25 +62,31 @@ class GroupController extends Controller
             $data = $this->_arrParam['form'];
             if ($task == 'edit') {
                 $data['modified_by'] = $this->_arrParam['userLogged']['username'];
+            } elseif ($task == 'add') {
+                $data['created_by'] = $this->_arrParam['userLogged']['username'];
             }
             $validate = new Validate($data);
             $required = $task == 'add' ? true : false;
-            $name    = $data['name'];
-            $query[] = "SELECT * FROM `group`";
-            if (isset($this->_arrParam['id'])) {
-                $query[] = "WHERE `id` <> " . $this->_arrParam['id'] . " AND `name` = '" . $name . "'";
-            } else {
-                $query[] = "WHERE `name` = '" . $name . "'";
-            }
-            $query = implode(" ", $query);
-            $validate->addRule('name', 'string-notExistRecord', ['min' => 3, 'max' => 20, 'database' => $this->_model, 'query' => $query, 'required' => true])
-                ->addRule('group_acp', 'groupAcp')
+            // $name    = $data['name'];
+            // $query[] = "SELECT `name` FROM `category`";
+            // if (isset($this->_arrParam['id'])) {
+            //     $query[] = "WHERE `id` <> " . $this->_arrParam['id'] . " AND `name` = '" . $name . "'";
+            // } else {
+            //     $data['created_by'] = $this->_arrParam['userLogged']['username'];
+            //     $query[] = "WHERE `name` = '" . $name . "'";
+            
+            // }
+            // $query = implode(" ", $query);
+            // $checkCategory = $this->_model->checkExistCategory($query);
+            // if ($checkCategory) {
+            //     $validate->setError('category',' is exist');
+            // }
+            $validate->addRule('name', 'username', ['min' => 5, 'max' => 100])
                 ->addRule('status', 'status');
             $validate->run();
             $data = $validate->getResult();
-            // $data['name'] = ($flag == true) ? '' : ($data['name'] ?? '');
             if ($validate->isValid()) {
-                $this->_model->saveItem($data, ['task' => $task], $this->_userLogged);
+                $this->_model->saveItem($data, ['task' => $task]);
                 URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
             } else {
                 $this->_view->errors = $validate->showErrors();
@@ -103,11 +95,4 @@ class GroupController extends Controller
         $this->_view->outPut = $data;
         $this->_view->render($this->_arrParam['controller'] . '/form');
     }
-
-
-    // public function clearAction()
-    // {
-    // 	// Session::unset('keyword');
-    // 	URL::redirectLink('backend', 'Group', 'index');
-    // }
 }
