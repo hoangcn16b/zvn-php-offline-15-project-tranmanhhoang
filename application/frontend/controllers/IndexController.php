@@ -42,7 +42,7 @@ class IndexController extends Controller
 				unset($data['submit']);
 				$inforUser = $this->_model->inforItem($data);
 				if ($inforUser == false) {
-				Session::set('messageLogin', ['class' => 'warning', 'content' => 'Tài khoản của bạn chưa dc kích hoạt, hãy kích hoạt bằng email hoặc nhờ quản trị viên để sử dụng tính năng này!']);
+					Session::set('messageLogin', ['class' => 'warning', 'content' => 'Tài khoản của bạn chưa dc kích hoạt, hãy kích hoạt bằng email hoặc nhờ quản trị viên để sử dụng tính năng này!']);
 					URL::redirectLink($this->_arrParam['module'], 'index', 'login');
 				}
 				$arrSession = [
@@ -52,7 +52,7 @@ class IndexController extends Controller
 					'group_acp' => $inforUser['group_acp']
 				];
 				Session::set('user', $arrSession);
-				URL::redirectLink($this->_arrParam['module'], 'index', 'profile');
+				URL::redirectLink($this->_arrParam['module'], 'user', 'profile');
 			} else {
 				$this->_view->errors = 'Tài khoản hoặc mật khẩu không chính xác!';
 			}
@@ -97,6 +97,19 @@ class IndexController extends Controller
 		$data['password'] = '';
 		$this->_view->outPut = $data;
 		$this->_view->render($this->_arrParam['controller'] . '/register');
+	}
+
+	public function activeAccountAction()
+	{
+		$queryCheck = "SELECT `status` FROM `user` WHERE `status` = 'active'";
+		$result = $this->_model->activate($this->_arrParam);
+		if ($result) {
+			Session::set('messageActivate', ['class' => 'success', 'content' => 'Tài khoản của bạn đã được kích hoạt thành công, hãy đăng nhập lại hệ thống!']);
+			URL::redirectLink('frontend', 'index', 'login');
+		} else {
+			Session::set('messageActivate', ['class' => 'warning', 'content' => 'Trạng thái tài khoản của bạn đã được thay đổi!']);
+			URL::redirectLink('frontend', 'index', 'login');
+		}
 	}
 
 	public function errorAction()

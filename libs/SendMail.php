@@ -34,7 +34,7 @@ class SendMail extends PHPMailer
             $this->isHTML(true);                             // Set email format to HTML
             $this->Subject = $subJect;
             $this->Body    = "
-                            Dear Customer, <br> 
+                            Dear $nameTo, <br> 
                             $content";
             $this->send();
         } catch (Exception $e) {

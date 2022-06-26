@@ -26,10 +26,12 @@ class IndexModel extends Model
 			$params['register_date'] = date("Y-m-d H:i:s");
 			$params['register_ip'] = $_SERVER['REMOTE_ADDR'];
 			$params['password'] = md5($params['password']);
-			$params['status'] = 'active';
+			$params['status'] = 'inactive';
+			$params['active_code'] = Helper::randomString();
 			$groupId = $this->getGroupId('Customer');
 			$params['group_id'] = $groupId['id'];
-			$result = $this->insert($params);
+			$this->insert($params);
+			HelperSendMail::sendEmailToActiveAccount($params);
 
 			// Session::set('messageForm', ['class' => 'success', 'content' => ADD_SUCCESS]);
 		}
@@ -66,6 +68,23 @@ class IndexModel extends Model
 			// }
 
 			return $result;
+		}
+	}
+	public function activate($params)
+	{
+		$query[] = "SELECT * FROM `user`";
+		$query[] = "WHERE `username` = '{$params['username']}' AND `active_code` = '{$params['active_code']}' AND `status` = 'inactive'";
+		$query = implode(" ", $query);
+		// $result = $this->query($query);
+		$result = $this->singleRecord($query);
+		if (!empty($result)) {
+			$modified = date("Y-m-d H:i:s");
+			$randomCode = Helper::randomString() . '_active';
+			$queryUpdate = "UPDATE `" . TABLE_USER . "` SET `status` = 'active', `modified` = '$modified', `modified_by` = '{$params['username']}', `active_code` = '$randomCode' WHERE `username` = '{$params['username']}'";
+			$this->query($queryUpdate);
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

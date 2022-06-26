@@ -1,6 +1,5 @@
 <?php
-echo Helper::cmsSuccess($_SESSION['messageRegister'] ?? '');
-Session::unset('messageRegister');
+
 
 $lblEmail = HelperForm::label('Email', false, 'required');
 $inputEmail = HelperForm::input('email', 'form[email]', $data['name'] ?? '', 'form-control', 'id="form[email]"');
@@ -28,9 +27,14 @@ $linkAction = URL::createLink($this->arrParams['module'], $this->arrParams['cont
             <div class="col-lg-6">
                 <h3>Đăng nhập</h3>
                 <div class="theme-card">
-                    <?php echo Helper::cmsError($this->errors ?? '');
+                    <?php
+                    echo Helper::cmsSuccess($_SESSION['messageRegister'] ?? '');
+                    Session::unset('messageRegister');
+                    echo Helper::cmsError($this->errors ?? '');
                     echo Helper::cmsSuccess($_SESSION['messageChangePass'] ?? '');
                     echo Helper::cmsSuccess($_SESSION['messageLogin'] ?? '');
+                    echo Helper::cmsSuccess($_SESSION['messageActivate'] ?? '');
+                    Session::unset('messageActivate');
                     Session::unset('messageChangePass');
                     Session::unset('messageLogin');
                     ?>

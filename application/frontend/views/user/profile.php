@@ -47,10 +47,10 @@ $inputAddress = HelperForm::input('text', 'form[address]', $data['address'] ?? '
                     <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i> Ẩn</span></div>
                     <div class="block-content">
                         <ul>
-                            <li class="active"><a href="<?= URL::createLink($this->arrParams['module'], 'user', 'profile') ?>">Thông tin tài khoản</a></li>
-                            <li class=""><a href="<?= URL::createLink($this->arrParams['module'], 'user', 'password') ?>">Thay đổi mật khẩu</a></li>
-                            <li class=""><a href="order-history.html">Lịch sử mua hàng</a></li>
-                            <li class=""><a href="<?= URL::createLink($this->arrParams['module'], 'index', 'logout') ?>">Đăng xuất</a>
+                            <li class="user-profile"><a href="<?= URL::createLink($this->arrParams['module'], 'user', 'profile') ?>">Thông tin tài khoản</a></li>
+                            <li class="user-password"><a href="<?= URL::createLink($this->arrParams['module'], 'user', 'password') ?>">Thay đổi mật khẩu</a></li>
+                            <li class="user-history"><a href="order-history.html">Lịch sử mua hàng</a></li>
+                            <li class="user-logout"><a href="<?= URL::createLink($this->arrParams['module'], 'index', 'logout') ?>">Đăng xuất</a>
                             </li>
                         </ul>
                     </div>

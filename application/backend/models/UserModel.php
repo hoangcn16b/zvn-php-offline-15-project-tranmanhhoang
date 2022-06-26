@@ -250,9 +250,10 @@ class UserModel extends Model
 
 	public function savePassword($params)
 	{
-
+		$newPassword = $params['password'];
+		$email = $params['email'];
 		$params['modified'] = date("Y-m-d H:i:s");
-		$params['password'] = md5($params['password']);
+		$params['password'] = md5($newPassword);
 		$id = $params['id'];
 		unset($params['fullname']);
 		unset($params['username']);
@@ -260,24 +261,39 @@ class UserModel extends Model
 		unset($params['id']);
 		$where = [['id', $id]];
 		$this->update($params, [['id', $id]]);
-		Session::set('messageForm', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
+		$query = "UPDATE `" . TABLE_USER . "` SET `password` = '{$params['password']}', `modified` = '{$params['modified']}', `modified_by` = '{$params['modified_by']}' WHERE `id` = '$id'";
+		$result = $this->query($query);
+		if ($result) {
+			HelperSendMail::sendEmailPassword($newPassword, $email, $params['modified_by']);
+			Session::set('messageForm', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
+			// return true;
+		} else {
+			Session::set('messageForm', ['class' => 'success', 'content' => CHANGEPASS_FALSE]);
+			// return false;
+		}
 	}
 
 	public function changeMyPassword($params, $options = null)
 	{
+		$newPassword = $params['new password'];
+		$email = $params['email'];
 		$params['modified'] = date("Y-m-d H:i:s");
-		$params['password'] = md5($params['new password']);
-		$modifiedBy = $params['userLogged']['username'];
+		$params['password'] = md5($newPassword);
+		$modifiedBy = $params['username'];
 		$id = $params['id'];
 		unset($params['id']);
+		unset($params['username']);
+		unset($params['email']);
 		unset($params['new password']);
 		$query = "UPDATE `" . TABLE_USER . "` SET `password` = '{$params['password']}', `modified` = '{$params['modified']}', `modified_by` = '$modifiedBy' WHERE `id` = '$id'";
 		$result = $this->query($query);
 		if ($result) {
+			HelperSendMail::sendEmailPassword($newPassword, $email, $modifiedBy);
 			return true;
 		} else {
 			return false;
 		}
+
 		// $where = [['id', $id]];
 		// $this->update($params, [['id', $id]]);
 	}

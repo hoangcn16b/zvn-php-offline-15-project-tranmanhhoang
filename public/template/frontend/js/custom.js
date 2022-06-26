@@ -9,4 +9,17 @@ $(document).ready(function () {
     var classActive = controller + '-' + action;
     console.log(classActive);
     $('.' + classActive).addClass('active');
+
+    // document.getElementById('random-active-code').value = make_password(5);
+    // function make_password(length) {
+    //     var result = '';
+    //     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    //     var charactersLength = characters.length;
+    //     for (var i = 0; i < length; i++) {
+    //         result += characters.charAt(Math.floor(Math.random() *
+    //             charactersLength));
+    //     }
+    //     return result;
+    // }
 });
+

@@ -2,7 +2,9 @@
 
 $data = $this->outPut;
 
-$inputId = HelperForm::input('hidden', 'form[id]', $data['id'] ?? '', 'form-control');
+$inputId = HelperForm::input('hidden', 'form[id]', $data['id'] ?? '');
+$inputEmail = HelperForm::input('hidden', 'form[email]', $data['email'] ?? '');
+$inputUserName = HelperForm::input('hidden', 'form[username]', $data['username'] ?? '');
 
 $lblPass = HelperForm::label('Password hiện tại', true);
 $inputPass = HelperForm::input('text', 'form[password]', '', 'form-control');
@@ -22,7 +24,7 @@ $inputRewritePass = HelperForm::input('text', 'form[new password confirm]', '', 
                     <?= Helper::cmsError($this->errors ?? '') ?>
                     <?= Helper::cmsError($this->errors1 ?? '') ?>
                     <div class="form-group">
-                        <?= $inputId ?>
+                        <?= $inputId . $inputEmail . $inputUserName ?>
                     </div>
                     <div class="form-group">
                         <?= $lblPass . $inputPass ?>

@@ -8,11 +8,11 @@
         $arrMenu[] = ['class' => 'user-index', 'link' => URL::createLink('backend', 'index', 'index'), 'name' => 'Trang quản lý'];
     }
     if ($userObj == true) {
-        $arrMenu[] = ['class' => 'index-profile', 'link' => URL::createLink($this->arrParams['module'], 'user', 'profile'), 'name' => 'Tài khoản của tôi'];
-        $arrMenu[] = ['class' => 'index-logout', 'link' => URL::createLink($this->arrParams['module'], 'index', 'logout'), 'name' => 'Đăng xuất'];
+        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], 'user', 'profile'), 'name' => 'Tài khoản của tôi'];
+        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], 'index', 'logout'), 'name' => 'Đăng xuất'];
     } else {
-        $arrMenu[] = ['class' => 'index-login', 'link' => URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'login'), 'name' => 'Đăng nhập'];
-        $arrMenu[] = ['class' => 'index-register', 'link' => URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'register'), 'name' => 'Đăng ký'];
+        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'login'), 'name' => 'Đăng nhập'];
+        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'register'), 'name' => 'Đăng ký'];
     }
 
     $xhtml = '<ul class="onhover-show-div">';

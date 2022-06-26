@@ -75,6 +75,7 @@ class UserController extends Controller
 			if ($validate->isValid() && empty($errorsPassword)) {
 				unset($data['password']);
 				unset($data['new password confirm']);
+				$data['email'] = $this->_arrParam['userLogged']['email'];
 				$result = $this->_model->changeMyPassword($data);
 				if ($result) {
 					Session::set('messageChangePass', ['class' => 'success', 'content' => CHANGEPASS_SUCCESS]);

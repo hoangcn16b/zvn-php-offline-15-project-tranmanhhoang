@@ -111,7 +111,7 @@ class Controller
 			$query = "
 						SELECT `u`.`id`, `fullname`, `username`, `email`, `birthday`, `address`, `phone`, `group_id`, `g`.`group_acp`
 						FROM `user` AS `u`, `group` AS `g`
-						WHERE `u`.`id` = `g`.`id` AND `u`.`id` = $id
+						WHERE `u`.`group_id` = `g`.`id` AND `u`.`id` = $id
 					";
 			// $query = implode(" ", $query);
 			$result = $this->_model->singleRecord($query);

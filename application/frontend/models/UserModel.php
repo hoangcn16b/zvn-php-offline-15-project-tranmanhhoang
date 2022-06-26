@@ -34,7 +34,7 @@ class UserModel extends Model
 		$query = "UPDATE `" . TABLE_USER . "` SET `password` = '{$params['password']}', `modified` = '{$params['modified']}', `modified_by` = '$modifiedBy' WHERE `id` = '$id'";
 		$result = $this->query($query);
 		if ($result) {
-			HelperSendMail::sendEmailPassword($newPassword, $params);
+			HelperSendMail::sendEmailPassword($newPassword, $params['email'], $modifiedBy);
 			return true;
 		} else {
 			return false;

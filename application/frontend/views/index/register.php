@@ -1,6 +1,7 @@
 <?php
 $data = $this->outPut;
 
+// $inputRamdomString = HelperForm::input('text', 'form[username]', $random, 'form-control');
 $lblUsername = HelperForm::label('Tên tài khoản', 'required');
 $inputUserName = HelperForm::input('text', 'form[username]', $data['username'] ?? '', 'form-control');
 
