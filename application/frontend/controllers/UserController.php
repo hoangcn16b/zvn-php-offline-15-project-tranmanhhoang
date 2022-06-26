@@ -90,11 +90,4 @@ class UserController extends Controller
 		$this->_view->render($this->_arrParam['controller'] . '/password');
 	}
 
-	public function activeAccountAction()
-	{
-		echo '<pre>';
-		print_r($this->_arrParam);
-		echo '</pre>';
-		$this->_view->render('index/index');
-	}
 }

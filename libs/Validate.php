@@ -139,6 +139,13 @@ class Validate
 	private function validateInt($element, $min = 0, $max = 0, $required = true)
 	{
 		if ($required == true) {
+			if ($this->source[$element] < $min) {
+				$this->setError($element, 'is invalid');
+			} elseif ($this->source[$element] > $max) {
+				$this->setError($element, 'is invalid');
+			} elseif (!is_string($this->source[$element])) {
+				$this->setError($element, 'is an invalid number');
+			}
 			if ($min > 0) {
 				if (!filter_var($this->source[$element], FILTER_VALIDATE_INT, array("options" => array("min_range" => $min, "max_range" => $max)))) {
 					$this->setError($element, 'is an invalid number');
@@ -350,7 +357,7 @@ class Validate
 		}
 
 		$ext = pathinfo($this->source[$element]['name'], PATHINFO_EXTENSION);
-		if (in_array($ext, $options['entension']) == false) {
+		if (in_array($ext, $options['extension']) == false) {
 			$this->setError($element, 'phần mở rộng không phù hợp');
 		}
 	}

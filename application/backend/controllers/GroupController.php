@@ -8,6 +8,7 @@ class GroupController extends Controller
         // if ($logged == false) {
         //     URL::redirectLink('backend', 'index', 'login');
         // }
+        Auth::checkAuth(Session::get('user') ?? '');
         parent::__construct($arrParams);
         $this->_templateObj->setFolderTemplate('backend/');
         $this->_templateObj->setFileTemplate('index.php');

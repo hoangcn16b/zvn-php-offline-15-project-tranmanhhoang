@@ -8,6 +8,7 @@ class CategoryController extends Controller
         // if ($logged == false) {
         //     URL::redirectLink('backend', 'index', 'login');
         // }
+        Auth::checkAuth(Session::get('user') ?? '');
         parent::__construct($arrParams);
         $this->_templateObj->setFolderTemplate('backend/');
         $this->_templateObj->setFileTemplate('index.php');
@@ -60,6 +61,9 @@ class CategoryController extends Controller
 
         if (!empty($this->_arrParam['form'])) {
             $data = $this->_arrParam['form'];
+            if (!empty($_FILES)) {
+                $data['picture'] = $_FILES['picture'];
+            }
             if ($task == 'edit') {
                 $data['modified_by'] = $this->_arrParam['userLogged']['username'];
             } elseif ($task == 'add') {
@@ -67,6 +71,7 @@ class CategoryController extends Controller
             }
             $validate = new Validate($data);
             $required = $task == 'add' ? true : false;
+
             // $name    = $data['name'];
             // $query[] = "SELECT `name` FROM `category`";
             // if (isset($this->_arrParam['id'])) {
@@ -74,7 +79,7 @@ class CategoryController extends Controller
             // } else {
             //     $data['created_by'] = $this->_arrParam['userLogged']['username'];
             //     $query[] = "WHERE `name` = '" . $name . "'";
-            
+
             // }
             // $query = implode(" ", $query);
             // $checkCategory = $this->_model->checkExistCategory($query);
@@ -82,7 +87,9 @@ class CategoryController extends Controller
             //     $validate->setError('category',' is exist');
             // }
             $validate->addRule('name', 'username', ['min' => 5, 'max' => 100])
-                ->addRule('status', 'status');
+                ->addRule('ordering', 'int', ['min' => 0, 'max' => 10, 'required' => true])
+                ->addRule('status', 'status')
+                ->addRule('picture', 'file', ['min' => 0, 'max' => 1000000, 'extension' => ['jpg', 'jpeg', 'png']], false);
             $validate->run();
             $data = $validate->getResult();
             if ($validate->isValid()) {
