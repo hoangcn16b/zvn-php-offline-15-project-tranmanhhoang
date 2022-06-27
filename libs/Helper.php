@@ -80,6 +80,19 @@ class Helper
         return $xhtml;
     }
 
+    public static function cmsSpecial($statusVal, $link, $id, $jsClass = 'ajax-special')
+    {
+        $status = ($statusVal == '1') ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
+
+        $iconStatus = ($statusVal == '1') ? 'check' : 'check';
+        $xhtml = '
+                    <a id = "status-' . $id . '" href="' . $link . '" class="' . $status . ' ' . $jsClass . '">
+                        <span ><i class="fas fa-' . $iconStatus . '"></i></span>
+                    </a>
+                ';
+        return $xhtml;
+    }
+
     public static function cmsRedirectStatus($statusVal)
     {
         $status = ($statusVal == 'active') ? 'btn btn-success rounded-circle btn-sm' : 'btn btn-danger rounded-circle btn-sm';
@@ -173,6 +186,35 @@ class Helper
         return $xhtml;
     }
 
+    public static function filterStatusBook($arrParams, $toUrl)
+    {
+        $xhtml = '';
+        $option = $toUrl['status'] ?? 'all';
+        $keySearch = $toUrl['input-keyword'] ?? '';
+        foreach ($arrParams as $key => $value) {
+            $optionsLink = [];
+            $class = $option == $key ? 'info' : 'secondary';
+            if (isset($toUrl['special'])) {
+                $optionsLink['special'] = $toUrl['special'];
+            }
+            if (isset($toUrl['category_id'])) {
+                $optionsLink['category_id'] = $toUrl['category_id'];
+            }
+            if ($keySearch == '') {
+                $optionsLink['status'] = $key;
+            } else {
+                $optionsLink['status'] = $key;
+                $optionsLink['input-keyword'] = $keySearch;
+            }
+            $url =  URL::createLink($toUrl['module'], $toUrl['controller'], $toUrl['action'], $optionsLink);
+            $xhtml .= ' 
+                        <a href="' . $url . '" class="btn btn-' . $class . '"> ' . ucfirst($key) . '
+                        <span class="badge badge-pill badge-light">' . $value . '</span>
+                        </a> 
+                    ';
+        }
+        return $xhtml;
+    }
     public static function cmsSuccess($value = null)
     {
 

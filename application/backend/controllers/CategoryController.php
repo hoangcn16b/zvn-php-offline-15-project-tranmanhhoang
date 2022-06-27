@@ -35,7 +35,11 @@ class CategoryController extends Controller
         echo $result;
         // echo json_encode($result);
     }
-
+    public function ajaxOrderingAction()
+    {
+        $result = $this->_model->changeOrdering($this->_arrParam);
+        echo $result;
+    }
     public function deleteAction()
     {
         if (isset($this->_arrParam['id'])) {
@@ -72,20 +76,6 @@ class CategoryController extends Controller
             $validate = new Validate($data);
             $required = $task == 'add' ? true : false;
 
-            // $name    = $data['name'];
-            // $query[] = "SELECT `name` FROM `category`";
-            // if (isset($this->_arrParam['id'])) {
-            //     $query[] = "WHERE `id` <> " . $this->_arrParam['id'] . " AND `name` = '" . $name . "'";
-            // } else {
-            //     $data['created_by'] = $this->_arrParam['userLogged']['username'];
-            //     $query[] = "WHERE `name` = '" . $name . "'";
-
-            // }
-            // $query = implode(" ", $query);
-            // $checkCategory = $this->_model->checkExistCategory($query);
-            // if ($checkCategory) {
-            //     $validate->setError('category',' is exist');
-            // }
             $validate->addRule('name', 'username', ['min' => 5, 'max' => 100])
                 ->addRule('ordering', 'int', ['min' => 0, 'max' => 10, 'required' => true])
                 ->addRule('status', 'status')
@@ -98,7 +88,9 @@ class CategoryController extends Controller
             } else {
                 $this->_view->errors = $validate->showErrors();
             }
+
         }
+
         $this->_view->outPut = $data;
         $this->_view->render($this->_arrParam['controller'] . '/form');
     }

@@ -31,17 +31,17 @@ class HelperForm
         return $xhtml;
     }
 
-    public static function selectBoxKeyInt($arrData, $name, $keySelected = 'default', $class = '')
+    public static function selectBoxKeyInt($arrData, $name, $keySelected = 'default', $class = '', $attr = '')
     {
         $xhtml = "";
         if (!empty($arrData)) {
             foreach ($arrData as $key => $value) {
-                $selected = ((string)$key === $keySelected) ? 'selected' : '';
-                $xhtml .= '<option value="' . $key . '" ' . $selected . '>' . $value . '</option>';
+                $selected = ((string)$value === $keySelected) ? 'selected' : '';
+                $xhtml .= '<option value="' . $value . '" ' . $selected . '>' . $value . '</option>';
             }
         }
 
-        $xhtml = '<select class="form-control custom-select ' . $class . '" name="' . $name . '">' . $xhtml . '</select>';
+        $xhtml = '<select class="form-control custom-select ' . $class . '" name="' . $name . '" ' . $attr . '>' . $xhtml . '</select>';
         return $xhtml;
     }
 
@@ -55,6 +55,6 @@ class HelperForm
                         </div>
                     </div>
                 ';
-                return $xhtml;
+        return $xhtml;
     }
 }

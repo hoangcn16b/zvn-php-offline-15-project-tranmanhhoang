@@ -19,7 +19,7 @@
 
 function changeGroupAcp(url) {
     $.get(url, function (data) {
-        console.log(data);
+        // console.log(data);
         var id = data[0];
         var groupAcp = data[1];
         var link = data[2];
@@ -53,6 +53,9 @@ $(document).ready(function () {
     $('.filter-element').on('change', function () {
         $('#form-search').submit();
     });
+    $('.filter-element-special').on('change', function () {
+        $('#form-search').submit();
+    });
 
     // $('.ajax-status').click(function (e) {
     //     e.preventDefault();
@@ -82,11 +85,26 @@ $(document).ready(function () {
             // dataType: "dataType",
             success: function (response) {
                 parent.html(response);
-                console.log(123);
                 parent.find('.ajax-status').notify("Success!", { className: 'success', position: 'top-center' });
-
             }
-            
+
+        });
+    });
+
+    $(document).on('click', '.ajax-special', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        var parent = $(this).parent();
+        $.ajax({
+            type: "GET",
+            url: url,
+            // data: "data",
+            // dataType: "dataType",
+            success: function (response) {
+                parent.html(response);
+                parent.find('.ajax-special').notify("Success!", { className: 'success', position: 'top-center' });
+            }
+
         });
     });
 
@@ -117,7 +135,8 @@ $(document).ready(function () {
         });
     });
 
-    $('.select-group').on('change', function () {
+
+    $('.select-ordering').on('change', function () {
         var value = $(this).val();
         var url = $(this).data('geturl');
         url = url.replace('value_new', value);
@@ -126,7 +145,7 @@ $(document).ready(function () {
             type: "GET",
             url: url,
             success: function (response) {
-                parent.find('.select-group').notify("Success!", { className: 'success', position: 'top-center' });
+                parent.find('.select-ordering').notify("Success!", { className: 'success', position: 'top-center' });
             }
         });
     });
@@ -154,7 +173,6 @@ $(document).ready(function () {
         })
     });
 
-    document.getElementById('random-password').value = make_password(5);
     function make_password(length) {
         var result = '';
         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -165,6 +183,7 @@ $(document).ready(function () {
         }
         return result;
     }
+    document.getElementById('random-password').value = make_password(5);
 
 });
 

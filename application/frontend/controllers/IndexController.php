@@ -15,7 +15,7 @@ class IndexController extends Controller
 	{
 		$userInfor = Session::get('user');
 		// Session::unset('user');
-		$this->_view->items = $this->_model->listCategory('', '');
+
 		$this->_view->render($this->_arrParam['controller'] . '/index');
 	}
 

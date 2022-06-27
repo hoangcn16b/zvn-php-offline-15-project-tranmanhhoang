@@ -36,3 +36,4 @@
 	define ('TABLE_GROUP'			, 'group');						
 	define ('TABLE_CATEGORY'		, 'category');						
 	define ('TABLE_PRIVILEGE'		, 'privilege');						
+	define ('TABLE_BOOK'			, 'book');						

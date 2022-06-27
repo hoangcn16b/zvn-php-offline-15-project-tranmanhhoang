@@ -57,6 +57,16 @@ class CategoryModel extends Model
 		return $result;
 	}
 
+	public function changeOrdering($params)
+	{
+		$id = $params['id'];
+		$modified = date("Y-m-d H:i:s");
+		$modifiedBy = $params['userLogged']['username'];
+		$ordering = $params['ordering'];
+		$query = "UPDATE `$this->table` SET `ordering` = '$ordering', `modified` = '$modified', `modified_by` = '$modifiedBy' WHERE `id` = '$id'";
+		$this->query($query);
+	}
+
 	public function deleteItem($id = '')
 	{
 		require_once LIBRARY_EXT_PATH . "Upload.php";
@@ -84,7 +94,6 @@ class CategoryModel extends Model
 			$keyword = "LIKE '%" . $arrParams['input-keyword'] . "%'";
 			$query[] = "AND `name` $keyword";
 		}
-
 		$query = implode(" ", $query);
 		$result = $this->singleRecord($query);
 		return $result;
@@ -103,10 +112,12 @@ class CategoryModel extends Model
 			$params['modified'] = date("Y-m-d H:i:s");
 			if ($params['picture']['name'] == null) {
 				unset($params['picture']);
+				unset($params['picture_hidden']);
 			} else {
 				$params['picture'] = $uploadObj->uploadFile($params['picture'], 'category', null);
 				$uploadObj->removeFile('category', $params['picture_hidden']);
-				$uploadObj->removeFile('category', '60x90' . $params['picture_hidden']);
+				$uploadObj->removeFile('category', '60x90-' . $params['picture_hidden']);
+				unset($params['picture_hidden']);
 			}
 			$id = $params['id'];
 			unset($params['id']);
