@@ -92,15 +92,22 @@ class CategoryModel extends Model
 
 	public function saveItem($params, $options = null)
 	{
+		require_once LIBRARY_EXT_PATH . "Upload.php";
+		$uploadObj = new Upload();
 		if ($options['task'] == 'add') {
-			require_once LIBRARY_EXT_PATH . "Upload.php";
-			$uploadObj = new Upload();
 			$params['picture'] = $uploadObj->uploadFile($params['picture'], 'category', null);
 			$params['created'] = date("Y-m-d H:i:s");
 			$this->insert($params);
 			Session::set('messageForm', ['class' => 'success', 'content' => 'Thêm mới thành công!']);
 		} elseif ($options['task'] == 'edit') {
 			$params['modified'] = date("Y-m-d H:i:s");
+			if ($params['picture']['name'] == null) {
+				unset($params['picture']);
+			} else {
+				$params['picture'] = $uploadObj->uploadFile($params['picture'], 'category', null);
+				$uploadObj->removeFile('category', $params['picture_hidden']);
+				$uploadObj->removeFile('category', '60x90' . $params['picture_hidden']);
+			}
 			$id = $params['id'];
 			unset($params['id']);
 			$this->update($params, [['id', $id]]);

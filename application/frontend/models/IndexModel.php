@@ -87,4 +87,5 @@ class IndexModel extends Model
 			return false;
 		}
 	}
+
 }

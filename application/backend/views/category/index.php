@@ -9,7 +9,14 @@ if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
         $id = $item['id'];
         $name = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['name']);
-
+        $picturePath = UPLOAD_PATH . 'category' . DS . '60x90-' . ($item['picture']);
+        if (file_exists($picturePath) == true) {
+            $pathImg = UPLOAD_URL . 'category' . DS . '60x90-' . ($item['picture']);
+            $picture = '<img src ="' . $pathImg . '">';
+        } else {
+            $pathImg = UPLOAD_URL . 'category' . DS . '90x90-default.png';
+            $picture = '<img src ="' . $pathImg . '">';
+        }
         $linkStatus = URL::createLink($module, $controller, 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
 
@@ -28,6 +35,7 @@ if (!empty($this->items)) {
                         <td>' . $ckb . '</td>
                         <td>' . $id . '</td>
                         <td>' . $name . '</td>
+                        <td>' . $picture . '</td>
                         <td class ="position-relative">' . $status . '</td>
                         <td>' . $createdBy . '</td>
                         <td>' . $modifiedBy . '</td>
@@ -150,6 +158,7 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                                 <th><input type="checkbox" name="checkall"></th>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>Picture</th>
                                 <th>Status</th>
                                 <th>Created</th>
                                 <th>Modified</th>

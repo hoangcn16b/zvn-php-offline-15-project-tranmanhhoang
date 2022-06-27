@@ -85,4 +85,3 @@ class SendMail extends PHPMailer
         }
     }
 }
-

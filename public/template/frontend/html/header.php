@@ -1,7 +1,6 @@
 <header class="my-header sticky">
     <?php
     $userObj = $this->arrParams['userLogged'] ?? '';
-
     // Session::unset('user');
     $arrMenu = [];
     if ($userObj['group_acp'] ?? '' == 1) {
@@ -23,6 +22,21 @@
     }
     $xhtml .= '</ul>';
 
+    //Category
+    $model = new Model();
+    $query = "SELECT `id`, `name` FROM `category` WHERE `status` = 'active' ORDER BY `ordering`";
+    $resultCategory = $model->listRecord($query);
+    $xhtmlCategory = '';
+    if ($resultCategory != null) {
+        $xhtmlCategory .= '<ul>';
+        foreach ($resultCategory as $key => $item) {
+            $link = '#';
+            $xhtmlCategory .= '
+                                <li><a href="' . $link . '"> ' . $item['name'] . '</a></li>
+                            ';
+        }
+        $xhtmlCategory .= '</ul>';
+    }
     ?>
     <div class="mobile-fix-option"></div>
     <div class="container">
@@ -47,14 +61,8 @@
                                     <li><a href="<?= URL::createLink($this->arrParams['module'], 'index', 'index') ?>" class="my-menu-link index-index">Trang chủ</a></li>
                                     <li><a href="list.html">Sách</a></li>
                                     <li>
-                                        <a href="category.html" class="index-category">Danh mục</a>
-                                        <ul>
-                                            <li><a href="list.html">Bà mẹ - Em bé</a></li>
-                                            <li><a href="list.html">Chính Trị - Pháp Lý</a></li>
-                                            <li><a href="list.html">Học Ngoại Ngữ</a></li>
-                                            <li><a href="list.html">Công Nghệ Thông Tin</a></li>
-                                            <li><a href="list.html">Giáo Khoa - Giáo Trình</a>
-                                        </ul>
+                                        <a href="<?= URL::createLink('frontend', 'category', 'index') ?>" class="index-category">Danh mục</a>
+                                        <?= $xhtmlCategory ?>
                                     </li>
                                 </ul>
                             </nav>

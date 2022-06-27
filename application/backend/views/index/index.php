@@ -1,10 +1,11 @@
 <?php
 $linkGroup = URL::createLink($this->arrParams['module'], 'group', $this->arrParams['action']);
 $linkUser = URL::createLink($this->arrParams['module'], 'user', $this->arrParams['action']);
+$linkCategory = URL::createLink($this->arrParams['module'], 'category', $this->arrParams['action']);
 $arrMenu = [
 	['total' => $this->total['Group'], 'name' => 'Group', 'class' => 'people', 'href' => $linkGroup],
 	['total' => $this->total['User'], 'name' => 'User', 'class' => 'person', 'href' => $linkUser],
-	['total' => 10, 'name' => 'Category', 'class' => 'clipboard', 'href' => '#'],
+	['total' => $this->total['Category'], 'name' => 'Category', 'class' => 'clipboard', 'href' => $linkCategory],
 	['total' => 50, 'name' => 'Book', 'class' => 'book', 'href' => '#']
 ];
 $xhtml = '';

@@ -8,6 +8,7 @@ if (isset($this->arrParams['id'])) {
     $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
     $pathImg = UPLOAD_URL . 'category' . DS . '60x90-' . ($data['picture'] ?? '');
     $picture = '<img src ="' . $pathImg . '">';
+    $inputPictureHidden = HelperForm::input('file', 'form[picture_hidden]', $data['picture'] ?? '', '');
 }
 $lblName = HelperForm::label('Name', true);
 $inputName = HelperForm::input('text', 'form[name]', $data['name'] ?? '', 'form-control');
@@ -19,7 +20,7 @@ $lblOrdering = HelperForm::label('Số thứ tự', true);
 $inputOrdering = HelperForm::input('number', 'form[ordering]', $data['ordering'] ?? '', 'form-control');
 
 $lblPicture = HelperForm::label('Picture', true);
-$inputPicture = HelperForm::input('file', 'picture', '', '');
+$inputPicture = HelperForm::input('file', 'picture', $data['picture'] ?? '', '');
 
 
 ?>
