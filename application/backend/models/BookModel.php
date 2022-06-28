@@ -8,7 +8,7 @@ class BookModel extends Model
 		date_default_timezone_set('Asia/Ho_Chi_Minh');
 	}
 
-	public function createQuery($arrParams, $total = 3, $options = ['name', 'special', 'price'])
+	public function createQuery($arrParams, $total = 3, $options = ['name', 'description', 'price'])
 	{
 		$query = [];
 		//search
@@ -106,7 +106,7 @@ class BookModel extends Model
 		Session::set('messageDelete', ['class' => 'success', 'content' => DELETE_SUCCESS]);
 	}
 
-	public function filterStatusFix($arrParams, $total = 3, $options = ['name', 'special', 'price'])
+	public function filterStatusFix($arrParams, $total = 3, $options = ['name', 'description', 'price'])
 	{
 		$result = [];
 		$query[] = "SELECT COUNT(`status`) as `all`, SUM(`status` = 'active') as `active`, SUM(`status` = 'inactive') as `inactive`";
@@ -196,6 +196,8 @@ class BookModel extends Model
 		if ($options['task'] == 'add') {
 			$params['picture'] = $uploadObj->uploadFile($params['picture'], 'book', null);
 			$params['created'] = date("Y-m-d H:i:s");
+			$params['name'] = mysqli_real_escape_string($this->connect, $params['name']);
+			$params['description'] = mysqli_real_escape_string($this->connect, ($params['description'] ?? ''));
 			$this->insert($params);
 			Session::set('messageForm', ['class' => 'success', 'content' => ADD_SUCCESS]);
 		} elseif ($options['task'] == 'edit') {
@@ -209,6 +211,8 @@ class BookModel extends Model
 				$uploadObj->removeFile('book', '60x90-' . $params['picture_hidden']);
 				unset($params['picture_hidden']);
 			}
+			$params['name'] = mysqli_real_escape_string($this->connect, $params['name']);
+			$params['description'] = mysqli_real_escape_string($this->connect, ($params['description'] ?? ''));
 			$id = $params['id'];
 			unset($params['id']);
 			$where = [['id', $id]];
@@ -241,7 +245,7 @@ class BookModel extends Model
 
 
 
-	public function countItem($arrParams, $total = 3, $options = ['name', 'price', 'special'])
+	public function countItem($arrParams, $total = 3, $options = ['name', 'price', 'description'])
 	{
 		$result = [];
 		$query[] = "SELECT COUNT(`id`) AS `all`";

@@ -71,23 +71,24 @@ if (isset($this->arrParams['id'])) {
                         <?= $lblPicture . '</br>' . $inputPicture . ($picture ?? '') . ($inputPictureHidden ?? '') ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblPrice . $inputPrice ?>
-                    </div>
-                    <div class="form-group">
-                        <?= $lblSpecial . $inputSpecial ?>
-                    </div>
-                    <div class="form-group">
                         <?= $lblSaleOff . $inputSaleOff ?>
                     </div>
                     <div class="form-group">
                         <?= $lblDescription . $inputDescription ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblStatus . $selectStatus ?>
-                    </div>
-                    <div class="form-group">
                         <?= $lblOrdering . $inputOrdering ?>
                     </div>
+                    <div class="form-group">
+                        <?= $lblPrice . $inputPrice ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $lblSpecial . $inputSpecial ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $lblStatus . $selectStatus ?>
+                    </div>
+
                     <div class="form-group">
                         <?= $lblGroup . $selectGroup  ?>
                     </div>

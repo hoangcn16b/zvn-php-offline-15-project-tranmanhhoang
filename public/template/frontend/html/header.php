@@ -29,10 +29,13 @@
     $xhtmlCategory = '';
     if ($resultCategory != null) {
         $xhtmlCategory .= '<ul>';
+        $activeCategory = $this->arrParams['id'] ?? '';
         foreach ($resultCategory as $key => $item) {
-            $link = '#';
+            $link = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $item['id']]);
+            $style = '';
+            if (($activeCategory) === $item['id']) $style = 'style = "color: #5fcbc4;"';
             $xhtmlCategory .= '
-                                <li><a href="' . $link . '"> ' . $item['name'] . '</a></li>
+                                <li ><a ' . $style . ' href="' . $link . '"> ' . $item['name'] . '</a></li>
                             ';
         }
         $xhtmlCategory .= '</ul>';
@@ -61,7 +64,7 @@
                                     <li><a href="<?= URL::createLink($this->arrParams['module'], 'index', 'index') ?>" class="my-menu-link index-index">Trang chủ</a></li>
                                     <li><a href="list.html">Sách</a></li>
                                     <li>
-                                        <a href="<?= URL::createLink('frontend', 'category', 'index') ?>" class="index-category">Danh mục</a>
+                                        <a href="<?= URL::createLink('frontend', 'category', 'index') ?>" class="my-menu-link category-book">Danh mục</a>
                                         <?= $xhtmlCategory ?>
                                     </li>
                                 </ul>

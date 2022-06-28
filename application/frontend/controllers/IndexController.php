@@ -4,6 +4,8 @@ class IndexController extends Controller
 
 	public function __construct($arrParams)
 	{
+		$userInfor = Session::get('user');
+
 		parent::__construct($arrParams);
 		$this->_templateObj->setFolderTemplate('frontend/');
 		$this->_templateObj->setFileTemplate('index.php');
@@ -13,9 +15,9 @@ class IndexController extends Controller
 
 	public function indexAction()
 	{
-		$userInfor = Session::get('user');
-		// Session::unset('user');
-
+		$this->_view->specialBook = $this->_model->listProductSpecial(['task' => 'get_product_special']);
+		$this->_view->specialCategory = $this->_model->listProductSpecial(['task' => 'get_category_special']);
+		$this->_view->getSpecialProctduct = $this->_model->getSpecialProctduct();
 		$this->_view->render($this->_arrParam['controller'] . '/index');
 	}
 

@@ -82,7 +82,7 @@ class BookController extends Controller
 				$data['created_by'] = $this->_arrParam['userLogged']['username'];
 			}
 			$validate = new Validate($data);
-			$validate->addRule('name', 'acceptUtf8', ['min' => 5, 'max' => 255])
+			$validate->addRule('name', 'acceptUtf8', ['min' => 3, 'max' => 255])
 				->addRule('price', 'int', ['min' => 1000, 'max' => 10000000])
 				->addRule('sale_off', 'int', ['min' => 0, 'max' => 100], false)
 				->addRule('ordering', 'int', ['min' => 0, 'max' => 10], false)

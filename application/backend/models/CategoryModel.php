@@ -106,6 +106,7 @@ class CategoryModel extends Model
 		if ($options['task'] == 'add') {
 			$params['picture'] = $uploadObj->uploadFile($params['picture'], 'category', null);
 			$params['created'] = date("Y-m-d H:i:s");
+			$params['name'] = mysqli_real_escape_string($this->connect, $params['name']);
 			$this->insert($params);
 			Session::set('messageForm', ['class' => 'success', 'content' => 'Thêm mới thành công!']);
 		} elseif ($options['task'] == 'edit') {
@@ -119,6 +120,7 @@ class CategoryModel extends Model
 				$uploadObj->removeFile('category', '60x90-' . $params['picture_hidden']);
 				unset($params['picture_hidden']);
 			}
+			$params['name'] = mysqli_real_escape_string($this->connect, $params['name']);
 			$id = $params['id'];
 			unset($params['id']);
 			$this->update($params, [['id', $id]]);

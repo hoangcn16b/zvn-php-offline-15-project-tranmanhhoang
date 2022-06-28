@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title">
-                    <h2 class="py-2">Danh mục sách</h2>
+                    <h2 class="py-2">Danh mục <?= $this->categoryName['name'] ?></h2>
                 </div>
             </div>
         </div>
@@ -15,7 +15,7 @@
 $xhtml = '';
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
-        $link = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $item['id']]);
+        $link = URL::createLink($this->arrParams['module'], 'book', 'list', ['category_id' => $item['id']]);
         $picturePath = UPLOAD_PATH . 'category' . DS . ($item['picture']);
         if (file_exists($picturePath) == true) {
             $pathImg = UPLOAD_URL . 'category' . DS . ($item['picture']);

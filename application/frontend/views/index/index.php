@@ -18,6 +18,80 @@
 
 <!-- Top Collection -->
 <!-- Title-->
+<?php
+
+
+$xhtmlSpecialBook = '';
+foreach ($this->specialBook as $key => $value) {
+    $iconSaleOff = '';
+    if ($value['sale_off'] > 0) {
+        $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
+        $iconSaleOff = '
+                            <div class="lable-block">
+                                <span class="lable4 badge badge-danger"> ' . $saleOff . '</span>
+                            </div>
+                        ';
+    }
+    $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
+    if (file_exists($picturePath) == true) {
+        $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
+        $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload bg-img" alt="product" >';
+    } else {
+        $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
+        $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="product" >';
+    }
+    $price = '';
+    $priceSale = number_format(($value['price']), 0, ',', '.');
+    if ($value['sale_off'] != 0) {
+        $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
+        $price = number_format(($value['price']), 0, ',', '.') . ' đ';
+    }
+    $xhtmlSpecialBook .= '
+                            <div class="product-box" title="' . substr($value['description'], 0, 100) . '">
+                                <div class="img-wrapper">
+                                    ' . $iconSaleOff . '
+                                    <div class="front">
+                                        <a href="">
+                                            ' . $picture . '
+                                        </a>
+                                    </div>
+                                    <div class="cart-info cart-wrap">
+                                        <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
+                                        <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
+                                    </div>
+                                </div>
+                                <div class="product-detail">
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <a href="item.html" title="' . substr($value['description'], 0, 100) . '">
+                                    <h6> ' . $value['name'] . ' </h6>
+                                </a>
+
+                            <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
+                        </div>
+                            </div>
+                        ';
+}
+
+$xhtmlCateSpecial = '';
+if ($this->specialCategory) {
+    $xhtmlCateSpecial .= '<ul class="tabs tab-title">';
+    $i = 1;
+    foreach ($this->specialCategory as $key => $value) {
+        $xhtmlCateSpecial .= '
+                                        <li><a href="tab-category-' . $i . '" class="my-product-tab" data-category="' . $i . '">' . $value . '</a></li>
+                                    ';
+        $i++;
+    }
+}
+
+
+?>
 <div class="title1 section-t-space title5">
     <h2 class="title-inner1">Sản phẩm nổi bật</h2>
     <hr role="tournament6">
@@ -28,14 +102,15 @@
         <div class="row">
             <div class="col">
                 <div class="product-4 product-m no-arrow">
-                    <div class="product-box">
+                    <?= $xhtmlSpecialBook ?>
+                    <!-- <div class="product-box">
                         <div class="img-wrapper">
                             <div class="lable-block">
                                 <span class="lable4 badge badge-danger"> -35%</span>
                             </div>
                             <div class="front">
                                 <a href="item.html">
-                                    <img src="<?= $this->_pathImg ?>product.jpg" class="img-fluid blur-up lazyload bg-img" alt="product">
+                                    <img src="< $this->_pathImg ?>product.jpg" class="img-fluid blur-up lazyload bg-img" alt="product">
                                 </a>
                             </div>
                             <div class="cart-info cart-wrap">
@@ -201,7 +276,7 @@
                             </a>
                             <h4 class="text-lowercase">48,020 đ <del>98,000 đ</del></h4>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -277,13 +352,13 @@
         <div class="row">
             <div class="col">
                 <div class="theme-tab">
-                    <ul class="tabs tab-title">
-                        <li class="current"><a href="tab-category-1" class="my-product-tab" data-category="1">Bà mẹ
-                                - Em bé</a></li>
+                    <?= $xhtmlCateSpecial ?>
+                    <!-- <ul class="tabs tab-title">
+                        <li class="current"><a href="tab-category-1" class="my-product-tab" data-category="1">Bà mẹ - Em bé</a></li>
                         <li><a href="tab-category-5" class="my-product-tab" data-category="5">Học Ngoại Ngữ</a></li>
                         <li><a href="tab-category-3" class="my-product-tab" data-category="3">Công Nghệ Thông
                                 Tin</a></li>
-                    </ul>
+                    </ul> -->
                     <div class="tab-content-cls">
                         <div id="tab-category-1" class="tab-content active default">
                             <div class="no-slider row tab-content-inside">
@@ -530,7 +605,7 @@
                             </div>
                             <div class="text-center"><a href="list.html" class="btn btn-solid">Xem tất cả</a></div>
                         </div>
-                        <div id="tab-category-5" class="tab-content ">
+                        <div id="tab-category-2" class="tab-content ">
                             <div class="no-slider row tab-content-inside">
                                 <div class="product-box">
                                     <div class="img-wrapper">

@@ -88,4 +88,51 @@ class IndexModel extends Model
 		}
 	}
 
+	public function listProductSpecial($options = null)
+	{
+		$check = true;
+		if ($check) {
+			if ($options['task'] == 'get_product_special') {
+				$query[] = "SELECT * FROM `" . TABLE_BOOK . "`";
+				$query[] = "WHERE `status` = 'active' AND `special` = 1 LIMIT 0,4";
+				$query = implode(" ", $query);
+				if ($this->query($query)) {
+					$result = $this->listRecord($query);
+				} else {
+					$result = [];
+				}
+			} elseif ($options['task'] == 'get_category_special') {
+				$query[] = "SELECT DISTINCT c.id, c.name ";
+				$query[] = "FROM `" . TABLE_CATEGORY . "` as `c`, `" . TABLE_BOOK . "` as `b`";
+				$query[] = "WHERE `b`.`category_id` = `c`.`id` AND `c`.`status` = 'active' AND `b`.`special` = 1 ORDER BY `c`.`ordering` ASC LIMIT 0,4";
+				$query = implode(" ", $query);
+				if ($this->query($query)) {
+					$result = $this->fetchPairs($query);
+				} else {
+					$result = [];
+				}
+			}
+		}
+		return $result;
+	}
+
+	public function getSpecialProctduct($arrParams = null)
+	{
+		$arrParams = $this->listProductSpecial(['task' => 'get_category_special']);
+		$result = [];
+		foreach ($arrParams as $key => $value) {
+			$queryProduct = [];
+			$queryProduct[] = "SELECT DISTINCT * ";
+			$queryProduct[] = "FROM  `" . TABLE_BOOK . "`";
+			$queryProduct[] = "WHERE `status` = 'active' AND `special` = 1 AND `category_id` = $key ";
+			$queryProduct[] = "ORDER BY `ordering` ASC LIMIT 0,4";
+			$queryProduct = implode(" ", $queryProduct);
+			if ($this->query($queryProduct)) {
+				$result[] = $this->fetchAll($queryProduct);
+			} else {
+				$result = [];
+			}
+		}
+		return $result;
+	}
 }

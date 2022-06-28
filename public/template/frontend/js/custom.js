@@ -9,7 +9,6 @@ $(document).ready(function () {
     var classActive = controller + '-' + action;
     console.log(classActive);
     $('.' + classActive).addClass('active');
-
     // document.getElementById('random-active-code').value = make_password(5);
     // function make_password(length) {
     //     var result = '';
@@ -23,3 +22,13 @@ $(document).ready(function () {
     // }
 });
 
+$(document).ready(function () {
+    var controller = (getUrlVar('controller') == '') ? 'category' : getUrlVar('controller');
+    // var action = (getUrlVar('action') == '') ? 'index' : getUrlVar('action');
+    var classActive = controller;
+    if (classActive == 'category' || classActive == 'book') {
+        console.log(classActive);
+        $('.category-book').addClass('active');
+    }
+
+});
