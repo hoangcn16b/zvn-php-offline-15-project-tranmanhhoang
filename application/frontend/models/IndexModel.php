@@ -128,7 +128,7 @@ class IndexModel extends Model
 			$queryProduct[] = "ORDER BY `ordering` ASC LIMIT 0,4";
 			$queryProduct = implode(" ", $queryProduct);
 			if ($this->query($queryProduct)) {
-				$result[] = $this->fetchAll($queryProduct);
+				$result[$key] = $this->fetchAll($queryProduct);
 			} else {
 				$result = [];
 			}

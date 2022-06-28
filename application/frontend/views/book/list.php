@@ -87,6 +87,65 @@ foreach ($this->productAll as $key => $value) {
                     </div>
                 ';
 }
+//sach noi bat
+echo '<pre>';
+print_r($this->getSpecialProduct['90']);
+echo '</pre>';
+
+$xhtmlSpecialProduct = '';
+$i = 1;
+foreach ($this->getSpecialProduct as $idCate => $listItems) {
+    $xhtmlSpecialProduct .= '<div>';
+
+    foreach ($listItems as $key => $value) {
+        $iconSaleOff = '';
+        if ($value['sale_off'] > 0) {
+            $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
+            $iconSaleOff = '
+                                <div class="lable-block">
+                                    <span class="lable4 badge badge-danger"> ' . $saleOff . '</span>
+                                </div>
+                            ';
+        }
+        $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
+        if (file_exists($picturePath) == true) {
+            $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
+            $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
+        } else {
+            $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
+            $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
+        }
+        $price = '';
+        $priceSale = number_format(($value['price']), 0, ',', '.');
+        if ($value['sale_off'] != 0) {
+            $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
+            $price = number_format(($value['price']), 0, ',', '.') . ' đ';
+        }
+        $xhtmlSpecialProduct .= '
+                                <div class="media">
+                                    <a href="item.html">
+                                        ' . $picture . '
+                                    </a>
+                                    <div class="media-body align-self-center">
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="item.html" title="' . substr($value['description'], 0, 100) . '">
+                                    <h6> ' . $value['name'] . ' </h6>
+                                </a>
+                                <p></p>
+                                <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
+                                    </div>
+                                </div>
+                            ';
+    }
+    $xhtmlSpecialProduct .= '</div>';
+    $i++;
+}
 
 ?>
 
@@ -115,136 +174,7 @@ foreach ($this->productAll as $key => $value) {
                     <div class="theme-card">
                         <h5 class="title-border">Sách nổi bật</h5>
                         <div class="offer-slider slide-1">
-                            <div>
-                                <div class="media">
-                                    <a href="item.html">
-                                        <img class="img-fluid blur-up lazyload" src="images/product.jpg" alt="Cẩm Nang Cấu Trúc Tiếng Anh"></a>
-                                    <div class="media-body align-self-center">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-
-                                        <a href="item.html" title="Cẩm Nang Cấu Trúc Tiếng Anh">
-                                            <h6>Cẩm Nang Cấu Trúc Tiếng Anh</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">48,020 đ</h4>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <a href="item.html">
-                                        <img class="img-fluid blur-up lazyload" src="images/product.jpg" alt="Cẩm Nang Cấu Trúc Tiếng Anh"></a>
-                                    <div class="media-body align-self-center">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-
-                                        <a href="item.html" title="Cẩm Nang Cấu Trúc Tiếng Anh">
-                                            <h6>Cẩm Nang Cấu Trúc Tiếng Anh</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">48,020 đ</h4>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <a href="item.html">
-                                        <img class="img-fluid blur-up lazyload" src="images/product.jpg" alt="Cẩm Nang Cấu Trúc Tiếng Anh"></a>
-                                    <div class="media-body align-self-center">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-
-                                        <a href="item.html" title="Cẩm Nang Cấu Trúc Tiếng Anh">
-                                            <h6>Cẩm Nang Cấu Trúc Tiếng Anh</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">48,020 đ</h4>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <a href="item.html">
-                                        <img class="img-fluid blur-up lazyload" src="images/product.jpg" alt="Cẩm Nang Cấu Trúc Tiếng Anh"></a>
-                                    <div class="media-body align-self-center">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-
-                                        <a href="item.html" title="Cẩm Nang Cấu Trúc Tiếng Anh">
-                                            <h6>Cẩm Nang Cấu Trúc Tiếng Anh</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">48,020 đ</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="media">
-                                    <a href="item.html">
-                                        <img class="img-fluid blur-up lazyload" src="images/product.jpg" alt="Cẩm Nang Cấu Trúc Tiếng Anh"></a>
-                                    <div class="media-body align-self-center">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-
-                                        <a href="item.html" title="Cẩm Nang Cấu Trúc Tiếng Anh">
-                                            <h6>Cẩm Nang Cấu Trúc Tiếng Anh</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">48,020 đ</h4>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <a href="item.html">
-                                        <img class="img-fluid blur-up lazyload" src="images/product.jpg" alt="Cẩm Nang Cấu Trúc Tiếng Anh"></a>
-                                    <div class="media-body align-self-center">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-
-                                        <a href="item.html" title="Cẩm Nang Cấu Trúc Tiếng Anh">
-                                            <h6>Cẩm Nang Cấu Trúc Tiếng Anh</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">48,020 đ</h4>
-                                    </div>
-                                </div>
-                                <div class="media">
-                                    <a href="item.html">
-                                        <img class="img-fluid blur-up lazyload" src="images/product.jpg" alt="Cẩm Nang Cấu Trúc Tiếng Anh"></a>
-                                    <div class="media-body align-self-center">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-
-                                        <a href="item.html" title="Cẩm Nang Cấu Trúc Tiếng Anh">
-                                            <h6>Cẩm Nang Cấu Trúc Tiếng Anh</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">48,020 đ</h4>
-                                    </div>
-                                </div>
-                            </div>
+                            <?= $xhtmlSpecialProduct ?>
                         </div>
                     </div>
                     <!-- silde-bar colleps block end here -->
@@ -303,7 +233,6 @@ foreach ($this->productAll as $key => $value) {
                                     </div>
                                     <div class="product-wrapper-grid" id="my-product-list">
                                         <div class="row margin-res">
-
                                             <?= $xhtmlProduct ?>
                                         </div>
                                     </div>

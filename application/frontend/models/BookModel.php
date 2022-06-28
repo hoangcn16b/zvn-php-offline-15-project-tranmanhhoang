@@ -40,7 +40,35 @@ class BookModel extends Model
 				}
 			}
 		}
+		return $result;
+	}
 
+	public function getSpecialProduct($arrParams = null)
+	{
+		
+		$query[] = "SELECT DISTINCT c.id, c.name ";
+		$query[] = "FROM `" . TABLE_CATEGORY . "` as `c`, `" . TABLE_BOOK . "` as `b`";
+		$query[] = "WHERE `b`.`category_id` = `c`.`id` AND `c`.`status` = 'active' AND `b`.`special` = 1 ORDER BY `c`.`ordering` ASC LIMIT 0,4";
+		$query = implode(" ", $query);
+		if ($this->query($query)) {
+			$resultTblCate = $this->fetchPairs($query);
+		} else {
+			$resultTblCate = [];
+		}
+		$result = [];
+		foreach ($resultTblCate as $key => $value) {
+			$queryProduct = [];
+			$queryProduct[] = "SELECT DISTINCT * ";
+			$queryProduct[] = "FROM  `" . TABLE_BOOK . "`";
+			$queryProduct[] = "WHERE `status` = 'active' AND `special` = 1 AND `category_id` = $key ";
+			$queryProduct[] = "ORDER BY `ordering` ASC LIMIT 0,4";
+			$queryProduct = implode(" ", $queryProduct); 
+			if ($this->query($queryProduct)) {
+				$result[$key] = $this->fetchAll($queryProduct);
+			} else {
+				$result = [];
+			}
+		}
 		return $result;
 	}
 }
