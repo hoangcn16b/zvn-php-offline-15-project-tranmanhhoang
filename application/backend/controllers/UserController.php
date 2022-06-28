@@ -73,10 +73,10 @@ class UserController extends Controller
 		}
 		if (!empty($this->_arrParam['form'])) {
 			$data = $this->_arrParam['form'];
-			if ($task = 'edit') {
+			if ($task == 'edit') {
 				$data['modified_by'] = $this->_arrParam['userLogged']['username'];
 			} else {
-				$data['created'] = $this->_arrParam['userLogged']['username'];
+				$data['created_by'] = $this->_arrParam['userLogged']['username'];
 			}
 			$validate = new Validate($data);
 

@@ -73,6 +73,9 @@ class Validate
 					case 'string':
 						$this->validateString($element, $value['options']['min'], $value['options']['max'], $value['options']['required'] = true);
 						break;
+					case 'acceptUtf8':
+						$this->validateCharSpecial($element, $value['options']['min'], $value['options']['max']);
+						break;
 					case 'username':
 						$this->validateUserName($element, $value['options']['min'], $value['options']['max']);
 						break;
@@ -182,6 +185,21 @@ class Validate
 				if (!preg_match($pattern, $this->source[$element])) {
 					$this->setError($element, 'is an invalid string');
 				};
+			}
+		}
+	}
+
+	// Validate String
+	private function validateCharSpecial($element, $min = 0, $max = 0, $required = true)
+	{
+		if ($required == true) {
+			$length = strlen($this->source[$element]);
+			if ($length < $min) {
+				$this->setError($element, 'is too short');
+			} elseif ($length > $max) {
+				$this->setError($element, 'is too long');
+			} elseif (!is_string($this->source[$element])) {
+				$this->setError($element, 'is an invalid string');
 			}
 		}
 	}
@@ -355,7 +373,6 @@ class Validate
 			if (!filter_var($this->source[$element]['size'], FILTER_VALIDATE_INT, array("options" => array("min_range" => $options['min'], "max_range" => $options['max'])))) {
 				$this->setError($element, 'kích thước không phù hợp');
 			}
-
 			$ext = pathinfo($this->source[$element]['name'], PATHINFO_EXTENSION);
 			if (in_array($ext, $options['extension']) == false) {
 				$this->setError($element, 'phần mở rộng không phù hợp');

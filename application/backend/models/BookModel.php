@@ -191,19 +191,27 @@ class BookModel extends Model
 
 	public function saveItem($params, $options = null)
 	{
+		require_once LIBRARY_EXT_PATH . "Upload.php";
+		$uploadObj = new Upload();
 		if ($options['task'] == 'add') {
+			$params['picture'] = $uploadObj->uploadFile($params['picture'], 'book', null);
 			$params['created'] = date("Y-m-d H:i:s");
-			$params['password'] = md5($params['password']);
 			$this->insert($params);
 			Session::set('messageForm', ['class' => 'success', 'content' => ADD_SUCCESS]);
 		} elseif ($options['task'] == 'edit') {
 			$params['modified'] = date("Y-m-d H:i:s");
+			if ($params['picture']['name'] == null) {
+				unset($params['picture']);
+				unset($params['picture_hidden']);
+			} else {
+				$params['picture'] = $uploadObj->uploadFile($params['picture'], 'book', null);
+				$uploadObj->removeFile('book', $params['picture_hidden']);
+				$uploadObj->removeFile('book', '60x90-' . $params['picture_hidden']);
+				unset($params['picture_hidden']);
+			}
 			$id = $params['id'];
-			unset($params['username']);
-			unset($params['email']);
 			unset($params['id']);
 			$where = [['id', $id]];
-
 			$this->update($params, [['id', $id]]);
 			Session::set('messageForm', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
 		}
@@ -231,14 +239,7 @@ class BookModel extends Model
 		return $result;
 	}
 
-	public function checkUserNameEmail($params)
-	{
-		$query[] = "SELECT `username`, `email` from `$this->table` ";
-		$query[] = "WHERE `username` = '{$params['username']}' OR `email` = '{$params['email']}'";
-		$query = implode(" ", $query);
-		$result = $this->isExist($query);
-		return $result;
-	}
+
 
 	public function countItem($arrParams, $total = 3, $options = ['name', 'price', 'special'])
 	{

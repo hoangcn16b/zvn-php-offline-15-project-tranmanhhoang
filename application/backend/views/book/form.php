@@ -3,45 +3,48 @@
 $data = $this->outPut;
 $arrSelect = [
     'status' => ['default' => 'Select Status', 'inactive' => 'Không kích hoạt', 'active' => 'Kích hoạt'],
-    'group' => $this->listGroupExcept
+    'special' =>  ['default' => 'Select Special', 1 => 'Nổi bật', 0 => 'Không nổi bật'],
+    'category' => $this->listCategory
 ];
 $readOnly = isset($this->arrParams['id']) ? 'readonly' : '';
+$readOnly = '';
+if (isset($this->arrParams['id'])) {
+    $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
+    $pathImg = UPLOAD_URL . 'book' . DS . '60x90-' . ($data['picture'] ?? '');
+    $picture = '<img src ="' . $pathImg . '">';
+    $inputPictureHidden = HelperForm::input('hidden', 'form[picture_hidden]', $data['picture'] ?? '');
+}
 
-$lblUsername = HelperForm::label('Username', true);
-$inputUserName = HelperForm::input('text', 'form[username]', $data['username'] ?? '', 'form-control', $readOnly);
+$lblName = HelperForm::label('Name', true);
+$inputName = HelperForm::input('text', 'form[name]', $data['name'] ?? '', 'form-control', $readOnly);
 
-$lblPassWord = HelperForm::label('Password', true);
-$inputPassWord = HelperForm::input('password', 'form[password]', $data['password'] ?? '', 'form-control', $readOnly);
+$lblPrice = HelperForm::label('Price', true);
+$inputPrice = HelperForm::input('number', 'form[price]', $data['price'] ?? '', 'form-control', $readOnly);
 
-$lblEmail = HelperForm::label('Email', true);
-$inputEmail = HelperForm::input('text', 'form[email]', $data['email'] ?? '', 'form-control', $readOnly);
+$lblSpecial = HelperForm::label('Special', true);
+$inputSpecial = HelperForm::selectBox($arrSelect['special'], 'form[special]', $data['special'] ?? 'default');
 
-$lblFullName = HelperForm::label('Fullname');
-$inputFullName = HelperForm::input('text', 'form[fullname]', $data['fullname'] ?? '', 'form-control');
+$lblSaleOff = HelperForm::label('Sale off');
+$inputSaleOff = HelperForm::input('number', 'form[sale_off]', $data['sale_off'] ?? '', 'form-control', $readOnly);
+
+$lblDescription = HelperForm::label('Description');
+$inputDescription = '<textarea class = "form-control" name = "form[description]"> ' . ($data['description'] ?? '') . ' </textarea>';
 
 $lblStatus = HelperForm::label('Status', true);
 $selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'default');
 
-$lblGroup = HelperForm::label('Group', true);
-$selectGroup = HelperForm::selectBox($arrSelect['group'], 'form[group_id]', lcfirst($data['group_id'] ?? 'default'));
+$lblOrdering = HelperForm::label('Ordering');
+$inputOrdering = HelperForm::input('number', 'form[ordering]', $data['ordering'] ?? '10', 'form-control');
+
+$lblGroup = HelperForm::label('Group Category', true);
+$selectGroup = HelperForm::selectBox($arrSelect['category'], 'form[category_id]', lcfirst($data['category_id'] ?? 'default'));
+
+$lblPicture = HelperForm::label('Picture', true);
+$inputPicture = HelperForm::input('file', 'picture', '', '');
 
 if (isset($this->arrParams['id'])) {
     $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
-    $lblPassWord = '';
-    $inputPassWord = '';
 }
-
-// if (isset($this->arrParams['id']) && $this->arrParams['idLogged'] == ($this->arrParams['id'] ?? '')) {
-//     $selectStatus = HelperForm::input('text', 'form[status]', $data['status'] ?? '', 'form-control', $readOnly);
-//     foreach ($this->listGroupExcept as $key => $value) {
-//         if ($idUserLogged == $key) {
-//             $getNameGroup = $value;
-//             break;
-//         }
-//     }
-//     $selectGroupHidden = HelperForm::input('hidden', 'form[group_id]', $data['group_id'] ?? '', 'form-control', $readOnly);
-//     $selectGroup = HelperForm::input('text', '', $getNameGroup, 'form-control', $readOnly);
-// }
 
 ?>
 
@@ -57,36 +60,46 @@ if (isset($this->arrParams['id'])) {
                 <li class="text-white"><b>Password:</b> Giá trị này không được rỗng!</li>
             </ul>
         </div> -->
-        <form action="" method="POST">
+        <form action="" method="POST" enctype="multipart/form-data">
             <div class="card card-outline card-info">
                 <div class="card-body">
                     <?= Helper::cmsError($this->errors ?? '') ?>
                     <div class="form-group">
-                        <?= $lblUsername . $inputUserName ?>
+                        <?= $lblName . $inputName ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblPassWord . $inputPassWord ?>
+                        <?= $lblPicture . '</br>' . $inputPicture . ($picture ?? '') . ($inputPictureHidden ?? '') ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblEmail . $inputEmail ?>
+                        <?= $lblPrice . $inputPrice ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblFullName . $inputFullName ?>
+                        <?= $lblSpecial . $inputSpecial ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $lblSaleOff . $inputSaleOff ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $lblDescription . $inputDescription ?>
                     </div>
                     <div class="form-group">
                         <?= $lblStatus . $selectStatus ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblGroup . $selectGroup . ($selectGroupHidden ?? '') ?>
+                        <?= $lblOrdering . $inputOrdering ?>
                     </div>
                     <div class="form-group">
-                        <?= $inputId ?? '' ?>
+                        <?= $lblGroup . $selectGroup  ?>
+                    </div>
+
+                    <div class="form-group">
+                        <?= $inputId ?? '' . ($inputPictureHidden ?? "") ?>
                     </div>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success">Save</button>
                     <?php
-                    echo Helper::cmsButton(URL::createLink('backend', 'user', 'index'), 'Cancel', 'btn btn-danger');
+                    echo Helper::cmsButton(URL::createLink('backend', 'book', 'index'), 'Cancel', 'btn btn-danger');
                     ?>
                 </div>
             </div>

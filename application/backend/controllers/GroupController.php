@@ -77,6 +77,8 @@ class GroupController extends Controller
             $data = $this->_arrParam['form'];
             if ($task == 'edit') {
                 $data['modified_by'] = $this->_arrParam['userLogged']['username'];
+            }else {
+                $data['created_by'] = $this->_arrParam['userLogged']['username'];
             }
             $validate = new Validate($data);
             $required = $task == 'add' ? true : false;

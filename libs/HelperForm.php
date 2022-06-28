@@ -22,7 +22,7 @@ class HelperForm
         $xhtml = "";
         if (!empty($arrData)) {
             foreach ($arrData as $key => $value) {
-                $selected = ((string)$key === $keySelected) ? 'selected' : '';
+                $selected = ((string)$key == $keySelected) ? 'selected' : '';
                 $xhtml .= '<option value="' . $key . '" ' . $selected . '>' . $value . '</option>';
             }
         }

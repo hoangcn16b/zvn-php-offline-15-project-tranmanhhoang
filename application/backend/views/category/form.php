@@ -42,7 +42,7 @@ $inputPicture = HelperForm::input('file', 'picture', '', '');
                         <?= $lblStatus . '</br>' . $selectStatus ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblPicture . '</br>' . $inputPicture . ($picture ?? '') . $inputPictureHidden ?>
+                        <?= $lblPicture . '</br>' . $inputPicture . ($picture ?? '') . ($inputPictureHidden ?? '') ?>
                     </div>
                     <?= $inputId ?? '' ?>
                 </div>
