@@ -62,7 +62,7 @@
                                         <div class="mobile-back text-right">Back<i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
                                     </li>
                                     <li><a href="<?= URL::createLink($this->arrParams['module'], 'index', 'index') ?>" class="my-menu-link index-index">Trang chủ</a></li>
-                                    <li><a href="list.html">Sách</a></li>
+                                    <li><a href="<?= URL::createLink($this->arrParams['module'], 'book', 'list') ?>" class="my-menu-link book-empty">Sách</a></li>
                                     <li>
                                         <a href="<?= URL::createLink('frontend', 'category', 'index') ?>" class="my-menu-link category-book">Danh mục</a>
                                         <?= $xhtmlCategory ?>

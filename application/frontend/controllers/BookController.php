@@ -20,10 +20,31 @@ class BookController extends Controller
 
     public function listAction()
     {
+        if (isset($this->_arrParam['id'])) {
+            if ($this->_model->checkId($this->_arrParam, ['task' => 'check_id_category']) == false) {
+                URL::redirectLink($this->_arrParam['module'], 'index', 'error', ['type' => 'file_not_exist']);
+            }
+        }
         $this->_view->categoryName = $this->_model->infoItems($this->_arrParam, ['task' => 'get_cate_name']);
         $this->_view->categoryAllName = $this->_model->infoItems($this->_arrParam, ['task' => 'get_all_cate_name']);
         $this->_view->productAll = $this->_model->infoItems($this->_arrParam, ['task' => 'get_product_by_cate_id']);
         $this->_view->getSpecialProduct = $this->_model->getSpecialProduct();
         $this->_view->render('book/list');
+    }
+
+    public function detailAction()
+    {
+        if (isset($this->_arrParam['book_id'])) {
+            if ($this->_model->checkId($this->_arrParam, ['task' => 'check_id_book']) == false) {
+                URL::redirectLink($this->_arrParam['module'], 'index', 'error', ['type' => 'file_not_exist']);
+            }
+        }
+        $this->_view->infoBook = 'Thông tin chi tiết';
+        $this->_view->bookInfo = $this->_model->bookDetail($this->_arrParam, ['task' => 'book_info']);
+        $this->_view->bookRelate = $this->_model->bookDetail($this->_arrParam, ['task' => 'book_relate']);
+        $this->_view->bookNew = $this->_model->bookNew();
+        $this->_view->getSpecialProduct = $this->_model->getSpecialProduct();
+
+        $this->_view->render('book/detail');
     }
 }

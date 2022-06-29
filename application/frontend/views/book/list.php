@@ -14,6 +14,7 @@
 
 $xhtmlAllCategory = '';
 $activeCategory = $this->arrParams['id'] ?? '';
+
 foreach ($this->categoryAllName as $key => $value) {
     $link = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $key]);
     $aClass = '';
@@ -54,13 +55,14 @@ foreach ($this->productAll as $key => $value) {
         $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
         $price = number_format(($value['price']), 0, ',', '.') . ' đ';
     }
+    $linktoProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
     $xhtmlProduct .= '
                     <div class="col-xl-3 col-6 col-grid-box" >
                         <div class="product-box" title="' . substr($value['description'], 0, 100) . '">
                             <div class="img-wrapper">
                                 ' . $iconSaleOff . '
                                 <div class="front">
-                                    <a href="">
+                                    <a href="' . $linktoProd . '">
                                         ' . $picture . '
                                     </a>
                                 </div>
@@ -77,7 +79,7 @@ foreach ($this->productAll as $key => $value) {
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                 </div>
-                                <a href="item.html" title="' . substr($value['description'], 0, 100) . '">
+                                <a href="' . $linktoProd . '" title="' . substr($value['description'], 0, 100) . '">
                                     <h6> ' . $value['name'] . ' </h6>
                                 </a>
                                 <p></p>
@@ -88,9 +90,6 @@ foreach ($this->productAll as $key => $value) {
                 ';
 }
 //sach noi bat
-echo '<pre>';
-print_r($this->getSpecialProduct['90']);
-echo '</pre>';
 
 $xhtmlSpecialProduct = '';
 $i = 1;
@@ -98,6 +97,7 @@ foreach ($this->getSpecialProduct as $idCate => $listItems) {
     $xhtmlSpecialProduct .= '<div>';
 
     foreach ($listItems as $key => $value) {
+
         $iconSaleOff = '';
         if ($value['sale_off'] > 0) {
             $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
@@ -121,9 +121,10 @@ foreach ($this->getSpecialProduct as $idCate => $listItems) {
             $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
             $price = number_format(($value['price']), 0, ',', '.') . ' đ';
         }
+        $linktospecialProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
         $xhtmlSpecialProduct .= '
                                 <div class="media">
-                                    <a href="item.html">
+                                    <a href="' . $linktospecialProd . '">
                                         ' . $picture . '
                                     </a>
                                     <div class="media-body align-self-center">
@@ -134,7 +135,7 @@ foreach ($this->getSpecialProduct as $idCate => $listItems) {
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                         </div>
-                                        <a href="item.html" title="' . substr($value['description'], 0, 100) . '">
+                                        <a href="' . $linktospecialProd . '" title="' . substr($value['description'], 0, 100) . '">
                                     <h6> ' . $value['name'] . ' </h6>
                                 </a>
                                 <p></p>

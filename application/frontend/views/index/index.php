@@ -46,12 +46,13 @@ foreach ($this->specialBook as $key => $value) {
         $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
         $price = number_format(($value['price']), 0, ',', '.') . ' đ';
     }
+    $linktoSpecialProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
     $xhtmlSpecialBook .= '
                             <div class="product-box" title="' . substr($value['description'], 0, 100) . '">
                                 <div class="img-wrapper">
                                     ' . $iconSaleOff . '
                                     <div class="front">
-                                        <a href="">
+                                        <a href="' . $linktoSpecialProd . '">
                                             ' . $picture . '
                                         </a>
                                     </div>
@@ -68,7 +69,7 @@ foreach ($this->specialBook as $key => $value) {
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
                             </div>
-                            <a href="item.html" title="' . substr($value['description'], 0, 100) . '">
+                            <a href="' . $linktoSpecialProd . '" title="' . substr($value['description'], 0, 100) . '">
                                     <h6> ' . $value['name'] . ' </h6>
                                 </a>
 
@@ -126,6 +127,7 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
             $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
             $price = number_format(($value['price']), 0, ',', '.') . ' đ';
         }
+        $linktoProdCate = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
         $xhtmldetailCate .= '
                         <div class="product-box" title="' . substr($value['description'], 0, 100) . '">
                             <div class="img-wrapper">
@@ -133,7 +135,7 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
                                     ' . $iconSaleOff . '
                                 </div>
                                 <div class="front">
-                                    <a href="item.html">
+                                    <a href="' . $linktoProdCate . '">
                                         ' . $picture . '
                                     </a>
                                 </div>
@@ -150,7 +152,7 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                 </div>
-                                <a href="item.html" title="' . substr($value['description'], 0, 100) . '">
+                                <a href="' . $linktoProdCate . '" title="' . substr($value['description'], 0, 100) . '">
                                     <h6> ' . $value['name'] . ' </h6>
                                 </a>
 
