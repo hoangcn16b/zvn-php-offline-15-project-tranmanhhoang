@@ -13,7 +13,8 @@ class IndexModel extends Model
 		$query[] = "SELECT
 		(SELECT COUNT(`id`) FROM `user` WHERE `id` > 0) AS `User`,";
 		$query[] = "(SELECT COUNT(`id`) FROM `group` WHERE `id` > 0) AS `Group`,";
-		$query[] = "(SELECT COUNT(`id`) FROM `category` WHERE `id` > 0) AS `Category`";
+		$query[] = "(SELECT COUNT(`id`) FROM `category` WHERE `id` > 0) AS `Category`,";
+		$query[] = "(SELECT COUNT(`id`) FROM `book` WHERE `id` > 0) AS `Book`";
 		$query = implode(" ", $query);
 		$result = $this->singleRecord($query);
 		return $result;

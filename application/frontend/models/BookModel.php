@@ -10,7 +10,6 @@ class BookModel extends Model
 
 	public function infoItems($params = null, $options = null)
 	{
-		$check = true;
 		if (isset($params['id'])) {
 			if ($options['task'] == 'get_cate_name') {
 				$query[] = "SELECT `name` FROM `" . TABLE_CATEGORY . "`";
@@ -30,8 +29,21 @@ class BookModel extends Model
 					$result = [];
 				}
 			} elseif ($options['task'] == 'get_product_by_cate_id') {
+
 				$query[] = "SELECT * FROM `" . TABLE_BOOK . "`";
 				$query[] = "WHERE `category_id` = '{$params['id']}' AND `status` = 'active'";
+				if (isset($params['sort'])) {
+					$sort = $params['sort'];
+					if ($sort == 'price_asc') {
+						$query[] = " ORDER BY `price` ASC ";
+					} elseif ($sort == 'price_desc') {
+						$query[] = " ORDER BY `price` DESC ";
+					} elseif ($sort == 'latest') {
+						$query[] = " ORDER BY `id` DESC ";
+					} elseif ($sort == 'default') {
+						$query[] = " ORDER BY `ordering` DESC ";
+					}
+				}
 				$query = implode(" ", $query);
 				if ($this->query($query)) {
 					$result = $this->listRecord($query);
@@ -40,20 +52,42 @@ class BookModel extends Model
 				}
 			}
 		} else {
-			$query[] = "SELECT * FROM `" . TABLE_BOOK . "`";
-			$query[] = "WHERE `status` = 'active'";
-			$query = implode(" ", $query);
-			if ($this->query($query)) {
-				$result = $this->listRecord($query);
-			} else {
-				$result = [];
-			}
-
-			if ($options['task'] == 'get_all_cate_name') {
+			if ($options['task'] == 'get_cate_name') {
+				$query[] = "SELECT `name` FROM `" . TABLE_CATEGORY . "`";
+				$query[] = "WHERE `status` = 'active'";
+				$query = implode(" ", $query);
+				if ($this->query($query)) {
+					$result = $this->singleRecord($query);
+				} else {
+					$result = [];
+				}
+			} elseif ($options['task'] == 'get_all_cate_name') {
 				$queryCate[] = "SELECT `id`, `name` FROM `" . TABLE_CATEGORY . "` WHERE `status` = 'active'";
 				$queryCate = implode(" ", $queryCate);
 				if ($this->query($queryCate)) {
 					$result = $this->fetchPairs($queryCate);
+				} else {
+					$result = [];
+				}
+			} elseif ($options['task'] == 'get_product_by_cate_id') {
+				$query[] = "SELECT * FROM `" . TABLE_BOOK . "`";
+				$query[] = "WHERE `status` = 'active'";
+				if (isset($params['sort'])) {
+					$sort = $params['sort'];
+					// $priceSale = 
+					if ($sort == 'price_asc') {
+						$query[] = " ORDER BY `price` ASC ";
+					} elseif ($sort == 'price_desc') {
+						$query[] = " ORDER BY `price` DESC ";
+					} elseif ($sort == 'latest') {
+						$query[] = " ORDER BY `id` DESC ";
+					} elseif ($sort == 'default') {
+						$query[] = " ORDER BY `ordering` DESC ";
+					}
+				}
+				$query = implode(" ", $query);
+				if ($this->query($query)) {
+					$result = $this->listRecord($query);
 				} else {
 					$result = [];
 				}

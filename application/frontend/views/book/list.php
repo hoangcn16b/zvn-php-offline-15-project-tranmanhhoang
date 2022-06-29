@@ -147,6 +147,12 @@ foreach ($this->getSpecialProduct as $idCate => $listItems) {
     $xhtmlSpecialProduct .= '</div>';
     $i++;
 }
+$paramsId = '';
+if (isset($this->arrParams['id'])) {
+    $paramsId = HelperForm::input('hidden', 'id', $this->arrParams['id']);
+}
+$paramsToURL = HelperForm::input('hidden', 'module', 'frontend') . HelperForm::input('hidden', 'controller', 'book') . HelperForm::input('hidden', 'action', 'list') . $paramsId;
+
 
 ?>
 
@@ -220,12 +226,18 @@ foreach ($this->getSpecialProduct as $idCate => $listItems) {
                                                     </div>
                                                     <div class="product-page-filter">
                                                         <form action="" id="sort-form" method="GET">
-                                                            <select id="sort" name="sort">
-                                                                <option value="default" selected> - Sắp xếp - </option>
+                                                            <?= $paramsToURL ?>
+                                                            <?php
+                                                            $arrData = ['default' => ' - Sắp xếp - ', 'price_asc' => 'Giá tăng dần', 'price_desc' => 'Giá giảm dần', 'latest' => 'Mới nhất'];
+                                                            $selectSearch = HelperFrontend::selectBox($arrData, 'sort', $this->arrParams['sort'] ?? 'default', '', 'id="sort"');
+                                                            echo $selectSearch;
+                                                            ?>
+                                                            <!-- <select id="sort" name="sort">
+                                                                <option value="default"> - Sắp xếp - </option>
                                                                 <option value="price_asc">Giá tăng dần</option>
                                                                 <option value="price_desc">Giá giảm dần</option>
                                                                 <option value="latest">Mới nhất</option>
-                                                            </select>
+                                                            </select> -->
                                                         </form>
                                                     </div>
                                                 </div>

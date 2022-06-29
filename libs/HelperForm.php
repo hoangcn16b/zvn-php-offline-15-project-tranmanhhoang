@@ -45,6 +45,7 @@ class HelperForm
         return $xhtml;
     }
 
+
     public static function iconFormLogin($class = '')
     {
         $xhtml = '';
