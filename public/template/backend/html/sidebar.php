@@ -28,7 +28,7 @@
                 </li>
                 <li class="nav-item">
                     <!-- index.php?module=backend&controller=Group&action=index -->
-                    <a href="#" class="nav-link group-index">
+                    <a href="#" class="nav-link group">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Group
@@ -37,13 +37,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= URL::createLink('backend', 'group', 'index') ?>" class="nav-link">
+                            <a href="<?= URL::createLink('backend', 'group', 'index') ?>" class="nav-link group-index">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= URL::createLink('backend', 'group', 'form') ?>" class="nav-link">
+                            <a href="<?= URL::createLink('backend', 'group', 'form') ?>" class="nav-link group-form">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add</p>
                             </a>
@@ -52,7 +52,7 @@
                 </li>
                 <!-- index.php?module=backend&controller=user&action=index -->
                 <li class="nav-item ">
-                    <a href="#" class="nav-link user-index">
+                    <a href="#" class="nav-link user">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             User
@@ -61,13 +61,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= URL::createLink('backend', 'user', 'index') ?>" class="nav-link">
+                            <a href="<?= URL::createLink('backend', 'user', 'index') ?>" class="nav-link user-index">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= URL::createLink('backend', 'user', 'form') ?>" class="nav-link">
+                            <a href="<?= URL::createLink('backend', 'user', 'form') ?>" class="nav-link user-form">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add</p>
                             </a>
@@ -75,7 +75,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link category-index">
+                    <a href="#" class="nav-link category">
                         <i class="nav-icon fas fa-thumbtack"></i>
                         <p>
                             Category
@@ -84,13 +84,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= URL::createLink($this->arrParams['module'], 'category', 'index') ?>" class="nav-link">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'category', 'index') ?>" class="nav-link category-index">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= URL::createLink($this->arrParams['module'], 'category', 'form') ?>" class="nav-link">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'category', 'form') ?>" class="nav-link category-form">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add</p>
                             </a>
@@ -98,7 +98,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link book-index">
+                    <a href="#" class="nav-link book">
                         <i class="nav-icon fas fa-book-open"></i>
                         <p>
                             Book
@@ -107,21 +107,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= URL::createLink($this->arrParams['module'], 'book', 'index') ?>" class="nav-link">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'book', 'index') ?>" class="nav-link book-index">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= URL::createLink($this->arrParams['module'], 'book', 'form') ?>" class="nav-link">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'book', 'form') ?>" class="nav-link book-form">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item user-myPassword">
-                    <a href="<?= URL::createLink('backend', 'user', 'myPassword') ?>" class="nav-link user-myPassword">
+                <li class="nav-item ">
+                    <a href="<?= URL::createLink('backend', 'user', 'myPassword') ?>" class="nav-link myPassword-myPassword">
                         <i class="nav-icon fas fa-key"></i>
                         <p>
                             Change My Password

@@ -193,12 +193,13 @@ function getUrlVar(key) {
 }
 $(document).ready(function () {
     var controller = (getUrlVar('controller') == '') ? 'index' : getUrlVar('controller');
-    // var action = (getUrlVar('action') == '') ? 'index' : getUrlVar('action');
-    var action = 'index';
+    var action = (getUrlVar('action') == '') ? 'index' : getUrlVar('action');
     if (getUrlVar('action') == 'myPassword') {
+        var controller = 'myPassword';
         var action = 'myPassword';
     }
     var classActive = controller + '-' + action;
+    $('.' + controller).addClass('active');
     $('.' + classActive).addClass('active');
 });
 

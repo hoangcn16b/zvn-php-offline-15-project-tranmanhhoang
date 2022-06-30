@@ -130,8 +130,10 @@ class Helper
             $searchValue = trim($searchValue);
             $searchValue = preg_quote($searchValue);
             // return str_replace("$searchValue", "<mark>$searchValue</mark>", $value);
+            return preg_replace("#$searchValue#i", "<mark>\\0</mark>", $value);
+        } else {
+            return $value;
         }
-        return preg_replace("#$searchValue#i", "<mark>\\0</mark>", $value);
     }
 
     public static function filterStatusGroup($arrParams, $toUrl)

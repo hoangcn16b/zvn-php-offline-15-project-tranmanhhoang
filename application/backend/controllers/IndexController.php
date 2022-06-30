@@ -13,6 +13,7 @@ class IndexController extends Controller
 
 	public function loginAction()
 	{
+
 		$userInfor = Session::get('user');
 		$logged = (($userInfor['login'] ?? false) == true && ((($userInfor['time'] ?? '') + TIME_LOGIN) >= time()));
 		if ($logged) {
@@ -50,6 +51,7 @@ class IndexController extends Controller
 
 	public function indexAction()
 	{
+
 		$this->_templateObj->setFileTemplate('index.php');
 		$this->_templateObj->load();
 		$this->_view->total = $this->_model->countTotalToIndex();

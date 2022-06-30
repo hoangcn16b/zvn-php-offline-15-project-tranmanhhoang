@@ -130,7 +130,7 @@ class CategoryModel extends Model
 
 	public function checkItem($params)
 	{
-		$query[] = "SELECT * FROM `$this->table`";
+		$query[] = "SELECT *, `picture` AS `picture_current` FROM `$this->table`";
 		$query[] = "WHERE `id` = '{$params['id']}'";
 		$query = implode(" ", $query);
 

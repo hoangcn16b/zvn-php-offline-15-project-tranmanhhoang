@@ -4,11 +4,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 // use PHPMailer\PHPMailer\Exception;
 
-require_once '././PHPMailer/src/Exception.php';
-require_once '././PHPMailer/src/PHPMailer.php';
-require_once '././PHPMailer/src/SMTP.php';
-require_once '././PHPMailer/src/OAuth.php';
-require_once '././PHPMailer/src/POP3.php';
+require_once 'PHPMailer/src/Exception.php';
+require_once 'PHPMailer/src/PHPMailer.php';
+require_once 'PHPMailer/src/SMTP.php';
+require_once 'PHPMailer/src/OAuth.php';
+require_once 'PHPMailer/src/POP3.php';
 
 class SendMail extends PHPMailer
 {
@@ -37,7 +37,9 @@ class SendMail extends PHPMailer
                             Dear $nameTo, <br> 
                             $content";
             $this->send();
+            return true;
         } catch (Exception $e) {
+            return false;
             //$notice .= '<div class ="alert alert-warning ">Email could not be sent</div>';
         }
     }

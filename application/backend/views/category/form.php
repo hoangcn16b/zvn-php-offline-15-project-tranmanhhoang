@@ -1,14 +1,16 @@
 <?php
 $data = $this->outPut;
-
+echo '<pre>';
+print_r ($data);
+echo '</pre>';
 $arrSelect = [
     'status' => ['default' => 'Select Status', 'inactive' => 'Không kích hoạt', 'active' => 'Kích hoạt']
 ];
 if (isset($this->arrParams['id'])) {
     $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
-    $pathImg = UPLOAD_URL . 'category' . DS . '60x90-' . ($data['picture'] ?? '');
+    $pathImg = UPLOAD_URL . 'category' . DS . '60x90-' . ($data['picture_current'] ?? $data['picture_hidden']);
     $picture = '<img src ="' . $pathImg . '">';
-    $inputPictureHidden = HelperForm::input('hidden', 'form[picture_hidden]', $data['picture'] ?? '');
+    $inputPictureHidden = HelperForm::input('hidden', 'form[picture_hidden]', $data['picture_current'] ?? '');
 }
 $lblName = HelperForm::label('Name', true);
 $inputName = HelperForm::input('text', 'form[name]', $data['name'] ?? '', 'form-control');

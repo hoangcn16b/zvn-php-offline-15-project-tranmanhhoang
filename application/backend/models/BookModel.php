@@ -56,11 +56,8 @@ class BookModel extends Model
 			$query[] = "LIMIT $position, $totalItemsPerPage";
 		}
 		$query = implode(" ", $query);
-		if ($this->query($query)) {
-			$result = $this->listRecord($query);
-		} else {
-			$result = [];
-		}
+		
+		$result = $this->listRecord($query);
 		return $result;
 	}
 
