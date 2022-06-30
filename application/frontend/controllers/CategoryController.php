@@ -3,7 +3,6 @@ class CategoryController extends Controller
 {
     public function __construct($arrParams)
     {
-
         parent::__construct($arrParams);
         $this->_templateObj->setFolderTemplate('frontend/');
         $this->_templateObj->setFileTemplate('index.php');
@@ -13,7 +12,6 @@ class CategoryController extends Controller
 
     public function indexAction()
     {
-
         $this->_view->items = $this->_model->listItems('', '');
         $this->_view->render('category/index');
     }

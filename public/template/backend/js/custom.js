@@ -150,6 +150,20 @@ $(document).ready(function () {
         });
     });
 
+    $('.select-ordering-book').on('change', function () {
+        var value = $(this).val();
+        var url = $(this).data('geturl');
+        url = url.replace('value_new', value);
+        var parent = $(this).parent();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (response) {
+                parent.find('.select-ordering-book').notify("Success!", { className: 'success', position: 'top-center' });
+            }
+        });
+    });
+
     $('.btn-acpt-delete').click(function (e) {
         e.preventDefault();
         let url = $(this).attr('href');
@@ -185,6 +199,14 @@ $(document).ready(function () {
     }
     document.getElementById('random-password').value = make_password(5);
 
+    var loadFile = function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('output');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
 });
 
 function getUrlVar(key) {

@@ -4,6 +4,7 @@ $module = $this->arrParams['module'];
 $controller = $this->arrParams['controller'];
 $action = $this->arrParams['action'];
 $xhtml = '';
+$listOrdering = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
@@ -13,15 +14,19 @@ if (!empty($this->items)) {
             $pathImg = UPLOAD_URL . 'book' . DS . '60x90-' . ($item['picture']);
             $picture = '<img src ="' . $pathImg . '">';
         } else {
-            $pathImg = UPLOAD_URL . 'book' . DS . '90x90-default.png';
+            $pathImg = UPLOAD_URL . 'book' . DS . '60x90-default.png';
             $picture = '<img src ="' . $pathImg . '">';
         }
+        $priceFormat = number_format($item['price'], 0, ',', '.') . ' Vnđ';
+        $saleOff = $item['sale_off'] . '%';
         $name = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['name']);
-        $price = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['price']);
-        $description = Helper::highLight($this->arrParams['input-keyword'] ?? '', substr($item['description'], 0, 30));
+        $price = Helper::highLight($this->arrParams['input-keyword'] ?? '', $priceFormat);
+        $saleOff = Helper::highLight($this->arrParams['input-keyword'] ?? '', $saleOff);
+        $description = Helper::highLight($this->arrParams['input-keyword'] ?? '', Helper::collapseDesc($item['description'], 3));
 
-        $linkStatus = URL::createLink($module, $controller, 'ajaxSpecial', ['id' => $id, 'special' => $item['special']]);
-        $special = Helper::cmsSpecial($item['special'], $linkStatus, $id);
+        $linkSpecial = URL::createLink($module, $controller, 'ajaxSpecial', ['id' => $id, 'special' => $item['special']]);
+        $special = Helper::cmsSpecial($item['special'], $linkSpecial, $id);
+
         $linkStatus = URL::createLink($module, $controller, 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
 
@@ -29,8 +34,11 @@ if (!empty($this->items)) {
         $attr = 'data-geturl = "' . $ajaxLinkGroup . '"';
         $group = HelperForm::selectBox($this->listCategory, '', $item['category_id'], 'w-auto select-ordering', $attr);
 
-        $createdBy = Helper::createdBy($item['created_by'], $item['created']);
-        $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
+        $ajaxOrdering = URL::createLink($module, $controller, 'ajaxOrdering', ['id' => $id, 'ordering' => 'value_new']);
+        $attrOrder = 'data-geturl = "' . $ajaxOrdering . '"';
+        $selectOrdering = HelperForm::selectBoxKeyInt($listOrdering, '', $item['ordering'], 'w-auto select-ordering-book', $attrOrder);
+        // $createdBy = Helper::createdBy($item['created_by'], $item['created']);
+        // $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
 
         $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
         $cmsButtonEdit = Helper::cmsButton($linkEdit, '<i class="fas fa-pen "></i>', 'btn btn-info btn-sm rounded-circle');
@@ -47,15 +55,14 @@ if (!empty($this->items)) {
                 <td>' . $picture . '</td>
                 <td class="text-left">
                     <p class="mb-0">Name: ' . $name . '</p>
-                    <p class="mb-0">Price: ' . $price . ' Vnd</p>
-                    <p class="mb-0">Sale off: ' . $item['sale_off'] . '</p>
-                    <p class="mb-0">Description: ' .$description . '</p>
+                    <p class="mb-0">Price: ' . $price . '</p>
+                    <p class="mb-0">Sale off: ' . $saleOff . '</p>
                 </td>
-                <td class ="position-relative"> ' . $group . ' </td>
+                <td> ' . $description . '</td>
                 <td class ="position-relative"> ' . $special . ' </td>
                 <td class ="position-relative"> ' . $status . ' </td>
-                <td>' . $createdBy . '</td>
-                <td> ' . $modifiedBy . '</td>
+                <td class ="position-relative"> ' . $group . ' </td>
+                <td class ="position-relative"> ' . $selectOrdering . ' </td>
                 <td>
                     ' . $cmsButtonEdit . '
                     ' . $cmsButtonDelete . '
@@ -180,11 +187,13 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                                 <th>ID</th>
                                 <th>Picture</th>
                                 <th class="text-left">Info</th>
-                                <th>Group</th>
+                                <th>Short Description</th>
                                 <th>Special</th>
                                 <th>Status</th>
-                                <th>Created</th>
-                                <th>Modified</th>
+                                <th>Group</th>
+                                <th>Ordering</th>
+                                <!-- <th>Created</th> -->
+                                <!-- <th>Modified</th> -->
                                 <th>Action</th>
                             </tr>
                         </thead>

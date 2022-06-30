@@ -93,9 +93,6 @@ if ($this->specialCategory) {
 
 $xhtmldetailCate = '';
 $i = 1;
-// echo '<pre>';
-// print_r($this->getSpecialProctduct);
-// echo '</pre>';
 foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
     $linkPreview = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $idCategory]);
     $attr = '';

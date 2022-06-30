@@ -56,6 +56,19 @@ class CategoryModel extends Model
 		$this->query($query);
 		return $result;
 	}
+	
+	public function changeSpecial($params)
+	{
+		$id = $params['id'];
+		$modified = date("Y-m-d H:i:s");
+		$modifiedBy = $params['userLogged']['username'];
+		$special = $params['special'] == 1 ? 0 : 1;
+		$query = "UPDATE `$this->table` SET `special` = '$special', `modified` = '$modified', `modified_by` = '$modifiedBy' where `id` = '$id'";
+		$url = URL::createLink($params['module'], $params['controller'], 'ajaxSpecial', ['id' => $id, 'special' => $special]);
+		$result = Helper::cmsSpecial($special, $url, $id);
+		$this->query($query);
+		return $result;
+	}
 
 	public function changeOrdering($params)
 	{

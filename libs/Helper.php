@@ -266,7 +266,8 @@ class Helper
         return $xhtml;
     }
 
-    public static function randomString($length = 5) {
+    public static function randomString($length = 5)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -274,5 +275,20 @@ class Helper
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    public static function collapseDesc($string, $length = 10)
+    {
+        $str = explode(" ", $string);
+        $xhtml = '';
+        foreach ($str as $key => $value) {
+            if ($key + 1 > $length) {
+                $xhtml .= '...';
+                break;
+            } else {
+                $xhtml .= $value . ' ';
+            }
+        }
+        return $xhtml;
     }
 }

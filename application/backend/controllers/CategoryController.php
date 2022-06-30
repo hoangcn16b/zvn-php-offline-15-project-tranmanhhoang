@@ -35,6 +35,11 @@ class CategoryController extends Controller
         echo $result;
         // echo json_encode($result);
     }
+    public function ajaxSpecialAction()
+	{
+		$result = $this->_model->changeSpecial($this->_arrParam);
+		echo $result;
+	}
     public function ajaxOrderingAction()
     {
         $result = $this->_model->changeOrdering($this->_arrParam);

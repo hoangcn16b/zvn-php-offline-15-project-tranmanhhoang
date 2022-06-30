@@ -7,12 +7,17 @@ $arrSelect = [
     'category' => $this->listCategory
 ];
 $readOnly = isset($this->arrParams['id']) ? 'readonly' : '';
+$labelExistPic = ': None!';
 $readOnly = '';
 if (isset($this->arrParams['id'])) {
+    if (($data['picture_current'] ?? $data['picture_hidden']) == '') {
+        $data['picture_current'] = 'default.png';
+    }
     $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
-    $pathImg = UPLOAD_URL . 'book' . DS . '60x90-' . ($data['picture'] ?? '');
+    $pathImg = UPLOAD_URL . 'book' . DS . '60x90-' . ($data['picture_current'] ?? $data['picture_hidden']);
     $picture = '<img src ="' . $pathImg . '">';
-    $inputPictureHidden = HelperForm::input('hidden', 'form[picture_hidden]', $data['picture'] ?? '');
+    $inputPictureHidden = HelperForm::input('hidden', 'form[picture_hidden]', $data['picture_current'] ?? '');
+    $labelExistPic = '';
 }
 
 $lblName = HelperForm::label('Name', true);
@@ -28,7 +33,7 @@ $lblSaleOff = HelperForm::label('Sale off');
 $inputSaleOff = HelperForm::input('number', 'form[sale_off]', $data['sale_off'] ?? '', 'form-control', $readOnly);
 
 $lblDescription = HelperForm::label('Description');
-$inputDescription = '<textarea class = "form-control" name = "form[description]"> ' . ($data['description'] ?? '') . ' </textarea>';
+$inputDescription = '<textarea class = "form-control" name = "form[description]">' . ($data['description'] ?? '') . '</textarea>';
 
 $lblStatus = HelperForm::label('Status', true);
 $selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'default');
@@ -39,8 +44,11 @@ $inputOrdering = HelperForm::input('number', 'form[ordering]', $data['ordering']
 $lblGroup = HelperForm::label('Group Category', true);
 $selectGroup = HelperForm::selectBox($arrSelect['category'], 'form[category_id]', lcfirst($data['category_id'] ?? 'default'));
 
-$lblPicture = HelperForm::label('Picture', true);
-$inputPicture = HelperForm::input('file', 'picture', '', '');
+$lblPicture = HelperForm::label('Current picture' . ($labelExistPic ?? ''));
+$lblPictureNew = HelperForm::label('Add new picture');
+
+$attrImg = 'onchange="document.getElementById(\'blah\').src = window.URL.createObjectURL(this.files[0])"';
+$inputPicture = HelperForm::input('file', 'picture', '', '', $attrImg);
 
 if (isset($this->arrParams['id'])) {
     $inputId = HelperForm::input('hidden', 'form[id]', $this->arrParams['id']);
@@ -68,7 +76,11 @@ if (isset($this->arrParams['id'])) {
                         <?= $lblName . $inputName ?>
                     </div>
                     <div class="form-group">
-                        <?= $lblPicture . '</br>' . $inputPicture . ($picture ?? '') . ($inputPictureHidden ?? '') ?>
+                        <?= $lblPicture . '</br>' . ($picture ?? '') . ($inputPictureHidden ?? '') ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $lblPictureNew . '</br>' . $inputPicture ?>
+                        <img id="blah" width="240" height="300" />
                     </div>
                     <div class="form-group">
                         <?= $lblSaleOff . $inputSaleOff ?>
@@ -88,11 +100,9 @@ if (isset($this->arrParams['id'])) {
                     <div class="form-group">
                         <?= $lblStatus . $selectStatus ?>
                     </div>
-
                     <div class="form-group">
                         <?= $lblGroup . $selectGroup  ?>
                     </div>
-
                     <div class="form-group">
                         <?= $inputId ?? '' . ($inputPictureHidden ?? "") ?>
                     </div>

@@ -15,18 +15,21 @@ if (!empty($this->items)) {
             $pathImg = UPLOAD_URL . 'category' . DS . '60x90-' . ($item['picture']);
             $picture = '<img src ="' . $pathImg . '">';
         } else {
-            $pathImg = UPLOAD_URL . 'category' . DS . '90x90-default.png';
+            $pathImg = UPLOAD_URL . 'category' . DS . '60x90-default.png';
             $picture = '<img src ="' . $pathImg . '">';
         }
         $linkStatus = URL::createLink($module, $controller, 'ajaxStatus', ['id' => $id, 'status' => $item['status']]);
         $status = Helper::cmsStatus($item['status'], $linkStatus, $id);
+
+        $linkSpecial = URL::createLink($module, $controller, 'ajaxSpecial', ['id' => $id, 'special' => $item['special']]);
+        $special = Helper::cmsSpecial($item['special'], $linkSpecial, $id);
 
         // ordering
         $ajaxOrdering = URL::createLink($module, $controller, 'ajaxOrdering', ['id' => $id, 'ordering' => 'value_new']);
         $attr = 'data-geturl = "' . $ajaxOrdering . '"';
         $selectOrdering = HelperForm::selectBoxKeyInt($listOrdering, '', $item['ordering'], 'w-auto select-ordering', $attr);
 
-        $createdBy = Helper::createdBy($item['created_by'], $item['created']);
+        // $createdBy = Helper::createdBy($item['created_by'], $item['created']);
         $modifiedBy = Helper::createdBy($item['modified_by'], $item['modified']);
 
         $linkEdit = URL::createLink($module, $controller, 'form', ['id' => $id]);
@@ -43,8 +46,9 @@ if (!empty($this->items)) {
                         <td>' . $name . '</td>
                         <td>' . $picture . '</td>
                         <td class ="position-relative">' . $status . '</td>
+                        <td class ="position-relative"> ' . $special . ' </td>
                         <td class ="position-relative">' . $selectOrdering . '</td>
-                        <td>' . $createdBy . '</td>
+                        
                         <td>' . $modifiedBy . '</td>
                         <td>
                             ' . $cmsButtonEdit . '
@@ -167,8 +171,9 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                                 <th>Name</th>
                                 <th>Picture</th>
                                 <th>Status</th>
+                                <th>Special</th>
                                 <th>Ordering</th>
-                                <th>Created</th>
+                                <!-- <th>Created</th> -->
                                 <th>Modified</th>
                                 <th>Action</th>
                             </tr>

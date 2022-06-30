@@ -43,7 +43,7 @@ class BookModel extends Model
 	public function listItems($arrParams, $option = null)
 	{
 		// $exceptId = $_SESSION['user']['info']['id'];			//`u`.`id` != $exceptId
-		$query[] = "SELECT `b`.`id`, b.name, b.description, b.price, b.special, b.sale_off, b.picture, b.created, b.created_by, b.modified, b.modified_by, b.status, b.category_id, c.name AS `group_name` ";
+		$query[] = "SELECT `b`.`id`, b.name, b.description, b.price, b.special, b.ordering, b.sale_off, b.picture, b.created, b.created_by, b.modified, b.modified_by, b.status, b.category_id, c.name AS `group_name` ";
 		$query[] = "FROM `book` AS `b`, `category` AS `c`";
 		$query[] = "WHERE `b`.`category_id` = `c`.`id`";
 		$query[] = $this->createQuery($arrParams, 3);
@@ -56,7 +56,7 @@ class BookModel extends Model
 			$query[] = "LIMIT $position, $totalItemsPerPage";
 		}
 		$query = implode(" ", $query);
-		
+
 		$result = $this->listRecord($query);
 		return $result;
 	}
@@ -96,6 +96,16 @@ class BookModel extends Model
 		echo $query = "UPDATE `$this->table` SET `category_id` = '$categoryId', `modified` = '$modified', `modified_by` = '$modifiedBy' WHERE `id` = '$id'";
 		$this->query($query);
 	}
+	public function changeOrdering($params)
+	{
+		$id = $params['id'];
+		$modified = date("Y-m-d H:i:s");
+		$modifiedBy = $params['userLogged']['username'];
+		$ordering = $params['ordering'];
+		$query = "UPDATE `$this->table` SET `ordering` = '$ordering', `modified` = '$modified', `modified_by` = '$modifiedBy' WHERE `id` = '$id'";
+		$this->query($query);
+	}
+
 	public function deleteItem($id = '')
 	{
 		$query = "DELETE FROM `$this->table` WHERE `id` = " . mysqli_real_escape_string($this->connect, $id);
@@ -220,7 +230,7 @@ class BookModel extends Model
 
 	public function checkItem($params)
 	{
-		$query[] = "SELECT * FROM `$this->table`";
+		$query[] = "SELECT *, `picture` AS `picture_current` FROM `$this->table`";
 		$query[] = "WHERE `id` = '{$params['id']}'";
 		$query = implode(" ", $query);
 

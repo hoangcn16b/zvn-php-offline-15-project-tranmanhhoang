@@ -96,21 +96,14 @@ class IndexModel extends Model
 				$query[] = "SELECT * FROM `" . TABLE_BOOK . "`";
 				$query[] = "WHERE `status` = 'active' AND `special` = 1 LIMIT 0,4";
 				$query = implode(" ", $query);
-				if ($this->query($query)) {
-					$result = $this->listRecord($query);
-				} else {
-					$result = [];
-				}
+
+				$result = $this->listRecord($query);
 			} elseif ($options['task'] == 'get_category_special') {
 				$query[] = "SELECT DISTINCT c.id, c.name ";
 				$query[] = "FROM `" . TABLE_CATEGORY . "` as `c`, `" . TABLE_BOOK . "` as `b`";
-				$query[] = "WHERE `b`.`category_id` = `c`.`id` AND `c`.`status` = 'active' AND `b`.`special` = 1 ORDER BY `c`.`ordering` ASC LIMIT 0,4";
+				$query[] = "WHERE `b`.`category_id` = `c`.`id` AND `c`.`status` = 'active' AND `c`.`special` = 1 ORDER BY `c`.`ordering` ASC LIMIT 0,4";
 				$query = implode(" ", $query);
-				if ($this->query($query)) {
-					$result = $this->fetchPairs($query);
-				} else {
-					$result = [];
-				}
+				$result = $this->fetchPairs($query);
 			}
 		}
 		return $result;
@@ -125,13 +118,9 @@ class IndexModel extends Model
 			$queryProduct[] = "SELECT DISTINCT * ";
 			$queryProduct[] = "FROM  `" . TABLE_BOOK . "`";
 			$queryProduct[] = "WHERE `status` = 'active' AND `special` = 1 AND `category_id` = $key ";
-			$queryProduct[] = "ORDER BY `ordering` ASC LIMIT 0,4";
+			$queryProduct[] = "ORDER BY `ordering` ASC LIMIT 0,8";
 			$queryProduct = implode(" ", $queryProduct);
-			if ($this->query($queryProduct)) {
-				$result[$key] = $this->fetchAll($queryProduct);
-			} else {
-				$result = [];
-			}
+			$result[$key] = $this->fetchAll($queryProduct);
 		}
 		return $result;
 	}

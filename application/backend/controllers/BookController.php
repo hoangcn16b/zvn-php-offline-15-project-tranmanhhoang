@@ -44,6 +44,11 @@ class BookController extends Controller
 		$result = $this->_model->changeCategory($this->_arrParam);
 		echo $result;
 	}
+	public function ajaxOrderingAction()
+    {
+        $result = $this->_model->changeOrdering($this->_arrParam);
+        echo $result;
+    }
 
 	public function deleteAction()
 	{
