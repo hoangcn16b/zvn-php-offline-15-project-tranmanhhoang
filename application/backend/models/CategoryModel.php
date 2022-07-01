@@ -56,7 +56,7 @@ class CategoryModel extends Model
 		$this->query($query);
 		return $result;
 	}
-	
+
 	public function changeSpecial($params)
 	{
 		$id = $params['id'];
@@ -116,6 +116,8 @@ class CategoryModel extends Model
 	{
 		require_once LIBRARY_EXT_PATH . "Upload.php";
 		$uploadObj = new Upload();
+		if (isset($params['picture_hidden']) && $params['picture_hidden'] == 'default.png') unset($params['picture_hidden']);
+
 		if ($options['task'] == 'add') {
 			$params['picture'] = $uploadObj->uploadFile($params['picture'], 'category', null);
 			$params['created'] = date("Y-m-d H:i:s");

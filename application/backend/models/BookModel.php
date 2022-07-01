@@ -108,6 +108,15 @@ class BookModel extends Model
 
 	public function deleteItem($id = '')
 	{
+		require_once LIBRARY_EXT_PATH . "Upload.php";
+		$uploadObj = new Upload();
+		$queryPic = "SELECT `id`, `picture` as `name` FROM `book` WHERE `id` = $id";
+		$result = $this->fetchPairs($queryPic);
+		foreach ($result as $value) {
+			$uploadObj->removeFile('book', $value);
+			$uploadObj->removeFile('book', '60x90-' . $value);
+		}
+
 		$query = "DELETE FROM `$this->table` WHERE `id` = " . mysqli_real_escape_string($this->connect, $id);
 		$this->query($query);
 		Session::set('messageDelete', ['class' => 'success', 'content' => DELETE_SUCCESS]);
@@ -200,6 +209,8 @@ class BookModel extends Model
 	{
 		require_once LIBRARY_EXT_PATH . "Upload.php";
 		$uploadObj = new Upload();
+		if (isset($params['picture_hidden']) && $params['picture_hidden'] == 'default.png') unset($params['picture_hidden']);
+
 		if ($options['task'] == 'add') {
 			$params['picture'] = $uploadObj->uploadFile($params['picture'], 'book', null);
 			$params['created'] = date("Y-m-d H:i:s");
