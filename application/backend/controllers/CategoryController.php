@@ -19,7 +19,7 @@ class CategoryController extends Controller
     public function indexAction()
     {
 
-        $configPagination = ['totalItemsPerPage' => 3, 'pageRange' => 3];
+        $configPagination = ['totalItemsPerPage' => 5, 'pageRange' => 3];
         $this->setPagination($configPagination);
         $this->_view->items = $this->_model->listItems($this->_arrParam);
         $this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);

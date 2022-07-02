@@ -25,13 +25,13 @@ if (isset($this->arrParams['id'])) {
 $lblName = HelperForm::label('Name', true);
 $inputName = HelperForm::input('text', 'form[name]', $data['name'] ?? '', 'form-control', $readOnly);
 
-$lblPrice = HelperForm::label('Price', true);
+$lblPrice = HelperForm::label('Price(Vnđ)', true);
 $inputPrice = HelperForm::input('number', 'form[price]', $data['price'] ?? '', 'form-control', $readOnly);
 
 $lblSpecial = HelperForm::label('Special', true);
 $inputSpecial = HelperForm::selectBox($arrSelect['special'], 'form[special]', $data['special'] ?? 0);
 
-$lblSaleOff = HelperForm::label('Sale off');
+$lblSaleOff = HelperForm::label('Sale off(%)');
 $inputSaleOff = HelperForm::input('number', 'form[sale_off]', $data['sale_off'] ?? '', 'form-control', $readOnly);
 
 $lblDescription = HelperForm::label('Description');
@@ -86,9 +86,7 @@ if (isset($this->arrParams['id'])) {
                         <?= $lblPictureNew . '</br>' . $inputPicture ?>
                         <img id="blah" width="240" height="300" />
                     </div>
-                    <div class="form-group">
-                        <?= $lblSaleOff . $inputSaleOff ?>
-                    </div>
+
                     <div class="form-group">
                         <?= $lblDescription . $inputDescription ?>
                     </div>
@@ -103,6 +101,9 @@ if (isset($this->arrParams['id'])) {
                     </div>
                     <div class="form-group">
                         <?= $lblPrice . $inputPrice ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $lblSaleOff . $inputSaleOff ?>
                     </div>
                     <div class="form-group">
                         <?= $lblSpecial . $inputSpecial ?>

@@ -15,7 +15,7 @@ class BookController extends Controller
 	public function indexAction()
 	{
 
-		$configPagination = ['totalItemsPerPage' => 4, 'pageRange' => 5];
+		$configPagination = ['totalItemsPerPage' => 20, 'pageRange' => 5];
 		$this->setPagination($configPagination);
 		$this->_view->items = $this->_model->listItems($this->_arrParam);
 		$this->_view->filterStatus = $this->_model->filterStatusFix($this->_arrParam);
@@ -94,7 +94,7 @@ class BookController extends Controller
 				->addRule('status', 'select')
 				->addRule('special', 'select')
 				->addRule('category_id', 'select')
-				->addRule('picture', 'file', ['min' => 0, 'max' => 1000000, 'extension' => ['jpg', 'jpeg', 'png']], false);
+				->addRule('picture', 'file', ['min' => 0, 'max' => 10000000, 'extension' => ['jpg', 'jpeg', 'png']], false);
 			if (isset($data['password'])) {
 				$validate->addRule('password', 'password', ['action' => $task]);
 			}
@@ -102,7 +102,7 @@ class BookController extends Controller
 			$data = $validate->getResult();
 			if ($validate->isValid()) {
 				$this->_model->saveItem($data, ['task' => $task]);
-				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'index');
+				URL::redirectLink($this->_arrParam['module'], $this->_arrParam['controller'], 'form');
 			} else {
 				$this->_view->errors = $validate->showErrors();
 			}

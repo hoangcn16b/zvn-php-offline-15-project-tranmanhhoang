@@ -3,7 +3,7 @@ $data = $this->outPut;
 
 $arrSelect = [
     'status' => ['active' => 'Kích hoạt', 'inactive' => 'Không kích hoạt'],
-    'special' => ['active' => 'Kích hoạt', 'inactive' => 'Không kích hoạt',]
+    'special' => [1 => 'Kích hoạt', 0 => 'Không kích hoạt',]
 ];
 $labelExistPic = ': None!';
 if (isset($this->arrParams['id'])) {
@@ -23,7 +23,7 @@ $lblStatus = HelperForm::label('Status', true);
 $selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'Kích hoạt');
 
 $lblSpecial = HelperForm::label('Special', true);
-$selectSpecial = HelperForm::selectBox($arrSelect['special'], 'form[special]', $data['status'] ?? 'Kích hoạt');
+$selectSpecial = HelperForm::selectBox($arrSelect['special'], 'form[special]', $data['special'] ?? 0);
 
 $lblOrdering = HelperForm::label('Số thứ tự');
 $inputOrdering = HelperForm::input('number', 'form[ordering]', $data['ordering'] ?? '10', 'form-control');

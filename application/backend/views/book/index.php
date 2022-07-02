@@ -32,7 +32,7 @@ if (!empty($this->items)) {
 
         $ajaxLinkGroup = URL::createLink($module, $controller, 'ajaxGroup', ['id' => $id, 'category_id' => 'value_new']);
         $attr = 'data-geturl = "' . $ajaxLinkGroup . '"';
-        $group = HelperForm::selectBox($this->listCategory, '', $item['category_id'], 'w-auto select-ordering', $attr);
+        $group = HelperForm::selectBox($this->listCategory, '', $item['category_id'], ' select-ordering', $attr);
 
         $ajaxOrdering = URL::createLink($module, $controller, 'ajaxOrdering', ['id' => $id, 'ordering' => 'value_new']);
         $attrOrder = 'data-geturl = "' . $ajaxOrdering . '"';
@@ -53,12 +53,12 @@ if (!empty($this->items)) {
                 <td>' . $ckb . '</td>
                 <td>' . $id . '</td>
                 <td>' . $picture . '</td>
-                <td class="text-left" style="width:15%;">
+                <td class="text-left" style="width:25%;">
                     <p class="mb-0">Name: ' . $name . '</p>
                     <p class="mb-0">Price: ' . $price . '</p>
                     <p class="mb-0">Sale off: ' . $saleOff . '</p>
                 </td>
-                <td> ' . $description . '</td>
+                <td style="width:30%;"> ' . $description . '</td>
                 <td class ="position-relative"> ' . $special . ' </td>
                 <td class ="position-relative"> ' . $status . ' </td>
                 <td class ="position-relative"> ' . $group . ' </td>
@@ -190,7 +190,7 @@ $xhtmlPagination = $this->pagination->showPagination(URL::createLink($module, $c
                                 <th>Short Description</th>
                                 <th>Special</th>
                                 <th>Status</th>
-                                <th>Group</th>
+                                <th style="width:20%">Group</th>
                                 <th>Ordering</th>
                                 <!-- <th>Created</th> -->
                                 <!-- <th>Modified</th> -->
