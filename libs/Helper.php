@@ -279,7 +279,7 @@ class Helper
 
     public static function collapseDesc($string, $length = 10)
     {
-        $str = explode(" ", $string);
+        $str = explode(" ", $string, 2000);
         $xhtml = '';
         foreach ($str as $key => $value) {
             if ($key + 1 > $length) {

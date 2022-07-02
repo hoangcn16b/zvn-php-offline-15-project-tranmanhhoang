@@ -291,8 +291,8 @@ class BookModel extends Model
 		}
 
 		if (isset($arrParams['special']) && $arrParams['special'] != 'default' && $arrParams['special'] != '') {
-			$status = $arrParams['special'];
-			$query[] = "AND `status` = '$status'";
+			$special = $arrParams['special'];
+			$query[] = "AND `special` = '$special'";
 		}
 		$query = implode(" ", $query);
 		if ($this->query($query)) {

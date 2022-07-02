@@ -94,7 +94,7 @@ class IndexModel extends Model
 		if ($check) {
 			if ($options['task'] == 'get_product_special') {
 				$query[] = "SELECT * FROM `" . TABLE_BOOK . "`";
-				$query[] = "WHERE `status` = 'active' AND `special` = 1 LIMIT 0,4";
+				$query[] = "WHERE `status` = 'active' AND `special` = 1 LIMIT 0,10";
 				$query = implode(" ", $query);
 
 				$result = $this->listRecord($query);

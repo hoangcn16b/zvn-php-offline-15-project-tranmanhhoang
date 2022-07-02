@@ -45,10 +45,10 @@ class BookController extends Controller
 		echo $result;
 	}
 	public function ajaxOrderingAction()
-    {
-        $result = $this->_model->changeOrdering($this->_arrParam);
-        echo $result;
-    }
+	{
+		$result = $this->_model->changeOrdering($this->_arrParam);
+		echo $result;
+	}
 
 	public function deleteAction()
 	{
@@ -63,7 +63,7 @@ class BookController extends Controller
 
 	public function formAction()
 	{
-		$this->_view->listCategory = $this->_model->getGroupCategory(null, true);
+		$this->_view->listCategory = $this->_model->getGroupCategory(null, false);
 		$this->_view->setTitleForm = 'Add Book';
 		$data = null;
 		$task = 'add';

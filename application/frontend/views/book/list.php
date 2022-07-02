@@ -17,6 +17,9 @@ $activeCategory = $this->arrParams['id'] ?? '';
 
 foreach ($this->categoryAllName as $key => $value) {
     $link = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $key]);
+    if (isset($this->arrParams['sort'])) {
+        $link = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $key, 'sort' => $this->arrParams['sort'] ?? '']);
+    }
     $aClass = '';
     if ($activeCategory == $key) {
         $aClass = 'my-text-primary';
@@ -27,7 +30,7 @@ foreach ($this->categoryAllName as $key => $value) {
                         <div class="custom-control custom-checkbox collection-filter-checkbox pl-0 category-item">
                             <a class="' . $aClass . '" href="' . $link . '">' . $value . '</a>
                         </div>
-                        ';
+                    ';
 }
 
 $xhtmlProduct = '';
@@ -153,7 +156,7 @@ if (isset($this->arrParams['id'])) {
 }
 $paramsToURL = HelperForm::input('hidden', 'module', 'frontend') . HelperForm::input('hidden', 'controller', 'book') . HelperForm::input('hidden', 'action', 'list') . $paramsId;
 
-
+$xhtmlPagination = $this->pagination->showPagination();
 ?>
 
 <section class="section-b-space j-box ratio_asos">
@@ -249,15 +252,22 @@ $paramsToURL = HelperForm::input('hidden', 'module', 'frontend') . HelperForm::i
                                             <?= $xhtmlProduct ?>
                                         </div>
                                     </div>
-                                    <!-- <div class="product-pagination">
+                                    <!-- <div class="card-footer clearfix">
+                                        <ul class="pagination m-0 float-right">
+                                            <?= $xhtmlPagination ?>
+                                        </ul>
+                                    </div> -->
+                                    <div class="product-pagination">
                                         <div class="theme-paggination-block">
                                             <div class="container-fluid p-0">
                                                 <div class="row">
                                                     <div class="col-xl-6 col-md-6 col-sm-12">
                                                         <nav aria-label="Page navigation">
                                                             <nav>
-                                                                <ul class="pagination">
-                                                                    <li class="page-item disabled">
+                                                                <!-- <ul class="pagination"> -->
+                                                                <?= $xhtmlPagination ?>
+
+                                                                <!-- <li class="page-item disabled">
                                                                         <a href="" class="page-link"><i class="fa fa-angle-double-left"></i></a>
                                                                     </li>
                                                                     <li class="page-item disabled">
@@ -277,20 +287,16 @@ $paramsToURL = HelperForm::input('hidden', 'module', 'frontend') . HelperForm::i
                                                                     </li>
                                                                     <li class="page-item">
                                                                         <a class="page-link" href="#"><i class="fa fa-angle-double-right"></i></a>
-                                                                    </li>
-                                                                </ul>
+                                                                    </li> -->
+                                                                <!-- </ul> -->
                                                             </nav>
                                                         </nav>
                                                     </div>
-                                                    <div class="col-xl-6 col-md-6 col-sm-12">
-                                                        <div class="product-search-count-bottom">
-                                                            <h5>Showing Items 1-12 of 55 Result</h5>
-                                                        </div>
-                                                    </div>
+                                                    <?= $this->pagination->showNumPage(); ?>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>

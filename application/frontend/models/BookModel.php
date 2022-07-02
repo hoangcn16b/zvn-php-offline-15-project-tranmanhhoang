@@ -26,17 +26,24 @@ class BookModel extends Model
 			$addWhere = " ";
 			if (isset($params['id'])) $addWhere = " `category_id` = '{$params['id']}' AND ";
 			$query[] = "WHERE $addWhere `status` = 'active'";
+
 			if (isset($params['sort'])) {
 				$sort = $params['sort'];
 				if ($sort == 'price_asc') {
-					$query[] = " ORDER BY `price` ASC, `` ";
+					$query[] = " ORDER BY `price` ASC, `ordering` ASC ";
 				} elseif ($sort == 'price_desc') {
-					$query[] = " ORDER BY `price` DESC ";
+					$query[] = " ORDER BY `price` DESC, `ordering` ASC ";
 				} elseif ($sort == 'latest') {
-					$query[] = " ORDER BY `id` DESC ";
+					$query[] = " ORDER BY `id` DESC, `ordering` ASC ";
 				} elseif ($sort == 'default') {
-					$query[] = " ORDER BY `ordering` DESC ";
+					$query[] = " ORDER BY `ordering` ASC";
 				}
+			}
+			$pagination = $params['pagination'];
+			$totalItemsPerPage = $pagination['totalItemsPerPage'];
+			if ($totalItemsPerPage > 0) {
+				$position = ($pagination['currentPage'] - 1) * $totalItemsPerPage;
+				$query[] = "LIMIT $position, $totalItemsPerPage";
 			}
 			$query = implode(" ", $query);
 			$result = $this->listRecord($query);
@@ -62,11 +69,11 @@ class BookModel extends Model
 				} else {
 					$cateId = '';
 				}
-				$queryRalte[] = "SELECT * FROM `" . TABLE_BOOK . "`";
-				$queryRalte[] = "WHERE `category_id` = $cateId AND `status` = 'active' AND `id` <> $bookId";
-				$queryRalte[] = "ORDER BY `ordering` ASC LIMIT 0,6";
-				$queryRalte = implode(" ", $queryRalte);
-				$result = $this->listRecord($queryRalte);
+				$queryRalate[] = "SELECT * FROM `" . TABLE_BOOK . "`";
+				$queryRalate[] = "WHERE `category_id` = $cateId AND `status` = 'active' AND `id` <> $bookId";
+				$queryRalate[] = "ORDER BY `ordering` ASC LIMIT 0,6";
+				$queryRalate = implode(" ", $queryRalate);
+				$result = $this->listRecord($queryRalate);
 			}
 		}
 		return $result;
@@ -126,6 +133,26 @@ class BookModel extends Model
 			} else {
 				return true;
 			}
+		}
+	}
+
+	public function countItem($params, $total = 3, $options = ['name', 'price', 'description'])
+	{
+		$result = [];
+		$query[] = "SELECT COUNT(`id`) AS `all`";
+		$query[] = "FROM `$this->table`";
+		$query[] = "WHERE 1 ";
+		if (isset($params['id']) && $params['id'] != '') {
+			$id = $params['id'];
+			$query[] = "AND `category_id` = '$id'";
+		}
+
+		$query = implode(" ", $query);
+		$result = $this->singleRecord($query);
+		if (empty($result)) {
+			return $result['all'] = 0;
+		} else {
+			return $result['all'];
 		}
 	}
 }

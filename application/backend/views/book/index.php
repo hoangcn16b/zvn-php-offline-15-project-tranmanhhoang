@@ -22,7 +22,7 @@ if (!empty($this->items)) {
         $name = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['name']);
         $price = Helper::highLight($this->arrParams['input-keyword'] ?? '', $priceFormat);
         $saleOff = Helper::highLight($this->arrParams['input-keyword'] ?? '', $saleOff);
-        $description = Helper::highLight($this->arrParams['input-keyword'] ?? '', Helper::collapseDesc($item['description'], 3));
+        $description = Helper::highLight($this->arrParams['input-keyword'] ?? '', Helper::collapseDesc($item['description'], 20));
 
         $linkSpecial = URL::createLink($module, $controller, 'ajaxSpecial', ['id' => $id, 'special' => $item['special']]);
         $special = Helper::cmsSpecial($item['special'], $linkSpecial, $id);
@@ -53,7 +53,7 @@ if (!empty($this->items)) {
                 <td>' . $ckb . '</td>
                 <td>' . $id . '</td>
                 <td>' . $picture . '</td>
-                <td class="text-left">
+                <td class="text-left" style="width:15%;">
                     <p class="mb-0">Name: ' . $name . '</p>
                     <p class="mb-0">Price: ' . $price . '</p>
                     <p class="mb-0">Sale off: ' . $saleOff . '</p>

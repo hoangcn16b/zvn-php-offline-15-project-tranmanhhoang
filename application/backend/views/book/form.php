@@ -1,11 +1,13 @@
 <?php
 
 $data = $this->outPut;
+// unset($this->listCategory['default']);
 $arrSelect = [
-    'status' => ['default' => 'Select Status', 'inactive' => 'Không kích hoạt', 'active' => 'Kích hoạt'],
-    'special' =>  ['default' => 'Select Special', 1 => 'Nổi bật', 0 => 'Không nổi bật'],
+    'status' => ['active' => 'Kích hoạt', 'inactive' => 'Không kích hoạt'],
+    'special' =>  [1 => 'Nổi bật', 0 => 'Không nổi bật'],
     'category' => $this->listCategory
 ];
+
 $readOnly = isset($this->arrParams['id']) ? 'readonly' : '';
 $labelExistPic = ': None!';
 $readOnly = '';
@@ -27,22 +29,24 @@ $lblPrice = HelperForm::label('Price', true);
 $inputPrice = HelperForm::input('number', 'form[price]', $data['price'] ?? '', 'form-control', $readOnly);
 
 $lblSpecial = HelperForm::label('Special', true);
-$inputSpecial = HelperForm::selectBox($arrSelect['special'], 'form[special]', $data['special'] ?? 'default');
+$inputSpecial = HelperForm::selectBox($arrSelect['special'], 'form[special]', $data['special'] ?? 0);
 
 $lblSaleOff = HelperForm::label('Sale off');
 $inputSaleOff = HelperForm::input('number', 'form[sale_off]', $data['sale_off'] ?? '', 'form-control', $readOnly);
 
 $lblDescription = HelperForm::label('Description');
-$inputDescription = '<textarea class = "form-control" name = "form[description]">' . ($data['description'] ?? '') . '</textarea>';
+$inputDescription = '<textarea class = "form-control" name = "form[description]" >' . ($data['description'] ?? '') . '</textarea>';
+$lblContent = HelperForm::label('Content');
+$inputContent = '<textarea class = "form-control" name = "form[content]" id="editorDesc">' . ($data['content'] ?? '') . '</textarea>';
 
 $lblStatus = HelperForm::label('Status', true);
-$selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'default');
+$selectStatus = HelperForm::selectBox($arrSelect['status'], 'form[status]', $data['status'] ?? 'active');
 
 $lblOrdering = HelperForm::label('Ordering');
 $inputOrdering = HelperForm::input('number', 'form[ordering]', $data['ordering'] ?? '10', 'form-control');
 
 $lblGroup = HelperForm::label('Group Category', true);
-$selectGroup = HelperForm::selectBox($arrSelect['category'], 'form[category_id]', lcfirst($data['category_id'] ?? 'default'));
+$selectGroup = HelperForm::selectBox($arrSelect['category'], 'form[category_id]', lcfirst($data['category_id'] ?? ''));
 
 $lblPicture = HelperForm::label('Current picture' . ($labelExistPic ?? ''));
 $lblPictureNew = HelperForm::label('Add new picture');
@@ -55,7 +59,7 @@ if (isset($this->arrParams['id'])) {
 }
 
 ?>
-
+<script type="text/javascript" src="<?= CKEDITOR_PATH ?>ckeditor.js"></script>
 <div class="row">
     <div class="col-12">
         <!-- <div class="alert alert-danger alert-dismissible">
@@ -88,6 +92,12 @@ if (isset($this->arrParams['id'])) {
                     <div class="form-group">
                         <?= $lblDescription . $inputDescription ?>
                     </div>
+                    <div class="form-group">
+                        <?= $lblContent . $inputContent ?>
+                    </div>
+                    <script>
+                        CKEDITOR.replace('editorDesc');
+                    </script>
                     <div class="form-group">
                         <?= $lblOrdering . $inputOrdering ?>
                     </div>

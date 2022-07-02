@@ -4,13 +4,14 @@
 	define ('DS'					, '/');
 	define ('ROOT_PATH'				, dirname(__FILE__));						// Định nghĩa đường dẫn đến thư mục gốc
 	define ('LIBRARY_PATH'			, ROOT_PATH . DS . 'libs' . DS);			// Định nghĩa đường dẫn đến thư mục thư viện
-	define ('LIBRARY_EXT_PATH'		, LIBRARY_PATH . DS . 'extends' . DS);			// Định nghĩa đường dẫn đến thư mục thư viện
+	define ('LIBRARY_EXT_PATH'		, LIBRARY_PATH . DS . 'extends' . DS);		// Định nghĩa đường dẫn đến thư mục thư viện
 	define ('PUBLIC_PATH'			, ROOT_PATH . DS . 'public' . DS);			// Định nghĩa đường dẫn đến thư mục public							
 	define ('UPLOAD_PATH'			, PUBLIC_PATH . 'files' . DS);			// Định nghĩa đường dẫn đến thư mục thư thư viện
 	define ('APPLICATION_PATH'		, ROOT_PATH . DS . 'application' . DS);		// Định nghĩa đường dẫn đến thư mục public							
 	define ('TEMPLATE_PATH'			, PUBLIC_PATH . 'template' . DS);		// Định nghĩa đường dẫn đến thư mục public							
-	define ('SCRIPT_PATH'		, PUBLIC_PATH  . 'scripts' . DS);				// Định nghĩa đường dẫn đến thư  
+	define ('SCRIPT_PATH'			, PUBLIC_PATH  . 'scripts' . DS);		// Định nghĩa đường dẫn đến thư  
 	
+
 	define	('ROOT_URL'				, 'zvn-php-offline-15-project-tranmanhhoang' . DS);
 	define	('APPLICATION_URL'		, ROOT_URL . 'application' . DS);
 	define	('PUBLIC_URL'			,  'public' . DS);
@@ -22,6 +23,11 @@
 
 	// img URL
 	define ('UPLOAD_URL'			, 'public' . DS . 'files' . DS);			// Định nghĩa đường dẫn đến thư mục thư thư viện
+
+	//ckEditor
+	define ('CKEDITOR_PATH'			, DS . ROOT_URL  . 'public' . DS . 'ckeditor' . DS);		// Định nghĩa đường dẫn đến thư  
+	//services layout
+	define	('SERVICE_LAYOUT'			, TEMPLATE_URL . 'frontend' . DS . 'html' . DS );
 
 	// config
 	define('TIME_LOGIN' 			, 5000);

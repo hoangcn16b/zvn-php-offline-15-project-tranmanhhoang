@@ -25,11 +25,15 @@ class BookController extends Controller
                 URL::redirectLink($this->_arrParam['module'], 'index', 'error', ['type' => 'file_not_exist']);
             }
         }
+        $configPagination = ['totalItemsPerPage' => 2, 'pageRange' => 5];
+        $this->setPagination($configPagination);
         // $this->_view->categoryName = $this->_model->infoItems($this->_arrParam, ['task' => 'get_cate_name']);
         $this->_view->categoryAllName = $this->_model->infoItems($this->_arrParam, ['task' => 'get_all_cate_name']);
         $this->_view->productAll = $this->_model->infoItems($this->_arrParam, ['task' => 'get_product_by_cate_id']);
         $this->_view->getSpecialProduct = $this->_model->getSpecialProduct();
-    
+
+        $this->totalItems = $this->_model->countItem($this->_arrParam);
+        $this->_view->pagination = new Pagination_frontend($this->totalItems, $this->_pagination);
         $this->_view->render('book/list');
     }
 
