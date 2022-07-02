@@ -85,7 +85,7 @@ $xhtmlBookInfo = '
                                             <a href="#" class="btn btn-solid ml-0"><i class="fa fa-cart-plus"></i> Chọn mua</a>
                                         </div>
                                         <div class="border-product">
-                                            ' . substr($bookInfo['description'], 0, 100) . '
+                                            ' . Helper::collapseDesc($bookInfo['description'], 20) . '
                                         </div>
                                     </div>
                                 </div>
@@ -102,7 +102,7 @@ $xhtmlBookInfo = '
                                         </ul>
                                         <div class="tab-content nav-material" id="top-tabContent">
                                             <div class="tab-pane fade show active ckeditor-content" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
-                                                <p>' . $bookInfo['description'] . '</p>
+                                                <p>' . $bookInfo['content'] . '</p>
                                             </div>
                                         </div>
                                     </div>
@@ -133,10 +133,10 @@ foreach ($bookSpecial as $idCate => $listItems) {
             $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
             if (file_exists($picturePath) == true) {
                 $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-                $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
+                $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '"style = "width:140px; height:210px;">';
             } else {
                 $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-                $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
+                $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" style = "width:140px; height:210px;">';
             }
             $price = '';
             $priceSale = number_format(($value['price']), 0, ',', '.');
@@ -192,10 +192,10 @@ foreach ($bookNew as $idNew => $listItemsNew) {
             $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
             if (file_exists($picturePath) == true) {
                 $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-                $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
+                $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" style = "width:140px; height:210px;">';
             } else {
                 $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-                $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
+                $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" style = "width:140px; height:210px;">';
             }
             $price = '';
             $priceSale = number_format(($value['price']), 0, ',', '.');
@@ -263,7 +263,7 @@ foreach ($bookRelate as $key => $value) {
                                 <div class="product-box">
                                     <div class="img-wrapper">
                                         ' . $iconSaleOff . '
-                                        <div class="front">
+                                        <div class="front" style="text-align:center;">
                                             <a href="' . $linktospecialProd . '">
                                                 ' . $picture . '
                                             </a>

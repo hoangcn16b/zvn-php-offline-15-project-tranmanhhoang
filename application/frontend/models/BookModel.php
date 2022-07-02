@@ -83,7 +83,7 @@ class BookModel extends Model
 	{
 		$query[] = "SELECT DISTINCT `id`, `name` ";
 		$query[] = "FROM `" . TABLE_CATEGORY . "`";
-		$query[] = "WHERE `status` = 'active' ORDER BY `ordering` ASC LIMIT 0,4";
+		$query[] = "WHERE `status` = 'active' ORDER BY `ordering` ASC LIMIT 0,5";
 		$query = implode(" ", $query);
 		$resultTblCate = $this->fetchPairs($query);
 		// $result = [];
