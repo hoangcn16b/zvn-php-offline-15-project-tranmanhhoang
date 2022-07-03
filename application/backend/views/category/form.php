@@ -34,7 +34,6 @@ $attrImg = 'onchange="document.getElementById(\'blah\').src = window.URL.createO
 // $inputPicPrev = HelperForm::input('file', '', '', '', $attrImg);
 $inputPicture = HelperForm::input('file', 'picture', '', '', $attrImg);
 
-
 ?>
 
 <div class="row">
