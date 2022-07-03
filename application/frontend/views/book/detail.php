@@ -133,7 +133,7 @@ foreach ($bookSpecial as $idCate => $listItems) {
             $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
             if (file_exists($picturePath) == true) {
                 $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-                $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '"style = "width:140px; height:210px;">';
+                $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" style = "width:140px; height:210px;">';
             } else {
                 $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
                 $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" style = "width:140px; height:210px;">';
@@ -158,8 +158,8 @@ foreach ($bookSpecial as $idCate => $listItems) {
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                         </div>
-                                        <a href="' . $linktospecialProd . '" title="' . substr($value['description'], 0, 100) . '">
-                                    <h6> ' . $value['name'] . ' </h6>
+                                        <a href="' . $linktospecialProd . '" title="' . Helper::collapseDesc($value['description'], 20) . '">
+                                    <h6> ' .  Helper::collapseDesc($value['name'], 5) . ' </h6>
                                 </a>
                                 <p></p>
                                 <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
@@ -217,8 +217,8 @@ foreach ($bookNew as $idNew => $listItemsNew) {
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                         </div>
-                                        <a href="' . $linktospecialProd . '" title="' . substr($value['description'], 0, 100) . '">
-                                    <h6> ' . $value['name'] . ' </h6>
+                                        <a href="' . $linktospecialProd . '" title="' .  Helper::collapseDesc($value['description'], 20)  . '">
+                                    <h6> ' . Helper::collapseDesc($value['name'], 5) . ' </h6>
                                 </a>
                                 <p></p>
                                 <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
@@ -259,7 +259,7 @@ foreach ($bookRelate as $key => $value) {
         }
         $linktospecialProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
         $xhtmlBookRelate .= '
-                            <div class="col-xl-3 col-md-6 col-sm-6">
+                            <div class="col-xl-2 col-md-4 col-sm-6">
                                 <div class="product-box">
                                     <div class="img-wrapper">
                                         ' . $iconSaleOff . '
@@ -270,7 +270,7 @@ foreach ($bookRelate as $key => $value) {
                                         </div>
                                         <div class="cart-info cart-wrap">
                                             <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                            <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
+                                            <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view-relate' . $value['id'] . '"></i></a>
                                         </div>
                                     </div>
                                     <div class="product-detail">
@@ -281,8 +281,8 @@ foreach ($bookRelate as $key => $value) {
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                         </div>
-                                        <a href="' . $linktospecialProd . '" title="' . substr($value['description'], 0, 100) . '">
-                                        <h6> ' . $value['name'] . ' </h6>
+                                        <a href="' . $linktospecialProd . '" title="' .  Helper::collapseDesc($value['description'], 20)  . '">
+                                        <h6> ' . Helper::collapseDesc($value['name'], 5)  . ' </h6>
                                         </a>
                                         <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
                                     </div>
@@ -879,3 +879,8 @@ foreach ($bookRelate as $key => $value) {
         </div>
     </div>
 </section>
+
+<?php
+echo HelperFrontend::quickView($bookRelate, $idName = 'quick-view-relate');
+
+?>

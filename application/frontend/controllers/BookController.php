@@ -25,7 +25,7 @@ class BookController extends Controller
                 URL::redirectLink($this->_arrParam['module'], 'index', 'error', ['type' => 'file_not_exist']);
             }
         }
-        $configPagination = ['totalItemsPerPage' => 2, 'pageRange' => 5];
+        $configPagination = ['totalItemsPerPage' => 20, 'pageRange' => 5];
         $this->setPagination($configPagination);
         // $this->_view->categoryName = $this->_model->infoItems($this->_arrParam, ['task' => 'get_cate_name']);
         $this->_view->categoryAllName = $this->_model->infoItems($this->_arrParam, ['task' => 'get_all_cate_name']);

@@ -80,6 +80,12 @@ if (isset($this->arrParams['id'])) {
                         <?= $lblName . $inputName ?>
                     </div>
                     <div class="form-group">
+                        <?= $lblPrice . $inputPrice ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $lblSaleOff . $inputSaleOff ?>
+                    </div>
+                    <div class="form-group">
                         <?= $lblPicture . '</br>' . ($picture ?? '') . ($inputPictureHidden ?? '') ?>
                     </div>
                     <div class="form-group">
@@ -98,12 +104,6 @@ if (isset($this->arrParams['id'])) {
                     </script>
                     <div class="form-group">
                         <?= $lblOrdering . $inputOrdering ?>
-                    </div>
-                    <div class="form-group">
-                        <?= $lblPrice . $inputPrice ?>
-                    </div>
-                    <div class="form-group">
-                        <?= $lblSaleOff . $inputSaleOff ?>
                     </div>
                     <div class="form-group">
                         <?= $lblSpecial . $inputSpecial ?>

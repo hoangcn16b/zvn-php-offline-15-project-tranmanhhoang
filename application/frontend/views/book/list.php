@@ -61,7 +61,7 @@ foreach ($this->productAll as $key => $value) {
     $linktoProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
     $xhtmlProduct .= '
                     <div class="col-xl-3 col-6 col-grid-box" >
-                        <div class="product-box" title="' . substr($value['description'], 0, 100) . '">
+                        <div class="product-box" title="' . Helper::collapseDesc($value['description'], 15) . '">
                             <div class="img-wrapper">
                                 ' . $iconSaleOff . '
                                 <div class="front">
@@ -71,7 +71,7 @@ foreach ($this->productAll as $key => $value) {
                                 </div>
                                 <div class="cart-info cart-wrap">
                                     <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                    <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
+                                    <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view-all-product' . $value['id'] . '"></i></a>
                                 </div>
                             </div>
                             <div class="product-detail">
@@ -83,7 +83,7 @@ foreach ($this->productAll as $key => $value) {
                                     <i class="fa fa-star"></i>
                                 </div>
                                 <a href="' . $linktoProd . '" title="' . substr($value['description'], 0, 100) . '">
-                                    <h6> ' . $value['name'] . ' </h6>
+                                    <h6> ' .  Helper::collapseDesc($value['name'], 5) . ' </h6>
                                 </a>
                                 <p></p>
                                 <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
@@ -113,10 +113,10 @@ foreach ($this->getSpecialProduct as $idCate => $listItems) {
         $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
         if (file_exists($picturePath) == true) {
             $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-            $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
+            $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" style = "width:140px; height:210px;">';
         } else {
             $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-            $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
+            $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" style = "width:140px; height:210px;">';
         }
         $price = '';
         $priceSale = number_format(($value['price']), 0, ',', '.');
@@ -138,8 +138,8 @@ foreach ($this->getSpecialProduct as $idCate => $listItems) {
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                         </div>
-                                        <a href="' . $linktospecialProd . '" title="' . substr($value['description'], 0, 100) . '">
-                                    <h6> ' . $value['name'] . ' </h6>
+                                        <a href="' . $linktospecialProd . '" title="' . Helper::collapseDesc($value['description']) . '">
+                                    <h6> ' . Helper::collapseDesc($value['name'], 5) . ' </h6>
                                 </a>
                                 <p></p>
                                 <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
@@ -231,7 +231,7 @@ $xhtmlPagination = $this->pagination->showPagination();
                                                         <form action="" id="sort-form" method="GET">
                                                             <?= $paramsToURL ?>
                                                             <?php
-                                                            $arrData = ['default' => ' - Sắp xếp - ', 'price_asc' => 'Giá tăng dần', 'price_desc' => 'Giá giảm dần', 'latest' => 'Mới nhất'];
+                                                            $arrData = ['default' => ' - Sắp xếp(mặc định) - ', 'price_asc' => 'Giá tăng dần', 'price_desc' => 'Giá giảm dần', 'latest' => 'Mới nhất'];
                                                             $selectSearch = HelperFrontend::selectBox($arrData, 'sort', $this->arrParams['sort'] ?? 'default', '', 'id="sort"');
                                                             echo $selectSearch;
                                                             ?>
@@ -306,3 +306,8 @@ $xhtmlPagination = $this->pagination->showPagination();
         </div>
     </div>
 </section>
+
+<?php
+echo HelperFrontend::quickView($this->productAll, $idName = 'quick-view-all-product');
+
+?>

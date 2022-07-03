@@ -30,9 +30,9 @@ class BookModel extends Model
 			if (isset($params['sort'])) {
 				$sort = $params['sort'];
 				if ($sort == 'price_asc') {
-					$query[] = " ORDER BY `price` ASC, `ordering` ASC ";
+					$query[] = " ORDER BY (`price`-`price`*`sale_off`/100) ASC, `ordering` ASC ";
 				} elseif ($sort == 'price_desc') {
-					$query[] = " ORDER BY `price` DESC, `ordering` ASC ";
+					$query[] = " ORDER BY (`price`-`price`*`sale_off`/100) DESC, `ordering` ASC ";
 				} elseif ($sort == 'latest') {
 					$query[] = " ORDER BY `id` DESC, `ordering` ASC ";
 				} elseif ($sort == 'default') {

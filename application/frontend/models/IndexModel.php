@@ -101,7 +101,7 @@ class IndexModel extends Model
 			} elseif ($options['task'] == 'get_category_special') {
 				$query[] = "SELECT DISTINCT c.id, c.name ";
 				$query[] = "FROM `" . TABLE_CATEGORY . "` as `c`, `" . TABLE_BOOK . "` as `b`";
-				$query[] = "WHERE `b`.`category_id` = `c`.`id` AND `c`.`status` = 'active' AND `c`.`special` = 1 ORDER BY `c`.`ordering` ASC LIMIT 0,8";
+				$query[] = "WHERE `b`.`category_id` = `c`.`id` AND `c`.`status` = 'active' AND `c`.`special` = 1 ORDER BY `c`.`ordering` ASC LIMIT 0,4";
 				$query = implode(" ", $query);
 				$result = $this->fetchPairs($query);
 			}
