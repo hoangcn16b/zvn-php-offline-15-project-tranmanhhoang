@@ -83,7 +83,7 @@ class Validate
 						$this->validatePassword($element, $value['options']);
 						break;
 					case 'url':
-						$this->validateUrl($element);
+						$this->validateUrl($element, $value['options']['min'], $value['options']['required'] = true);
 						break;
 					case 'email':
 						$this->validateEmail($element);
@@ -205,10 +205,15 @@ class Validate
 	}
 
 	// Validate URL
-	private function validateURL($element)
+	private function validateURL($element, $min = 0, $required = true)
 	{
-		if (!filter_var($this->source[$element], FILTER_VALIDATE_URL)) {
-			$this->setError($element, 'is an invalid url');
+		if ($required == true) {
+			$length = strlen($this->source[$element]);
+			if ($length > $min) {
+				if (!filter_var($this->source[$element], FILTER_VALIDATE_URL)) {
+					$this->setError($element, 'is an invalid url');
+				}
+			}
 		}
 	}
 

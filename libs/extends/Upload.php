@@ -19,6 +19,23 @@ class Upload
         }
     }
 
+    public function uploadSlider($fileObj, $folderUpload, $options = null)
+    {
+        if ($options == null) {
+            if ($fileObj['tmp_name'] != null) {
+                $uploadDir = UPLOAD_PATH . $folderUpload . DS;
+                $randomName = Helper::randomString(7);
+                $ext = '.' . pathinfo($fileObj['name'], PATHINFO_EXTENSION);
+                $nameFile = $randomName . $ext;
+                copy($fileObj['tmp_name'], $uploadDir . $nameFile);
+                $thumb = PhpThumbFactory::create($uploadDir . $nameFile);
+                $thumb->adaptiveResize(400, 200);
+                $thumb->save($uploadDir . '400x200-' . $nameFile);
+            }
+            return $nameFile;
+        }
+    }
+
     public function removeFile($folderUpload, $fileName)
     {
         $fileName = UPLOAD_PATH . $folderUpload . DS . $fileName;

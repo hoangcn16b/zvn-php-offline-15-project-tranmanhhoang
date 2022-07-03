@@ -27,17 +27,19 @@ $(document).ready(function () {
     var classActive = controller + '-' + id;
     if (classActive == 'book-empty') {
         $('.' + classActive).addClass('active');
-    }
+    };
+
+
 });
 
-    // document.getElementById('random-active-code').value = make_password(5);
-    // function make_password(length) {
-    //     var result = '';
-    //     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    //     var charactersLength = characters.length;
-    //     for (var i = 0; i < length; i++) {
-    //         result += characters.charAt(Math.floor(Math.random() *
-    //             charactersLength));
-    //     }
-    //     return result;
-    // }
+// function openModal(key, e) {
+//     e.preventdefault();
+//     console.log(key);
+//     $('#' + key).modal('toggle');
+// }
+
+$(document).on('click', '#clickModal', function (e) {
+    e.preventDefault();
+    let classModal = $(this).attr('class');
+    $('.myModal' + classModal).modal('show');
+});

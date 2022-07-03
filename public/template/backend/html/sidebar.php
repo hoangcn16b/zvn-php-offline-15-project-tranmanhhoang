@@ -120,6 +120,29 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link slider">
+                        <i class="nav-icon fas fa-image"></i>
+                        <p>
+                            Slider
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'slider', 'index') ?>" class="nav-link slider-index">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?= URL::createLink($this->arrParams['module'], 'slider', 'form') ?>" class="nav-link slider-form">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Add</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item ">
                     <a href="<?= URL::createLink('backend', 'user', 'myPassword') ?>" class="nav-link myPassword-myPassword">
                         <i class="nav-icon fas fa-key"></i>

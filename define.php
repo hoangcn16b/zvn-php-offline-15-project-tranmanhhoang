@@ -43,3 +43,4 @@
 	define ('TABLE_CATEGORY'		, 'category');						
 	define ('TABLE_PRIVILEGE'		, 'privilege');						
 	define ('TABLE_BOOK'			, 'book');						
+	define ('TABLE_SLIDER'			, 'slider');						

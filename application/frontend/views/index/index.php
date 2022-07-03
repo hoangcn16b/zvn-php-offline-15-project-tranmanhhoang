@@ -58,7 +58,7 @@ foreach ($this->specialBook as $key => $value) {
                                     </div>
                                     <div class="cart-info cart-wrap">
                                         <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                        <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view-special' . $value['id'] . '"></i></a>
+                                        <a href="#" id = "clickModal" class="' . $value['id'] . '" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
                                     </div>
                                 </div>
                                 <div class="product-detail">
@@ -139,7 +139,7 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
                                 </div>
                                 <div class="cart-info cart-wrap">
                                     <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                    <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view-cate' . $value['id'] . '"></i></a>
+                                    <a href="#" id = "clickModal" class="' . $value['id'] . '" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
                                 </div>
                             </div>
                             <div class="product-detail">
@@ -920,14 +920,14 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
 
 <!-- Quick-view modal popup start-->
 
-<!-- <div class="modal fade bd-example-modal-lg theme-modal" id="quick-view" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- <div class="myModal modal fade bd-example-modal-lg theme-modal" id="quick-view" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content quick-view-modal">
             <div class="modal-body">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">X</span></button>
                 <div class="row">
                     <div class="col-lg-6 col-xs-12">
-                        <div class="quick-view-img"><img src="<?= $this->_pathImg ?>quick-view-bg.jpg" alt="" class="w-100 img-fluid blur-up lazyload book-picture"></div>
+                        <div class="quick-view-img"><img src="images/quick-view-bg.jpg" alt="" class="w-100 img-fluid blur-up lazyload book-picture"></div>
                     </div>
                     <div class="col-lg-6 rtl-text">
                         <div class="product-right">
@@ -971,9 +971,9 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
 </div> -->
 
 <?php
-echo HelperFrontend::quickView($this->specialBook, $idName = 'quick-view-special');
+echo HelperFrontend::quickView($this->specialBook);
 foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
-    echo HelperFrontend::quickView($listItems, $idName = 'quick-view-cate');
+    echo HelperFrontend::quickView($listItems);
 }
 ?>
 <!-- Quick-view modal popup end -->

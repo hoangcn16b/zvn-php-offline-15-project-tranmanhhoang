@@ -117,7 +117,7 @@ class IndexModel extends Model
 			$queryProduct = [];
 			$queryProduct[] = "SELECT DISTINCT * ";
 			$queryProduct[] = "FROM  `" . TABLE_BOOK . "`";
-			$queryProduct[] = "WHERE `status` = 'active' AND `special` = 1 AND `category_id` = $key ";
+			$queryProduct[] = "WHERE `status` = 'active' AND `special` = 0 AND `category_id` = $key ";
 			$queryProduct[] = "ORDER BY `ordering` ASC LIMIT 0,8";
 			$queryProduct = implode(" ", $queryProduct);
 			$result[$key] = $this->fetchAll($queryProduct);
