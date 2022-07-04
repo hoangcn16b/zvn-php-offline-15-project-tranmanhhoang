@@ -146,7 +146,6 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
                                 <a href="' . $linktoProdCate . '" title="' . substr($value['description'], 0, 100) . '">
                                     <h6> ' . $value['name'] . ' </h6>
                                 </a>
-
                             <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
                             </div>
                         </div>

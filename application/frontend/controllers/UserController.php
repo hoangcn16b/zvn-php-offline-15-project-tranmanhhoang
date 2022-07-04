@@ -89,5 +89,24 @@ class UserController extends Controller
 		$data['password'] = '';
 		$this->_view->render($this->_arrParam['controller'] . '/password');
 	}
-
+	public function orderAction()
+	{
+		$cart = Session::get('cart');
+		$bookId = $this->_arrParam['book_id'];
+		$price = $this->_arrParam['price'];
+		if (empty($cart)) {
+			$cart['quantity'][$bookId] = 1;
+			$cart['price'][$bookId] = $price;
+		} else {
+			if (key_exists($bookId, $cart['quantity'])) {
+				$cart['quantity'][$bookId] += 1;
+				$cart['price'][$bookId] = $price * $cart['quantity'][$bookId];
+			} else {
+				$cart['quantity'][$bookId] = 1;
+				$cart['price'][$bookId] = $price;
+			}
+		}
+		Session::set('cart', $cart);
+		URL::redirectLink($this->_arrParam['module'],'book','detail',['book_id'=>$bookId]);
+	}
 }

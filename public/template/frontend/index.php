@@ -8,7 +8,7 @@
 
     <link rel="icon" href="<?= $this->_pathImg ?>favicon.png" type="image/x-icon">
     <link rel="shortcut icon" href="<?= $this->_pathImg ?>favicon.png" type="image/x-icon">
-    <title>Trang chủ | BookStore</title>
+    <title><?= $this->_title ?? 'Trang chủ | BookStore' ?></title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700,900" rel="stylesheet">
 
     <?php echo $this->_cssFiles; ?>

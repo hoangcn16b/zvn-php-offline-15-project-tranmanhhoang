@@ -49,7 +49,6 @@ class BookController extends Controller
         $this->_view->bookRelate = $this->_model->bookDetail($this->_arrParam, ['task' => 'book_relate']);
         $this->_view->bookNew = $this->_model->bookNew();
         $this->_view->getSpecialProduct = $this->_model->getSpecialProduct();
-
         $this->_view->render('book/detail');
     }
 }

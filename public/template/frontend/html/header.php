@@ -10,8 +10,8 @@
         $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], 'user', 'profile'), 'name' => 'Tài khoản của tôi'];
         $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], 'index', 'logout'), 'name' => 'Đăng xuất'];
     } else {
-        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'login'), 'name' => 'Đăng nhập'];
-        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'register'), 'name' => 'Đăng ký'];
+        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], 'index', 'login'), 'name' => 'Đăng nhập'];
+        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'],'index', 'register'), 'name' => 'Đăng ký'];
     }
 
     $xhtml = '<ul class="onhover-show-div">';
@@ -110,7 +110,7 @@
                                     </li>
                                     <li class="onhover-div mobile-cart">
                                         <div>
-                                            <a href="cart.html" id="cart" class="position-relative">
+                                            <a href="<?= URL::createLink('frontend', 'cart', 'index') ?>" id="cart" class="position-relative">
                                                 <img src="<?= $this->_pathImg ?>cart.png" class="img-fluid blur-up lazyload" alt="cart">
                                                 <i class="ti-shopping-cart"></i>
                                                 <span class="badge badge-warning">0</span>
