@@ -7,5 +7,8 @@
 	define ('REGISTER_SUCCESS'				, 'Đăng ký thành công, vui lòng kích hoạt tài khoản của bạn bằng email!');
 	define ('CHANGEPASS_SUCCESS'			, 'Thay đổi Password thành công, hãy đăng nhập lại!');
 	define ('CHANGEPASS_FALSE'				, 'Thay đổi Password thất bại!');
+	//frontend
+	define ('MSG_CHECKOUT'					, 'Hãy đăng nhập để thanh toán!');
+
 
 	

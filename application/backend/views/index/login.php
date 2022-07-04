@@ -10,6 +10,7 @@ $linkAction = URL::createLink($this->arrParams['module'], $this->arrParams['cont
 echo Helper::cmsError($this->errors ?? '');
 echo Helper::cmsSuccess($_SESSION['messageChangePass'] ?? '');
 Session::unset('messageChangePass');
+
 ?>
 <form action="<?= $linkAction ?>" method="post">
     <div class="input-group mb-3">

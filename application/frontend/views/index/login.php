@@ -29,14 +29,17 @@ $linkAction = URL::createLink($this->arrParams['module'], $this->arrParams['cont
                 <div class="theme-card">
                     <?php
                     echo Helper::cmsSuccess($_SESSION['messageRegister'] ?? '');
-                    Session::unset('messageRegister');
                     echo Helper::cmsError($this->errors ?? '');
                     echo Helper::cmsSuccess($_SESSION['messageChangePass'] ?? '');
                     echo Helper::cmsSuccess($_SESSION['messageLogin'] ?? '');
                     echo Helper::cmsSuccess($_SESSION['messageActivate'] ?? '');
+                    echo Helper::cmsError($_SESSION['messageCheckout'] ?? '');
+                    Session::unset('messageRegister');
                     Session::unset('messageActivate');
                     Session::unset('messageChangePass');
                     Session::unset('messageLogin');
+                    Session::unset('messageCheckout');
+
                     ?>
                     <form action="<?= $linkAction ?>" method="post" id="admin-form" class="theme-form">
                         <div class="form-group">

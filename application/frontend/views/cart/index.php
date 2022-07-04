@@ -12,7 +12,7 @@
 
 <?php
 $cart = Session::get('cart');
-Session::unset('cart');
+// Session::unset('cart');
 $totalItems = 0;
 $totalPrice = 0;
 if (!empty($cart)) {
@@ -91,10 +91,11 @@ if (!empty($this->items)) {
                             <h2 class="td-color text-lowercase">' . $totalPrice . ' đ</h2>
                         </td>
                     </tr>
-                    <input type="hidden" name="form[book_id][]" value="10" id="input_book_id_10">
-                    <input type="hidden" name="form[price][]" value="48300" id="input_price_10">
-                    <input type="hidden" name="form[quantity][]" value="1" id="input_quantity_10">
-                    <input type="hidden" name="form[name][]" value="Chờ Đến Mẫu Giáo Thì Đã Muộn" id="input_name_10"><input type="hidden" name="form[picture][]" value="product.jpg" id="input_picture_10">
+                    <input type="hidden" name="form[book_id][]" value="' . $value['id'] . '" id="input_book_id_10">
+                    <input type="hidden" name="form[price][]" value="' . $value['totalprice'] . '" id="input_price_10">
+                    <input type="hidden" name="form[quantity][]" value="' . $value['quantity'] . '" id="input_quantity_10">
+                    <input type="hidden" name="form[name][]" value="' . $value['name'] . '" id="input_name_10">
+                    <input type="hidden" name="form[picture][]" value="' . $value['picture'] . '" id="input_picture_10">
                 </tbody>
             ';
     }
@@ -111,14 +112,17 @@ if (!empty($this->items)) {
                             </tr>
                         </tfoot>
                     </table>
+                    
+
                 ';
 } else {
     $xhtml = 'Chưa có sẳn phẩm được thêm vào, hãy mua thêm sản phẩm!';
 }
-
+$linkContinue = URL::createLink('frontend', 'book', 'list');
+$linkSubmit = URL::createLink('frontend', 'cart', 'buy');
 ?>
 
-<form action="" method="POST" name="admin-form" id="admin-form">
+<form action="<?= $linkSubmit ?>" method="POST" name="admin-form" id="admin-form">
     <section class="cart-section section-b-space">
         <div class="container">
             <div class="row">
@@ -236,7 +240,7 @@ if (!empty($this->items)) {
                 </div>
             </div>
             <div class="row cart-buttons">
-                <div class="col-6"><a href="<?= URL::createLink('frontend', 'index', 'index') ?>" class="btn btn-solid">Tiếp tục mua sắm</a></div>
+                <div class="col-6"><a href="<?= $linkContinue ?>" class="btn btn-solid">Tiếp tục mua sắm</a></div>
                 <?php if (!empty($this->items)) {
                     echo '<div class="col-6"><button type="submit" class="btn btn-solid">Đặt hàng</button></div>';
                 } ?>

@@ -110,7 +110,7 @@
                                     </li>
                                     <li class="onhover-div mobile-cart">
                                         <div>
-                                            <a href="<?= URL::createLink('frontend', 'cart', 'index') ?>" id="cart" class="position-relative">
+                                            <a href="<?= URL::createLink('frontend', 'cart', 'index') ?>" id="cart" class="position-relative cart-index">
                                                 <img src="<?= $this->_pathImg ?>cart.png" class="img-fluid blur-up lazyload" alt="cart">
                                                 <i class="ti-shopping-cart"></i>
                                                 <span class="badge badge-warning">0</span>

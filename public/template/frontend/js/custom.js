@@ -7,6 +7,7 @@ $(document).ready(function () {
     var controller = (getUrlVar('controller') == '') ? 'index' : getUrlVar('controller');
     var action = (getUrlVar('action') == '') ? 'index' : getUrlVar('action');
     var classActive = controller + '-' + action;
+    console.log(classActive);
     $('.' + classActive).addClass('active');
 });
 
@@ -16,8 +17,13 @@ $(document).ready(function () {
     var action = (getUrlVar('action') == '') ? 'index' : getUrlVar('action');
     var classActive = controller;
     var checkClass = classActive + '-' + id + '-' + action;
-    if ((classActive == 'category' || classActive == 'book' || id == 'empty') && checkClass != 'book-empty-list' && controller != 'index' && action != 'detail' && controller != 'user') {
+    if (id == '' || id == 'empty') {
+        checkClass = classActive + '-' + action;
+    }
+    console.log(checkClass);
+    if ((classActive == 'category' || classActive == 'book' || id == 'empty') && checkClass != 'book-empty-list' && controller != 'index' && action != 'detail' && controller != 'user' && controller != 'cart') {
         $('.category-book').addClass('active');
+
     }
 });
 
@@ -25,6 +31,7 @@ $(document).ready(function () {
     var controller = (getUrlVar('controller') == '') ? 'book' : getUrlVar('controller');
     var id = (getUrlVar('id') == '') ? 'empty' : getUrlVar('id');
     var classActive = controller + '-' + id;
+
     if (classActive == 'book-empty' && controller !== 'user') {
         $('.' + classActive).addClass('active');
     };

@@ -34,4 +34,22 @@ class CartModel extends Model
 		}
 		return $result;
 	}
+
+	public function saveItems($params)
+	{
+		echo '<pre>';
+		print_r($params);
+		echo '</pre>';
+		$id = Helper::randomString(7);
+		$username = $params['userLogged']['username'];
+		$books = json_encode($params['form']['book_id']);
+		$prices = json_encode($params['form']['price']);
+		$quantities = json_encode($params['form']['quantity']);
+		$names = json_encode($params['form']['name']);
+		$pictures = json_encode($params['form']['picture']);
+		$date = date("Y-m-d H:i:s");
+
+		$query = "INSERT INTO `cart` (`id`, `username`, `books`, `prices`, `quantities`, `names`, `pictures`,`status`, `date`) 
+		VALUES ('$id', '$username', '$books', '$prices', '$quantities', '$names', '$pictures', '0', '$date')";
+	}
 }
