@@ -15,11 +15,13 @@ class IndexController extends Controller
 
 	public function indexAction()
 	{
+		$this->_view->slider = $this->_model->slider();
 		$this->_view->specialBook = $this->_model->listProductSpecial(['task' => 'get_product_special']);
 		$this->_view->specialCategory = $this->_model->listProductSpecial(['task' => 'get_category_special']);
 		$this->_view->getSpecialProctduct = $this->_model->getSpecialProctduct();
 		$this->_view->render($this->_arrParam['controller'] . '/index');
 	}
+
 
 	public function loginAction()
 	{

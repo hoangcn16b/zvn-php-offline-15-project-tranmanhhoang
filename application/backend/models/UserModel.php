@@ -65,8 +65,17 @@ class UserModel extends Model
 		$id = $params['id'];
 		$modified = date("Y-m-d H:i:s");
 		$modifiedBy = $params['userLogged']['username'];
+		$queryStatus = "SELECT `active_code` FROM `user` WHERE `id` = $id";
+		$resultQuery = $this->singleRecord($queryStatus);
+
 		$status = $params['status'] == 'active' ? 'inactive' : 'active';
-		$query = "UPDATE `$this->table` SET `status` = '$status', `modified` = '$modified', `modified_by` = '$modifiedBy' where `id` = '$id'";
+		$query[] = "UPDATE `$this->table` SET `status` = '$status', `modified` = '$modified', `modified_by` = '$modifiedBy' ";
+		if (preg_match('/_active/', $resultQuery['active_code']) == false) {
+			$randomcode = Helper::randomString(5) . '_active';
+			$query[] = ", `active_code` = '$randomcode' ";
+		}
+		$query[] = " where `id` = '$id'";
+		$query = implode(" ", $query);
 		$url = URL::createLink($params['module'], $params['controller'], 'ajaxStatus', ['id' => $id, 'status' => $status]);
 		$result = Helper::cmsStatus($status, $url, $id);
 		$this->query($query);

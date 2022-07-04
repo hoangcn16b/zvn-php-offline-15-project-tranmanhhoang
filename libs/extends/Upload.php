@@ -29,8 +29,8 @@ class Upload
                 $nameFile = $randomName . $ext;
                 copy($fileObj['tmp_name'], $uploadDir . $nameFile);
                 $thumb = PhpThumbFactory::create($uploadDir . $nameFile);
-                $thumb->adaptiveResize(400, 200);
-                $thumb->save($uploadDir . '400x200-' . $nameFile);
+                $thumb->adaptiveResize(360, 180);
+                $thumb->save($uploadDir . '360x180-' . $nameFile);
             }
             return $nameFile;
         }

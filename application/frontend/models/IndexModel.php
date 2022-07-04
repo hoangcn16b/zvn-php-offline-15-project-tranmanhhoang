@@ -124,4 +124,10 @@ class IndexModel extends Model
 		}
 		return $result;
 	}
+	public function slider()
+	{
+		$query = "SELECT `picture`, `link` FROM `slider` LIMIT 0,4";
+		$result = $this->fetchAll($query);
+		return $result;
+	}
 }

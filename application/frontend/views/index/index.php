@@ -1,25 +1,18 @@
-<!-- Home slider -->
-<section class="p-0 my-home-slider">
-    <div class="slide-1 home-slider">
-        <div>
-            <a href="" class="home text-center">
-                <img src="<?= $this->_pathImg ?>slider.jpg" alt="" class="bg-img blur-up lazyload">
-            </a>
-        </div>
-
-        <div>
-            <a href="" class="home text-center">
-                <img src="<?= $this->_pathImg ?>slider.jpg" alt="" class="bg-img blur-up lazyload">
-            </a>
-        </div>
-    </div>
-</section>
-<!-- Home slider end -->
-
-<!-- Top Collection -->
-<!-- Title-->
 <?php
-
+$slider = $this->slider;
+$xhtmlSlider = '';
+if (!empty($slider)) {
+    foreach ($slider as $key => $value) {
+        $linkImg = UPLOAD_URL . 'slider' . DS . $value['picture'];
+        $xhtmlSlider .= '
+                    <div>
+                    <a href="" class="home text-center">
+                        <img src="' . $linkImg . '" alt="" class="bg-img blur-up lazyload">
+                    </a>
+                    </div>   
+                ';
+    }
+}
 $xhtmlSpecialBook = '';
 $i = 1;
 foreach ($this->specialBook as $key => $value) {
@@ -169,6 +162,22 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
 }
 
 ?>
+
+<!-- Home slider -->
+<section class="p-0 my-home-slider">
+    <div class="slide-1 home-slider">
+        <?= $xhtmlSlider ?>
+        <!-- <div>
+            <a href="" class="home text-center">
+                <img src="<= $this->_pathImg ?>slider.jpg" alt="" class="bg-img blur-up lazyload">
+            </a>
+        </div> -->
+    </div>
+</section>
+<!-- Home slider end -->
+
+<!-- Top Collection -->
+
 <div class="title1 section-t-space title5">
     <h2 class="title-inner1">Sản phẩm nổi bật</h2>
     <hr role="tournament6">

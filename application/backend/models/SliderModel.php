@@ -77,7 +77,7 @@ class SliderModel extends Model
 		$result = $this->fetchPairs($queryPic);
 		foreach ($result as $value) {
 			$uploadObj->removeFile('slider', $value);
-			$uploadObj->removeFile('slider', '60x90-' . $value);
+			$uploadObj->removeFile('slider', '360x180-' . $value);
 		}
 		$query = "DELETE FROM `$this->table` WHERE `id` = " . mysqli_real_escape_string($this->connect, $id);
 		$this->query($query);
@@ -120,7 +120,7 @@ class SliderModel extends Model
 			} else {
 				$params['picture'] = $uploadObj->uploadSlider($params['picture'], 'slider', null);
 				$uploadObj->removeFile('slider', $params['picture_hidden']);
-				$uploadObj->removeFile('slider', '400x200-' . $params['picture_hidden']);
+				$uploadObj->removeFile('slider', '360x180-' . $params['picture_hidden']);
 				unset($params['picture_hidden']);
 			}
 			$params['name'] = mysqli_real_escape_string($this->connect, $params['name']);

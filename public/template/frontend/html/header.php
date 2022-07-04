@@ -4,7 +4,7 @@
     // Session::unset('user');
     $arrMenu = [];
     if ($userObj['group_acp'] ?? '' == 1) {
-        $arrMenu[] = ['class' => 'user-index', 'link' => URL::createLink('backend', 'index', 'index'), 'name' => 'Trang quản lý'];
+        $arrMenu[] = ['class' => '', 'link' => URL::createLink('backend', 'index', 'index'), 'name' => 'Trang quản lý'];
     }
     if ($userObj == true) {
         $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], 'user', 'profile'), 'name' => 'Tài khoản của tôi'];

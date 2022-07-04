@@ -9,9 +9,9 @@ $listOrdering = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
         $id = $item['id'];
-        $picturePath = UPLOAD_PATH . 'slider' . DS . '400x200-' . ($item['picture']);
+        $picturePath = UPLOAD_PATH . 'slider' . DS . '360x180-' . ($item['picture']);
         if (file_exists($picturePath) == true) {
-            $pathImg = UPLOAD_URL . 'slider' . DS . '400x200-' . ($item['picture']);
+            $pathImg = UPLOAD_URL . 'slider' . DS . '360x180-' . ($item['picture']);
             $picture = '<img src ="' . $pathImg . '">';
         } else {
             $pathImg = UPLOAD_URL . 'slider' . DS . '60x90-default.png';

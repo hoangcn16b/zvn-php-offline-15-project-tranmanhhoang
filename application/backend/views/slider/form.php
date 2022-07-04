@@ -5,9 +5,7 @@ $data = $this->outPut;
 $arrSelect = [
     'active' => 'Hiển thị', 'inactive' => 'Không hiển thị'
 ];
-echo '<pre>';
-print_r($data);
-echo '</pre>';
+
 $readOnly = isset($this->arrParams['id']) ? 'readonly' : '';
 $labelExistPic = ': None!';
 $readOnly = '';

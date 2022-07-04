@@ -1,3 +1,6 @@
+<?php
+
+?>
 <section class="p-0 my-home-slider">
     <div class="slide-1 home-slider">
         <div>

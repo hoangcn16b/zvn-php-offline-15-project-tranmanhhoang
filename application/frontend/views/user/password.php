@@ -66,7 +66,7 @@ $inputConfirmPass = HelperForm::input('text', 'form[new password confirm]', '', 
                                 <?= $lblConfirmPass . $inputConfirmPass ?>
                             </div>
                             <!-- <input type="hidden" id="form[token]" name="form[token]" value="1599258345"> -->
-                            <button type="submit" id="submit" class="btn btn-solid btn-sm">Cập nhật thông tin</button>
+                            <button type="submit" id="submit" class="btn btn-solid btn-sm">Cập nhật mật khẩu </button>
                         </form>
                     </div>
                 </div>

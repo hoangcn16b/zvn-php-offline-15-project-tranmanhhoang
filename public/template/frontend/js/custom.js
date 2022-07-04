@@ -16,7 +16,7 @@ $(document).ready(function () {
     var action = (getUrlVar('action') == '') ? 'index' : getUrlVar('action');
     var classActive = controller;
     var checkClass = classActive + '-' + id + '-' + action;
-    if ((classActive == 'category' || classActive == 'book' || id == 'empty') && checkClass != 'book-empty-list' && controller != 'index' && action != 'detail') {
+    if ((classActive == 'category' || classActive == 'book' || id == 'empty') && checkClass != 'book-empty-list' && controller != 'index' && action != 'detail' && controller != 'user') {
         $('.category-book').addClass('active');
     }
 });
@@ -25,11 +25,9 @@ $(document).ready(function () {
     var controller = (getUrlVar('controller') == '') ? 'book' : getUrlVar('controller');
     var id = (getUrlVar('id') == '') ? 'empty' : getUrlVar('id');
     var classActive = controller + '-' + id;
-    if (classActive == 'book-empty') {
+    if (classActive == 'book-empty' && controller !== 'user') {
         $('.' + classActive).addClass('active');
     };
-
-
 });
 
 // function openModal(key, e) {
