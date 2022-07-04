@@ -54,9 +54,9 @@ if (!empty($this->items)) {
                 <td>' . $id . '</td>
                 <td>' . $picture . '</td>
                 <td class="text-left" style="width:25%;">
-                    <p class="mb-0">Name: ' . $name . '</p>
-                    <p class="mb-0">Price: ' . $price . '</p>
-                    <p class="mb-0">Sale off: ' . $saleOff . '</p>
+                    <p class="mb-0"><b>Name:</b> ' . $name . '</p>
+                    <p class="mb-0"><b>Price:</b> ' . $price . '</p>
+                    <p class="mb-0"><b>Sale off:</b> ' . $saleOff . '</p>
                 </td>
                 <td style="width:30%;"> ' . $description . '</td>
                 <td class ="position-relative"> ' . $special . ' </td>
