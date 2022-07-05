@@ -97,7 +97,7 @@ if (!empty($this->items)) {
                         </td>
                     </tr>
                     <input type="hidden" name="form[book_id][]" value="' . $value['id'] . '" id="input_book_id_10">
-                    <input type="hidden" name="form[price][]" value="' . $value['totalprice'] . '" id="input_price_10">
+                    <input type="hidden" name="form[price][]" value="' . $value['price'] . '" id="input_price_10">
                     <input type="hidden" name="" value="' . $value['quantity'] . '" id="input_quantity_10">
                     <input type="hidden" name="form[name][]" value="' . $value['name'] . '" id="input_name_10">
                     <input type="hidden" name="form[picture][]" value="' . $value['picture'] . '" id="input_picture_10">

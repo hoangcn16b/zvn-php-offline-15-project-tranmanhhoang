@@ -26,10 +26,11 @@ class CartModel extends Model
 			$query[] = "WHERE `id` IN $ids AND `status` = 'active'";
 			$query = implode(" ", $query);
 			$result = $this->fetchAll($query);
+			
 			foreach ($result as $key => $value) {
 				$result[$key]['quantity'] = $cart['quantity'][$value['id']];
-				$result[$key]['totalprice'] = $cart['price'][$value['id']];
-				$result[$key]['price'] = $result[$key]['totalprice'] / $result[$key]['quantity'];
+				$result[$key]['price'] = $cart['price'][$value['id']];
+				$result[$key]['totalprice'] = $result[$key]['price'] * $result[$key]['quantity'];
 			}
 		}
 		return $result;
@@ -48,6 +49,7 @@ class CartModel extends Model
 
 		$query = "INSERT INTO `cart` (`id`, `username`, `books`, `prices`, `quantities`, `names`, `pictures`,`status`, `date`) 
 		VALUES ('$id', '$username', '$books', '$prices', '$quantities', '$names', '$pictures', 'new', '$date')";
+
 		$this->query($query);
 		Session::unset('cart');
 	}

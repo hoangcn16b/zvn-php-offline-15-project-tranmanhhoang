@@ -19,7 +19,8 @@ if ((Session::get('messageCheckout') != null)) {
     $notice = Helper::cmsSuccess(Session::get('messageCheckout' ?? ''));
     Session::unset('messageCheckout');
 } else {
-    $notice = Helper::cmsSuccess(['class' => 'waring', 'content' => 'Bạn chưa đặt hàng, hãy quay lại mua hàng!']);
+    $notice = '';
+    // $notice = Helper::cmsSuccess(['class' => 'waring', 'content' => 'Bạn chưa đặt hàng, hãy quay lại mua hàng!']);
 }
 ?>
 <div class="breadcrumb-section">

@@ -24,11 +24,9 @@ class CartController extends Controller
 			URL::redirectLink('frontend', 'index', 'login');
 		}
 		if (isset($this->_arrParam['form'])) {
-			echo '<pre>';
-			print_r($this->_arrParam['form']);
-			echo '</pre>';
-			die;
+	 
 			$this->_model->saveItems($this->_arrParam);
+			
 			Session::set('messageCheckout', ['class' => 'success', 'content' => 'Bạn đã đặt hàng thành công! Hãy kiểm tra email để xem lại hoá đơn và thời gian nhận hàng!']);
 			URL::redirectLink($this->_arrParam['module'], 'index', 'error', ['type' => 'checkout_success']);
 		}

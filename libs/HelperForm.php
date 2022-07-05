@@ -58,4 +58,25 @@ class HelperForm
                 ';
         return $xhtml;
     }
+
+    public static function selectBoxOnCart($arrData, $name, $keySelected = 'default', $class = '', $attr = '')
+    {
+        $color = 'white';
+
+
+        $xhtml = "";
+        if (!empty($arrData)) {
+            foreach ($arrData as $key => $value) {
+                $selected = ((string)$key == $keySelected) ? 'selected' : '';
+                $xhtml .= '<option value="' . $key . '" ' . $selected . '>' . $value . '</option>';
+            }
+        }
+        $color = ($keySelected == 'new') ? 'limegreen' : $color;
+        $color = ($keySelected == 'waiting') ? 'yellow' : $color;
+        $color = ($keySelected == 'process') ? 'orange' : $color;
+        $color = ($keySelected == 'completed') ? 'darkgray' : $color;
+        $backGround = 'style="background-color:' . $color . ';"';
+        $xhtml = sprintf('<select %s class="form-control custom-select %s" name="%s" %s> %s</select>', $backGround, $class, $name, $attr, $xhtml);
+        return $xhtml;
+    }
 }
