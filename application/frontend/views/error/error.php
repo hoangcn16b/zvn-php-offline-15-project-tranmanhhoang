@@ -7,11 +7,20 @@ switch ($this->arrParams['type'] ?? '') {
     case 'file_not_exist':
         $msg = 'Đường dẫn không tồn tại!';
         break;
+    case 'checkout_success':
+        $msg = 'Thông báo!';
+        break;
     default:
         $msg = 'Không tìm thấy trang yêu cầu';
         break;
 }
-
+$notice = '';
+if ((Session::get('messageCheckout') != null)) {
+    $notice = Helper::cmsSuccess(Session::get('messageCheckout' ?? ''));
+    Session::unset('messageCheckout');
+} else {
+    $notice = Helper::cmsSuccess(['class' => 'waring', 'content' => 'Bạn chưa đặt hàng, hãy quay lại mua hàng!']);
+}
 ?>
 <div class="breadcrumb-section">
     <div class="container">
@@ -30,7 +39,9 @@ switch ($this->arrParams['type'] ?? '') {
         <div class="row">
             <div class="col-sm-12">
                 <div class="error-section">
-                    <h1>404</h1>
+                    <h2>
+                        <?= $notice ?>
+                    </h2>
                     <!-- <h2>Đường dẫn không hợp lệ</h2> -->
                     <a href="<?= URL::createLink($this->arrParams['module'], $this->arrParams['controller'], 'index') ?>" class="btn btn-solid">Quay lại trang chủ</a>
                 </div>

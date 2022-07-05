@@ -40,4 +40,16 @@ class UserModel extends Model
 			return false;
 		}
 	}
+
+	public function listItems($params)
+	{
+		$userName = $params['userLogged']['username'];
+		$query[] = "SELECT `id`, `books`, `pictures`, `prices`, `quantities`, `names`, `status`, `date` ";
+		$query[] = "FROM `cart`";
+		$query[] = "WHERE `username` = '$userName'";
+		$query[] = "ORDER BY `date` ASC ";
+		$query = implode(" ", $query);
+		$result = $this->fetchAll($query);
+		return $result;
+	}
 }

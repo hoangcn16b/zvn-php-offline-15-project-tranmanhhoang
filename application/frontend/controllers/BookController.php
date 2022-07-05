@@ -51,4 +51,5 @@ class BookController extends Controller
         $this->_view->getSpecialProduct = $this->_model->getSpecialProduct();
         $this->_view->render('book/detail');
     }
+    
 }

@@ -11,7 +11,7 @@
         $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], 'index', 'logout'), 'name' => 'Đăng xuất'];
     } else {
         $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], 'index', 'login'), 'name' => 'Đăng nhập'];
-        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'],'index', 'register'), 'name' => 'Đăng ký'];
+        $arrMenu[] = ['class' => '', 'link' => URL::createLink($this->arrParams['module'], 'index', 'register'), 'name' => 'Đăng ký'];
     }
 
     $xhtml = '<ul class="onhover-show-div">';
@@ -40,6 +40,14 @@
         }
         $xhtmlCategory .= '</ul>';
     }
+    if (!empty(Session::get('cart'))) {
+        $cart = Session::get('cart');
+        $totalItems = array_sum($cart['quantity']);
+        Session::set('quantity', $totalItems);
+    } else {
+        $totalItems = 0;
+    }
+
     ?>
     <div class="mobile-fix-option"></div>
     <div class="container">
@@ -113,7 +121,7 @@
                                             <a href="<?= URL::createLink('frontend', 'cart', 'index') ?>" id="cart" class="position-relative cart-index">
                                                 <img src="<?= $this->_pathImg ?>cart.png" class="img-fluid blur-up lazyload" alt="cart">
                                                 <i class="ti-shopping-cart"></i>
-                                                <span class="badge badge-warning">0</span>
+                                                <span class="badge badge-warning"><?= $totalItems ?? '0' ?></span>
                                             </a>
                                         </div>
                                     </li>

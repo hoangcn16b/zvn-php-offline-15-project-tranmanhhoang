@@ -41,7 +41,7 @@ if ($bookInfo['sale_off'] != 0) {
     $priceSale = number_format($priceReal, 0, ',', '.');
     $price = number_format(($bookInfo['price']), 0, ',', '.') . ' đ';
 }
-$linkOrder = URL::createLink('frontend', 'user', 'order', ['book_id' => $bookInfo['id'], 'price' => $priceReal]);
+$linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $bookInfo['id'], 'price' => $priceReal]);
 $xhtmlBookInfo = '
                     <div class="col-lg-9 col-sm-12 col-xs-12">
                         <div class="container-fluid">
@@ -61,7 +61,8 @@ $xhtmlBookInfo = '
                                 <div class="col-lg-8 col-xl-8 rtl-text">
                                     <div class="product-right">
                                         <h2 class="mb-2">' . $bookInfo['name'] . '</h2>
-                                        <form action="" method="post">
+                                        <form action="' . $linkOrder . '" method="POST">
+                                        
                                         <h4><del>' . $price . '</del>' . $iconSaleOff . '</h4>
                                         <h3>' . $priceSale . ' Đ</h3>
                                         <div class="product-description border-product">
@@ -83,7 +84,7 @@ $xhtmlBookInfo = '
                                             </div>
                                         </div>
                                         <div class="product-buttons">
-                                            <a href="' . $linkOrder . '" class="btn btn-solid ml-0"><i class="fa fa-cart-plus"></i> Chọn mua</a>
+                                            <button type="submit" class="btn btn-solid ml-0"><i class="fa fa-cart-plus"></i> Chọn mua</button>
                                         </div>
                                         </form>
                                         <div class="border-product">

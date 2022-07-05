@@ -41,7 +41,7 @@ $inputConfirmPass = HelperForm::input('text', 'form[new password confirm]', '', 
                         <ul>
                             <li class="active"><a href="<?= URL::createLink($this->arrParams['module'], 'user', 'profile') ?>">Thông tin tài khoản</a></li>
                             <li class=""><a href="<?= URL::createLink($this->arrParams['module'], 'user', 'password') ?>">Thay đổi mật khẩu</a></li>
-                            <li class=""><a href="order-history.html">Lịch sử mua hàng</a></li>
+                            <li class=""><a href="<?= URL::createLink($this->arrParams['module'], 'user', 'history') ?>">Lịch sử mua hàng</a></li>
                             <li class=""><a href="<?= URL::createLink($this->arrParams['module'], 'index', 'logout') ?>">Đăng xuất</a>
                             </li>
                         </ul>

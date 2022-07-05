@@ -13,6 +13,7 @@
 <?php
 $cart = Session::get('cart');
 // Session::unset('cart');
+
 $totalItems = 0;
 $totalPrice = 0;
 if (!empty($cart)) {
@@ -49,6 +50,7 @@ if (!empty($this->items)) {
         $price = number_format(($value['price']), 0, ',', '.');
         $totalPrice = number_format(($value['totalprice']), 0, ',', '.');
         $countPrice += $value['totalprice'];
+        $linkDeleteProd = URL::createLink('frontend', 'cart', 'deleteProduct', ['book_id' => $value['id']]);
         $xhtml .= '
                 <tbody>
                     <tr>
@@ -62,7 +64,7 @@ if (!empty($this->items)) {
                                 <div class="col-xs-3">
                                     <div class="qty-box">
                                         <div class="input-group">
-                                            <input type="number" name="quantity" value="' . $value['quantity'] . '" class="form-control input-number" id="quantity-10" min="1">
+                                            <input type="number" name="" value="' . $value['quantity'] . '" class="form-control input-number" id="quantity-10" min="1">
                                         </div>
                                     </div>
                                 </div>
@@ -82,18 +84,18 @@ if (!empty($this->items)) {
                         <td>
                             <div class="qty-box">
                                 <div class="input-group">
-                                    <input type="number" name="quantity" value="' . $value['quantity'] . '" class="form-control input-number" id="quantity-10" min="1">
+                                    <input type="number" name="form[quantity][]" value="' . $value['quantity'] . '" class="form-control input-number" id="quantity-10" min="1" readonly>
                                 </div>
                             </div>
                         </td>
-                        <td><a href="#" class="icon"><i class="ti-close"></i></a></td>
+                        <td><a href="' . $linkDeleteProd . '" class="icon"><i class="ti-close"></i></a></td>
                         <td>
                             <h2 class="td-color text-lowercase">' . $totalPrice . ' đ</h2>
                         </td>
                     </tr>
                     <input type="hidden" name="form[book_id][]" value="' . $value['id'] . '" id="input_book_id_10">
                     <input type="hidden" name="form[price][]" value="' . $value['totalprice'] . '" id="input_price_10">
-                    <input type="hidden" name="form[quantity][]" value="' . $value['quantity'] . '" id="input_quantity_10">
+                    <input type="hidden" name="" value="' . $value['quantity'] . '" id="input_quantity_10">
                     <input type="hidden" name="form[name][]" value="' . $value['name'] . '" id="input_name_10">
                     <input type="hidden" name="form[picture][]" value="' . $value['picture'] . '" id="input_picture_10">
                 </tbody>

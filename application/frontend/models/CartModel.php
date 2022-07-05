@@ -37,9 +37,6 @@ class CartModel extends Model
 
 	public function saveItems($params)
 	{
-		echo '<pre>';
-		print_r($params);
-		echo '</pre>';
 		$id = Helper::randomString(7);
 		$username = $params['userLogged']['username'];
 		$books = json_encode($params['form']['book_id']);
@@ -50,6 +47,8 @@ class CartModel extends Model
 		$date = date("Y-m-d H:i:s");
 
 		$query = "INSERT INTO `cart` (`id`, `username`, `books`, `prices`, `quantities`, `names`, `pictures`,`status`, `date`) 
-		VALUES ('$id', '$username', '$books', '$prices', '$quantities', '$names', '$pictures', '0', '$date')";
+		VALUES ('$id', '$username', '$books', '$prices', '$quantities', '$names', '$pictures', 'new', '$date')";
+		$this->query($query);
+		Session::unset('cart');
 	}
 }
