@@ -144,6 +144,14 @@
                     </ul>
                 </li>
                 <li class="nav-item ">
+                    <a href="<?= URL::createLink('backend', 'cart', 'index') ?>" class="nav-link cart-index">
+                        <i class="nav-icon fas fa-cart-arrow-down"></i>
+                        <p>
+                            Cart
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item ">
                     <a href="<?= URL::createLink('backend', 'user', 'myPassword') ?>" class="nav-link myPassword-myPassword">
                         <i class="nav-icon fas fa-key"></i>
                         <p>

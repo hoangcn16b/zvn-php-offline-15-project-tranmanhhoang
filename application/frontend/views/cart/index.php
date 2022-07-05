@@ -22,6 +22,7 @@ if (!empty($cart)) {
 }
 
 $xhtml = '';
+$linkDeleteAll = URL::createLink('frontend', 'cart', 'deleteAll');
 if (!empty($this->items)) {
     $xhtml .= '
             <table class="table cart-table table-responsive-xs">
@@ -31,7 +32,9 @@ if (!empty($this->items)) {
                         <th scope="col">Tên sách</th>
                         <th scope="col">Giá</th>
                         <th scope="col">Số Lượng</th>
-                        <th scope="col"></th>
+                        <th scope="col">Delete All 
+                            <a href="' . $linkDeleteAll . '" class="icon"><i class="ti-close"></i></a>
+                        </th>
                         <th scope="col">Thành tiền</th>
                     </tr>
                 </thead>

@@ -24,7 +24,10 @@ class CartController extends Controller
 			URL::redirectLink('frontend', 'index', 'login');
 		}
 		if (isset($this->_arrParam['form'])) {
-
+			echo '<pre>';
+			print_r($this->_arrParam['form']);
+			echo '</pre>';
+			die;
 			$this->_model->saveItems($this->_arrParam);
 			Session::set('messageCheckout', ['class' => 'success', 'content' => 'Bạn đã đặt hàng thành công! Hãy kiểm tra email để xem lại hoá đơn và thời gian nhận hàng!']);
 			URL::redirectLink($this->_arrParam['module'], 'index', 'error', ['type' => 'checkout_success']);
@@ -52,12 +55,18 @@ class CartController extends Controller
 		Session::set('cart', $cart);
 		URL::redirectLink($this->_arrParam['module'], 'book', 'detail', ['book_id' => $bookId]);
 	}
-	
+
 	public function deleteProductAction()
 	{
 		$id = $this->_arrParam['book_id'];
 		unset($_SESSION['cart']['quantity'][$id]);
 		unset($_SESSION['cart']['price'][$id]);
+		URL::redirectLink('frontend', 'cart', 'index');
+	}
+
+	public function deleteAllAction()
+	{
+		Session::unset('cart');
 		URL::redirectLink('frontend', 'cart', 'index');
 	}
 }
