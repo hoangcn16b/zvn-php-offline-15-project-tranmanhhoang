@@ -15,10 +15,22 @@ class CartModel extends Model
 		$i = 0;
 		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
 			$query[] = "AND (";
+
 			foreach ($options as $cols => $value) {
-				if ($i == $total) break;
+				$checkSearchBy = false;
+				if (isset($arrParams['search_by']) && $arrParams['search_by'] != '' && $arrParams['search_by'] != 'all') {
+					$value = $arrParams['search_by'];
+					$checkSearchBy = true;
+				}
+				if ($i == $total) {
+					break;
+				}
 				$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
 				$query[] = ($i < 4) ? "`u`.`{$value}` $likeKeyWord OR" : "`u`.`{$value}` $likeKeyWord";
+				if ($checkSearchBy) {
+					$query[] = "`u`.`{$value}` $likeKeyWord";
+					break;
+				}
 				$i++;
 			}
 			$query[] = ")";
@@ -38,7 +50,7 @@ class CartModel extends Model
 		$query[] = "WHERE `u`.`username` = `c`.`username`";
 
 		$query[] = $this->createQuery($arrParams, 5);
-		$query[] = "ORDER BY `c`.`date` ASC";
+		$query[] = "ORDER BY `c`.`date` DESC";
 		$pagination = $arrParams['pagination'];
 		$totalItemsPerPage = $pagination['totalItemsPerPage'];
 		if ($totalItemsPerPage > 0) {
@@ -54,16 +66,27 @@ class CartModel extends Model
 	public function countItem($arrParams, $total = 5, $options = ['username', 'email', 'phone', 'fullname', 'address'])
 	{
 		$result = [];
-		$query[] = "SELECT COUNT(`id`) AS `all`";
-		$query[] = "FROM `$this->table`";
-		$query[] = "WHERE 1 ";
+		$query[] = "SELECT DISTINCT COUNT(`c`.`id`) AS `all`";
+		$query[] = "FROM `cart` as `c`, `user` as `u`";
+		$query[] = "WHERE `c`.`username` = `u`.`username` ";
 		$i = 0;
 		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
 			$query[] = "AND (";
 			foreach ($options as $cols => $value) {
-				if ($i == $total) break;
+				$checkSearchBy = false;
+				if (isset($arrParams['search_by']) && $arrParams['search_by'] != '' && $arrParams['search_by'] != 'all') {
+					$value = $arrParams['search_by'];
+					$checkSearchBy = true;
+				}
+				if ($i == $total) {
+					break;
+				}
 				$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
-				$query[] = ($i < 4) ? "`{$value}` $likeKeyWord OR" : "`{$value}` $likeKeyWord";
+				$query[] = ($i < 4) ? "`u`.`{$value}` $likeKeyWord OR" : "`u`.`{$value}` $likeKeyWord";
+				if ($checkSearchBy) {
+					$query[] = "`u`.`{$value}` $likeKeyWord";
+					break;
+				}
 				$i++;
 			}
 			$query[] = ")";
@@ -71,7 +94,7 @@ class CartModel extends Model
 
 		if (isset($arrParams['status']) && $arrParams['status'] != 'all' && $arrParams['status'] != '') {
 			$status = $arrParams['status'];
-			$query[] = "AND `status` = '$status'";
+			$query[] = "AND `c`.`status` = '$status'";
 		}
 		$query = implode(" ", $query);
 		if ($this->query($query)) {

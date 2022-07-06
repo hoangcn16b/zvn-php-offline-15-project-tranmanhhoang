@@ -6,7 +6,8 @@ $action = $this->arrParams['action'];
 $xhtml = '';
 $listStatus = [
     'selectStatus' => ['new' => 'New', 'waiting' => 'Waiting', 'process' => 'Process', 'completed' => 'Completed'],
-    'filterStatus' => ['all' => 'Select Status', 'new' => 'New', 'waiting' => 'Waiting', 'process' => 'Process', 'completed' => 'Completed']
+    'filterStatus' => ['all' => '--Select Status--', 'new' => 'New', 'waiting' => 'Waiting', 'process' => 'Process', 'completed' => 'Completed'],
+    'search_by' => ['all' => '--Search by all--', 'fullname' => 'Fullname', 'username' => 'Username', 'email' => 'Email', 'phone' => 'Phone', 'address' => 'Address']
 ];
 $items = $this->items;
 if (!empty($items)) {
@@ -18,6 +19,8 @@ if (!empty($items)) {
         $selectStatus = HelperForm::selectBoxOnCart($listStatus['selectStatus'], '', $item['status'], ' select-ordering-book', $attrStatus);
         $linkView = URL::createLink($module, $controller, 'form', ['id' => $id]);
         $cmsButtonView = Helper::cmsButton($linkView, '<i class="fas fa-eye "></i>', 'btn btn-info btn-sm rounded-circle');
+
+        $id = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['id']);
         $userName = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['username']);
         $fullName = Helper::highLight($this->arrParams['input-keyword'] ?? '',  $item['fullname']);
         $email = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['email']);
@@ -42,7 +45,7 @@ if (!empty($items)) {
             $name = $arrName[$keyB];
             $totalPrice += $price * $quantity;
             $tableContent .= '
-                            <p class="mb-0"><b>+</b> ' . $name . ' x <span class="badge badge-info badge-pill">' . $quantity . '</span> = ' . $totalperProd . '
+                            <p class="mb-0"><b>+</b> <i>' . $name . '</i> x <span class="badge badge-info badge-pill">' . $quantity . '</span> = ' . $totalperProd . '
                             </p>--------------------------------------------<br>
                             ';
         }
@@ -50,14 +53,14 @@ if (!empty($items)) {
         $xhtml .= '
             <tr>
                 <td>' . $id . '</td>
-                <td class="text-left" style="width:35%;">
+                <td class="text-left" style="width:25%;">
                 <p class="mb-0"><b>Fullname:</b> ' . $fullName . '</p>
                     <p class="mb-0"><b>Username:</b> ' . $userName . '</p>
                     <p class="mb-0"><b>Email:</b> ' . $email . '</p>
                     <p class="mb-0"><b>Phone:</b> ' . $phone . '</p>
                     <p class="mb-0"><b>Address:</b> ' . $address . '</p>
                 </td>
-                <td class="text-left" style="width:35%;">
+                <td class="text-left" style="width:40%;">
                     ' . $tableContent . '
                 </td>
                 <td> ' . $formatTotalPrice . ' </td>
@@ -71,14 +74,16 @@ if (!empty($items)) {
 $valueApplication = HelperForm::input('hidden', 'module', $module) .
     HelperForm::input('hidden', 'controller', $controller) .
     HelperForm::input('hidden', 'action', $action);
-$totalDeals = $this->totalDeals;
 
 $filterAll = '
             <a href="" class="btn btn-primary"> Total Deals
-                <span class="badge badge-pill badge-light">' . $this->totalDeals['total'] . '</span>
+                <span class="badge badge-pill badge-light">' . $this->totalDeals . '</span>
             </a>';
 $select = HelperForm::selectBox($listStatus['filterStatus'], 'status', $this->arrParams['status'] ?? 'all', ' filter-element');
 $filterStatus = $valueApplication . $select;
+
+$selectSearchBy = HelperForm::selectBox($listStatus['search_by'], 'search_by', $this->arrParams['search_by'] ?? 'all', 'filter-search-by');
+
 $filterSearch = HelperForm::input('text', 'input-keyword', ($this->arrParams['input-keyword'] ?? ''), 'input-keyword', 'form-control');
 
 $xhtmlPagination = $this->pagination->showPagination();
@@ -105,6 +110,9 @@ $xhtmlPagination = $this->pagination->showPagination();
                         <form action="" method="get" id="form-search" class="flex-grow-1 row align-items-center justify-content-end">
                             <div class="area-filter-attribute mb-2 mr-2 mb-2">
                                 <?= $filterStatus ?? '' ?>
+                            </div>
+                            <div class="area-filter-attribute mb-2 mr-2 mb-2">
+                                <?= $selectSearchBy ?? '' ?>
                             </div>
                             <div class="area-search mb-2">
                                 <div class="input-group" id="form-input">

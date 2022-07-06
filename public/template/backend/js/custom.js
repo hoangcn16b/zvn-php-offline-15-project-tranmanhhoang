@@ -56,7 +56,10 @@ $(document).ready(function () {
     $('.filter-element-special').on('change', function () {
         $('#form-search').submit();
     });
-
+    $('.filter-search-by').on('change', function () {
+        console.log(123);
+        $('#form-search').submit();
+    });
     // $('.ajax-status').click(function (e) {
     //     e.preventDefault();
     //     let url = $(this).attr('href');
