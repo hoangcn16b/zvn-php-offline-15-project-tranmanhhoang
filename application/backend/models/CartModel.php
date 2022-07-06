@@ -69,28 +69,8 @@ class CartModel extends Model
 		$query[] = "SELECT DISTINCT COUNT(`c`.`id`) AS `all`";
 		$query[] = "FROM `cart` as `c`, `user` as `u`";
 		$query[] = "WHERE `c`.`username` = `u`.`username` ";
-		$i = 0;
-		if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
-			$query[] = "AND (";
-			foreach ($options as $cols => $value) {
-				$checkSearchBy = false;
-				if (isset($arrParams['search_by']) && $arrParams['search_by'] != '' && $arrParams['search_by'] != 'all') {
-					$value = $arrParams['search_by'];
-					$checkSearchBy = true;
-				}
-				if ($i == $total) {
-					break;
-				}
-				$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
-				$query[] = ($i < 4) ? "`u`.`{$value}` $likeKeyWord OR" : "`u`.`{$value}` $likeKeyWord";
-				if ($checkSearchBy) {
-					$query[] = "`u`.`{$value}` $likeKeyWord";
-					break;
-				}
-				$i++;
-			}
-			$query[] = ")";
-		}
+		// $i = 0;
+		$query[] = $this->createQuery($arrParams, 5);
 
 		if (isset($arrParams['status']) && $arrParams['status'] != 'all' && $arrParams['status'] != '') {
 			$status = $arrParams['status'];
@@ -115,14 +95,36 @@ class CartModel extends Model
 		$this->query($query);
 	}
 
-	public function totalDeals()
-	{
-		$query = "SELECT count(`id`) AS `total` FROM `cart`";
-		$result = [];
-		$result = $this->singleRecord($query);
-		if (empty($result)) {
-			$result['total'] = 0;
-		}
-		return $result;
-	}
+	// public function totalDeals()
+	// {
+	// 	$query = "SELECT count(`id`) AS `total` FROM `cart`";
+	// 	$result = [];
+	// 	$result = $this->singleRecord($query);
+	// 	if (empty($result)) {
+	// 		$result['total'] = 0;
+	// 	}
+	// 	return $result;
+	// }
+	
+	// if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
+		// 	$query[] = "AND (";
+		// 	foreach ($options as $cols => $value) {
+		// 		$checkSearchBy = false;
+		// 		if (isset($arrParams['search_by']) && $arrParams['search_by'] != '' && $arrParams['search_by'] != 'all') {
+		// 			$value = $arrParams['search_by'];
+		// 			$checkSearchBy = true;
+		// 		}
+		// 		if ($i == $total) {
+		// 			break;
+		// 		}
+		// 		$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
+		// 		$query[] = ($i < 4) ? "`u`.`{$value}` $likeKeyWord OR" : "`u`.`{$value}` $likeKeyWord";
+		// 		if ($checkSearchBy) {
+		// 			$query[] = "`u`.`{$value}` $likeKeyWord";
+		// 			break;
+		// 		}
+		// 		$i++;
+		// 	}
+		// 	$query[] = ")";
+		// }
 }
