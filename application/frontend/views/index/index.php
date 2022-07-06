@@ -78,54 +78,49 @@ foreach ($this->specialBook as $key => $value) {
 $xhtmlCateSpecial = '';
 if ($this->specialCategory) {
     $xhtmlCateSpecial .= '<ul class="tabs tab-title">';
-    $i = 1;
-    foreach ($this->specialCategory as $key => $value) {
-        $xhtmlCateSpecial .= '
-                                        <li><a href="tab-category-' . $i . '" class="my-product-tab" data-category="' . $i . '">' . $value . '</a></li>
-                                    ';
-        $i++;
-    }
-}
+    foreach ($this->specialCategory as $keyC => $valueC) {
+        $categoryId = $valueC['id'];
+        $categoryName = $valueC['name'];
+        $xhtmlCateSpecial .= sprintf('<li><a href="tab-category-%s" class="my-product-tab" data-category="%s">%s</a></li>', $categoryId, $categoryId, $categoryName);
 
-$xhtmldetailCate = '';
-$i = 1;
-foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
-    $linkPreview = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $idCategory]);
-    $attr = '';
-    if ($i == 1) $attr = 'active default';
-    $xhtmldetailCate .= '
-                    <div id="tab-category-' . $i . '" class="tab-content ' . $attr . '">
+        $linkPreview = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $categoryId]);
+
+        $attr = '';
+        if ($key == 0) $attr = 'active default';
+
+        $xhtmldetailCate .= '
+                    <div id="tab-category-' . $categoryId . '" class="tab-content ' . $attr . '">
                         <div class="no-slider row tab-content-inside">';
-    foreach ($listItems as $key => $value) {
-        $iconSaleOff = '';
-        if ($value['sale_off'] > 0) {
-            $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
-            $iconSaleOff = '
+        foreach ($valueC['books'] as $keyB => $value) {
+            $iconSaleOff = '';
+            if ($value['sale_off'] > 0) {
+                $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
+                $iconSaleOff = '
                                 <div class="lable-block">
                                     <span class="lable4 badge badge-danger"> ' . $saleOff . '</span>
                                 </div>
                             ';
-        }
-        $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
-        if (file_exists($picturePath) == true) {
-            $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-            $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload bg-img" alt="product" >';
-        } else {
-            $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-            $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="product" >';
-        }
-        $price = '';
-        $priceSale = number_format(($value['price']), 0, ',', '.');
-        $priceReal = $value['price'] - ($value['price'] * ($value['sale_off'] / 100));
+            }
+            $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
+            if (file_exists($picturePath) == true) {
+                $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
+                $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload bg-img" alt="product" >';
+            } else {
+                $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
+                $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="product" >';
+            }
+            $price = '';
+            $priceSale = number_format(($value['price']), 0, ',', '.');
+            $priceReal = $value['price'] - ($value['price'] * ($value['sale_off'] / 100));
 
-        if ($value['sale_off'] != 0) {
-            $priceSale = number_format($priceReal, 0, ',', '.');
-            $price = number_format(($value['price']), 0, ',', '.') . ' đ';
-        }
-        $linktoProdCate = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
-        $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
+            if ($value['sale_off'] != 0) {
+                $priceSale = number_format($priceReal, 0, ',', '.');
+                $price = number_format(($value['price']), 0, ',', '.') . ' đ';
+            }
+            $linktoProdCate = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
+            $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
 
-        $xhtmldetailCate .= '
+            $xhtmldetailCate .= '
                         <div class="product-box" title="' . substr($value['description'], 0, 100) . '">
                             <div class="img-wrapper">
                                 <div class="lable-block">
@@ -156,14 +151,14 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
                             </div>
                         </div>
                     ';
-    }
+        }
 
-    $xhtmldetailCate .= '
+        $xhtmldetailCate .= '
                         </div>
                         <div class="text-center"><a href="' . $linkPreview . '" class="btn btn-solid">Xem tất cả</a></div>
                     </div> 
                 ';
-    $i++;
+    }
 }
 
 ?>
@@ -985,9 +980,9 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
 </div> -->
 
 <?php
-echo HelperFrontend::quickView($this->specialBook);
-foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
-    echo HelperFrontend::quickView($listItems);
-}
+// echo HelperFrontend::quickView($this->specialBook);
+// foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
+//     echo HelperFrontend::quickView($listItems);
+// }
 ?>
 <!-- Quick-view modal popup end -->

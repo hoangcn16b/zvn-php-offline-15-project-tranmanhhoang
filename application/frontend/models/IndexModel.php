@@ -103,7 +103,7 @@ class IndexModel extends Model
 				$query[] = "FROM `" . TABLE_CATEGORY . "` as `c`, `" . TABLE_BOOK . "` as `b`";
 				$query[] = "WHERE `b`.`category_id` = `c`.`id` AND `c`.`status` = 'active' AND `c`.`special` = 1 ORDER BY `c`.`ordering` ASC LIMIT 0,4";
 				$query = implode(" ", $query);
-				$result = $this->fetchPairs($query);
+				$result = $this->fetchAll($query);
 			}
 		}
 		return $result;
@@ -117,12 +117,12 @@ class IndexModel extends Model
 			$queryProduct = [];
 			$queryProduct[] = "SELECT DISTINCT * ";
 			$queryProduct[] = "FROM  `" . TABLE_BOOK . "`";
-			$queryProduct[] = "WHERE `status` = 'active' AND `special` = 0 AND `category_id` = $key ";
+			$queryProduct[] = "WHERE `status` = 'active' AND `special` = 0 AND `category_id` = {$value['id']} ";
 			$queryProduct[] = "ORDER BY `ordering` ASC LIMIT 0,8";
 			$queryProduct = implode(" ", $queryProduct);
-			$result[$key] = $this->fetchAll($queryProduct);
+			$arrParams[$key]['books'] = $this->fetchAll($queryProduct);
 		}
-		return $result;
+		return $arrParams;
 	}
 	public function slider()
 	{
