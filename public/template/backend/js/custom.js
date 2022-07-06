@@ -90,7 +90,6 @@ $(document).ready(function () {
                 parent.html(response);
                 parent.find('.ajax-status').notify("Success!", { className: 'success', position: 'top-center' });
             }
-
         });
     });
 

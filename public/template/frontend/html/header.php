@@ -121,7 +121,7 @@
                                             <a href="<?= URL::createLink('frontend', 'cart', 'index') ?>" id="cart" class="position-relative cart-index">
                                                 <img src="<?= $this->_pathImg ?>cart.png" class="img-fluid blur-up lazyload" alt="cart">
                                                 <i class="ti-shopping-cart"></i>
-                                                <span class="badge badge-warning"><?= $totalItems ?? '0' ?></span>
+                                                <span class="badge badge-warning quantity-cart" id="quantity-cart"><?= $totalItems ?? '0' ?></span>
                                             </a>
                                         </div>
                                     </li>

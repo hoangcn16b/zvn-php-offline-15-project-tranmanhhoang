@@ -60,9 +60,7 @@ $xhtmlBookInfo = '
                                 </div>
                                 <div class="col-lg-8 col-xl-8 rtl-text">
                                     <div class="product-right">
-                                        <h2 class="mb-2">' . $bookInfo['name'] . '</h2>
-                                        <form action="' . $linkOrder . '" method="POST">
-                                        
+                                        <h2 class="mb-2">' . $bookInfo['name'] . '</h2>                       
                                         <h4><del>' . $price . '</del>' . $iconSaleOff . '</h4>
                                         <h3>' . $priceSale . ' Đ</h3>
                                         <div class="product-description border-product">
@@ -74,7 +72,7 @@ $xhtmlBookInfo = '
                                                             <i class="ti-angle-left"></i>
                                                         </button>
                                                     </span>
-                                                    <input type="text" name="form[quantity]" class="form-control input-number" value="1">
+                                                    <input type="text" name="this_quantity" class="form-control input-number quantity-number" id ="quantity-number" value="1">
                                                     <span class="input-group-prepend">
                                                         <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
                                                             <i class="ti-angle-right"></i>
@@ -84,9 +82,9 @@ $xhtmlBookInfo = '
                                             </div>
                                         </div>
                                         <div class="product-buttons">
-                                            <button type="submit" class="btn btn-solid ml-0"><i class="fa fa-cart-plus"></i> Chọn mua</button>
+                                            <a href="' . $linkOrder . '" class="btn btn-solid ml-0 form-cart"><i class="fa fa-cart-plus"></i> Chọn mua</a>
                                         </div>
-                                        </form>
+                                        
                                         <div class="border-product">
                                             ' . Helper::collapseDesc($bookInfo['description'], 20) . '
                                         </div>

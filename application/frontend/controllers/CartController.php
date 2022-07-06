@@ -37,10 +37,8 @@ class CartController extends Controller
 		$cart = Session::get('cart');
 		$bookId = $this->_arrParam['book_id'];
 		$price = $this->_arrParam['price'];
-		$quantity = $this->_arrParam['form']['quantity'];
-		echo '<pre>';
-		print_r($this->_arrParam);
-		echo '</pre>';
+		// $quantity = $this->_arrParam['form']['quantity'];
+		$quantity = $this->_arrParam['this_quantity'];
 		if (empty($cart)) {
 			$cart['quantity'][$bookId] = $quantity;
 			$cart['price'][$bookId] = $price;
@@ -54,7 +52,10 @@ class CartController extends Controller
 			}
 		}
 		Session::set('cart', $cart);
-		URL::redirectLink($this->_arrParam['module'], 'book', 'detail', ['book_id' => $bookId]);
+		$qty = $cart['quantity'];
+		echo array_sum($qty);
+		// echo $cart['quantity']['']
+		// URL::redirectLink($this->_arrParam['module'], 'book', 'detail', ['book_id' => $bookId]);
 	}
 
 	public function deleteProductAction()

@@ -7,7 +7,6 @@ $(document).ready(function () {
     var controller = (getUrlVar('controller') == '') ? 'index' : getUrlVar('controller');
     var action = (getUrlVar('action') == '') ? 'index' : getUrlVar('action');
     var classActive = controller + '-' + action;
-    console.log(classActive);
     $('.' + classActive).addClass('active');
 });
 
@@ -20,10 +19,8 @@ $(document).ready(function () {
     if (id == '' || id == 'empty') {
         checkClass = classActive + '-' + action;
     }
-    console.log(checkClass);
     if ((classActive == 'category' || classActive == 'book' || id == 'empty') && checkClass != 'book-empty-list' && controller != 'index' && action != 'detail' && controller != 'user' && controller != 'cart') {
         $('.category-book').addClass('active');
-
     }
 });
 
@@ -48,3 +45,27 @@ $(document).on('click', '#clickModal', function (e) {
     let classModal = $(this).attr('class');
     $('.myModal' + classModal).modal('show');
 });
+
+$(document).ready(function () {
+
+    $(document).on('click', '.form-cart', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        var quantityNumber = $('.quantity-number').val();
+        // var quantityNumber = document.getElementById('quantity-number').value;
+        var parent = $('.quantity-cart').parent();
+        var parentCart = $(this).parent();
+        url = url + '&this_quantity=' + quantityNumber;
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (response) {
+                document.getElementById('quantity-cart').innerHTML = response;
+                parent.find('.quantity-cart').notify("Success!", { className: 'success', position: 'bottom-center' });
+                parentCart.find('.form-cart').notify("Success!", { className: 'success', position: 'right-center' });
+            }
+        });
+    });
+
+});
+

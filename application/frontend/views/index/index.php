@@ -78,6 +78,8 @@ foreach ($this->specialBook as $key => $value) {
 $xhtmlCateSpecial = '';
 if ($this->specialCategory) {
     $xhtmlCateSpecial .= '<ul class="tabs tab-title">';
+    $i = 0;
+    $xhtmldetailCate = '';
     foreach ($this->specialCategory as $keyC => $valueC) {
         $categoryId = $valueC['id'];
         $categoryName = $valueC['name'];
@@ -86,11 +88,11 @@ if ($this->specialCategory) {
         $linkPreview = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $categoryId]);
 
         $attr = '';
-        if ($key == 0) $attr = 'active default';
+        if ($key == 0 || $i == 0) $attr = 'active default';
 
         $xhtmldetailCate .= '
                     <div id="tab-category-' . $categoryId . '" class="tab-content ' . $attr . '">
-                        <div class="no-slider row tab-content-inside">';
+                        <div class="no-slider row tab-content-inside"> ';
         foreach ($valueC['books'] as $keyB => $value) {
             $iconSaleOff = '';
             if ($value['sale_off'] > 0) {
@@ -158,7 +160,9 @@ if ($this->specialCategory) {
                         <div class="text-center"><a href="' . $linkPreview . '" class="btn btn-solid">Xem tất cả</a></div>
                     </div> 
                 ';
+        $i++;
     }
+    $xhtmlCateSpecial .= '</ul>';
 }
 
 ?>
