@@ -31,9 +31,12 @@ class CartController extends Controller
 		// echo json_encode($result);
 	}
 
-	public function viewAction(){
-		
+	public function viewAction()
+	{
 		$this->_view->getItem = $this->_model->getItem($this->_arrParam);
+		if (empty($this->_model->getItem($this->_arrParam))) {
+			URL::redirectLink('backend', 'cart', 'index');
+		}
 		$this->_view->render('cart/view');
 	}
 }

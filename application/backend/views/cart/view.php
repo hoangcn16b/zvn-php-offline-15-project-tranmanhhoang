@@ -32,7 +32,10 @@ if (!empty($item)) {
     $arrQuantity = json_decode($item['quantities']);
     $arrPicture = json_decode($item['pictures']);
     $totalPrice = 0;
+
     foreach ($arrBook as $keyB => $valueB) {
+        $idBook = $valueB;
+        $linkBook = URL::createLink('backend', 'book', 'form', ['id' => $idBook]);
         $name = $arrName[$keyB];
         $price = $arrPrice[$keyB];
         $formatPrice = number_format($price);
@@ -50,7 +53,7 @@ if (!empty($item)) {
         }
         $tableContent .= '
                             <tr>
-                                <td style="width: 120px; padding: 5px">' . $picture . '</td>
+                                <td style="width: 120px; padding: 5px"><a href = "' . $linkBook . '">' . $picture . '</a></td>
                                 <td class="text-wrap" style="min-width: 180px">' . $name . '</td>
                                 <td class="text-center">' . $formatPrice . 'đ</td>
                                 <td class="text-center">' . $quantity . '</td>
