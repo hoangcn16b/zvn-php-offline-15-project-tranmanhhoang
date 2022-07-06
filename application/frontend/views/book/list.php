@@ -54,11 +54,13 @@ foreach ($this->productAll as $key => $value) {
     }
     $price = '';
     $priceSale = number_format(($value['price']), 0, ',', '.');
+    $priceReal = $value['price'] - ($value['price'] * ($value['sale_off'] / 100));
     if ($value['sale_off'] != 0) {
-        $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
+        $priceSale = number_format($priceReal, 0, ',', '.');
         $price = number_format(($value['price']), 0, ',', '.') . ' đ';
     }
     $linktoProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
+    $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
     $xhtmlProduct .= '
                     <div class="col-xl-3 col-6 col-grid-box" >
                         <div class="product-box" title="' . Helper::collapseDesc($value['description'], 15) . '">
@@ -70,8 +72,8 @@ foreach ($this->productAll as $key => $value) {
                                     </a>
                                 </div>
                                 <div class="cart-info cart-wrap">
-                                    <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                    <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view-all-product' . $value['id'] . '"></i></a>
+                                    <a href="' . $linkOrder . '" title="Add to cart"><i class="ti-shopping-cart"></i></a>
+                                    <a href="#" id = "clickModal" class="' . $value['id'] . '" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
                                 </div>
                             </div>
                             <div class="product-detail">
@@ -157,6 +159,7 @@ if (isset($this->arrParams['id'])) {
 $paramsToURL = HelperForm::input('hidden', 'module', 'frontend') . HelperForm::input('hidden', 'controller', 'book') . HelperForm::input('hidden', 'action', 'list') . $paramsId;
 
 $xhtmlPagination = $this->pagination->showPagination();
+
 ?>
 
 <section class="section-b-space j-box ratio_asos">
@@ -308,6 +311,5 @@ $xhtmlPagination = $this->pagination->showPagination();
 </section>
 
 <?php
-echo HelperFrontend::quickView($this->productAll, $idName = 'quick-view-all-product');
-
+    echo HelperFrontend::quickView($this->productAll);
 ?>

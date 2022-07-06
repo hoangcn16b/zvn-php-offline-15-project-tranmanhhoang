@@ -41,11 +41,13 @@ class HelperFrontend
             }
             $price = '';
             $priceSale = number_format(($value['price']), 0, ',', '.');
+            $priceReal = $value['price'] - ($value['price'] * $value['sale_off'] / 100);
             if ($value['sale_off'] != 0) {
-                $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
+                $priceSale = number_format($priceReal, 0, ',', '.');
                 $price = number_format(($value['price']), 0, ',', '.') . ' đ';
             }
             $linktoSpecialProd = URL::createLink('frontend', 'book', 'detail', ['book_id' => $value['id']]);
+            $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
             $xhtml .= '
                         <div class=" myModal' . $value['id'] . ' modal fade bd-example-modal-lg theme-modal" id="quick-view" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -67,6 +69,7 @@ class HelperFrontend
                                                         <div class="book-description">
                                                         ' . $value['description'] . '</div>
                                                     </div>
+                                                    <form action ="' . $linkOrder . '" method = "POST"> 
                                                     <div class="product-description border-product">
                                                         <h6 class="product-title">Số lượng</h6>
                                                         <div class="qty-box">
@@ -76,7 +79,7 @@ class HelperFrontend
                                                                         <i class="ti-angle-left"></i>
                                                                     </button>
                                                                 </span>
-                                                                <input type="text" name="quantity" class="form-control input-number" value="1">
+                                                                <input type="text" name="form[quantity]" class="form-control input-number" value="1">
                                                                 <span class="input-group-prepend">
                                                                     <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
                                                                         <i class="ti-angle-right"></i>
@@ -86,9 +89,10 @@ class HelperFrontend
                                                         </div>
                                                     </div>
                                                     <div class="product-buttons">
-                                                        <a href="#" class="btn btn-solid mb-1 btn-add-to-cart">Chọn Mua</a>
+                                                        <button type = "submit" class="btn btn-solid mb-1 btn-add-to-cart">Chọn Mua</button>
                                                         <a href="' . $linktoSpecialProd . '" class="btn btn-solid mb-1 btn-view-book-detail">Xem chi tiết</a>
                                                     </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

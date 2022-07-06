@@ -264,6 +264,7 @@ foreach ($bookRelate as $key => $value) {
             $price = number_format(($value['price']), 0, ',', '.') . ' đ';
         }
         $linktospecialProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
+        $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
         $xhtmlBookRelate .= '
                             <div class="col-xl-2 col-md-4 col-sm-6">
                                 <div class="product-box">
@@ -275,7 +276,7 @@ foreach ($bookRelate as $key => $value) {
                                             </a>
                                         </div>
                                         <div class="cart-info cart-wrap">
-                                            <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
+                                            <a href="' . $linkOrder . '" title="Add to cart"><i class="ti-shopping-cart"></i></a>
                                             <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view-relate' . $value['id'] . '"></i></a>
                                         </div>
                                     </div>

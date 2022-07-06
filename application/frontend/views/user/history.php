@@ -11,7 +11,10 @@
 </div>
 
 <?php
-
+$listStatus =
+    [
+        'new' => 'New', 'waiting' => 'Waiting', 'process' => 'Process', 'completed' => 'Completed'
+    ];
 $xhtml = '';
 if (!empty($this->items)) {
     foreach ($this->items as $key => $item) {
@@ -63,11 +66,17 @@ if (!empty($this->items)) {
                         </tr>';
         }
         $formatTotalPrice = number_format($totalPrice);
+        foreach ($listStatus as $key => $value) {
+            if ($item['status'] == $key) {
+                $status = $value;
+                break;
+            }
+        }
         $xhtml .= '
                     <div class="card">
                         <div class="card-header">
                             <h5 class="mb-0"><button style="text-transform: none;" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#' . $cartId . '">Mã đơn hàng:
-                                    ' . $cartId . '</button>&nbsp;&nbsp;Thời gian: ' . $date . '&nbsp;&nbsp; Trạng thái: <b>' . $item['status'] . '</b></h5>
+                                    ' . $cartId . '</button>&nbsp;&nbsp;Thời gian: ' . $date . '&nbsp;&nbsp; Trạng thái: <b>' . $status . '</b></h5>
                         </div>
                         <div id="' . $cartId . '" class="collapse" data-parent="#accordionExample">
                             <div class="card-body table-responsive">

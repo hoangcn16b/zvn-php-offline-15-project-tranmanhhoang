@@ -24,9 +24,9 @@ class CartController extends Controller
 			URL::redirectLink('frontend', 'index', 'login');
 		}
 		if (isset($this->_arrParam['form'])) {
-	 
+
 			$this->_model->saveItems($this->_arrParam);
-			
+
 			Session::set('messageCheckout', ['class' => 'success', 'content' => 'Bạn đã đặt hàng thành công! Hãy kiểm tra email để xem lại hoá đơn và thời gian nhận hàng!']);
 			URL::redirectLink($this->_arrParam['module'], 'index', 'error', ['type' => 'checkout_success']);
 		}
@@ -38,13 +38,16 @@ class CartController extends Controller
 		$bookId = $this->_arrParam['book_id'];
 		$price = $this->_arrParam['price'];
 		$quantity = $this->_arrParam['form']['quantity'];
+		echo '<pre>';
+		print_r($this->_arrParam);
+		echo '</pre>';
 		if (empty($cart)) {
 			$cart['quantity'][$bookId] = $quantity;
 			$cart['price'][$bookId] = $price;
 		} else {
 			if (key_exists($bookId, $cart['quantity'])) {
 				$cart['quantity'][$bookId] += $quantity;
-				$cart['price'][$bookId] = $price * $cart['quantity'][$bookId];
+				$cart['price'][$bookId] = $price;
 			} else {
 				$cart['quantity'][$bookId] = $quantity;
 				$cart['price'][$bookId] = $price;

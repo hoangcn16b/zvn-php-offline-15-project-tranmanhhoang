@@ -35,11 +35,13 @@ foreach ($this->specialBook as $key => $value) {
     }
     $price = '';
     $priceSale = number_format(($value['price']), 0, ',', '.');
+    $priceReal = $value['price'] - ($value['price'] * ($value['sale_off'] / 100));
     if ($value['sale_off'] != 0) {
         $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
         $price = number_format(($value['price']), 0, ',', '.') . ' đ';
     }
     $linktoSpecialProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
+    $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
     $xhtmlSpecialBook .= '
                             <div class="product-box" title="' . substr($value['description'], 0, 100) . '">
                                 <div class="img-wrapper">
@@ -50,7 +52,7 @@ foreach ($this->specialBook as $key => $value) {
                                         </a>
                                     </div>
                                     <div class="cart-info cart-wrap">
-                                        <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
+                                        <a href="' . $linkOrder . '" title="Add to cart"><i class="ti-shopping-cart"></i></a>
                                         <a href="#" id = "clickModal" class="' . $value['id'] . '" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
                                     </div>
                                 </div>
@@ -114,11 +116,15 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
         }
         $price = '';
         $priceSale = number_format(($value['price']), 0, ',', '.');
+        $priceReal = $value['price'] - ($value['price'] * ($value['sale_off'] / 100));
+
         if ($value['sale_off'] != 0) {
-            $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
+            $priceSale = number_format($priceReal, 0, ',', '.');
             $price = number_format(($value['price']), 0, ',', '.') . ' đ';
         }
         $linktoProdCate = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
+        $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
+
         $xhtmldetailCate .= '
                         <div class="product-box" title="' . substr($value['description'], 0, 100) . '">
                             <div class="img-wrapper">
@@ -131,7 +137,7 @@ foreach ($this->getSpecialProctduct as $idCategory => $listItems) {
                                     </a>
                                 </div>
                                 <div class="cart-info cart-wrap">
-                                    <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
+                                    <a href="' . $linkOrder . '" title="Add to cart"><i class="ti-shopping-cart"></i></a>
                                     <a href="#" id = "clickModal" class="' . $value['id'] . '" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
                                 </div>
                             </div>
