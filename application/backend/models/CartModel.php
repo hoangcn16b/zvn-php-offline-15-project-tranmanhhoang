@@ -95,6 +95,16 @@ class CartModel extends Model
 		$this->query($query);
 	}
 
+	public function getItem($arrParams)
+	{
+		$query[] = "SELECT `c`.`id`, c.books, c.pictures, c.prices, c.quantities, c.names, c.status, c.date, u.username, u.fullname, u.address, u.phone, u.email ";
+		$query[] = "FROM `user` AS `u`, `cart` AS `c`";
+		$query[] = "WHERE `u`.`username` = `c`.`username` AND `c`.`id` = '{$arrParams['id']}'";
+		$query[] = "ORDER BY `c`.`date` DESC";
+		$query = implode(" ", $query);
+		$result = $this->singleRecord($query);
+		return $result;
+	}
 	// public function totalDeals()
 	// {
 	// 	$query = "SELECT count(`id`) AS `total` FROM `cart`";
@@ -105,26 +115,26 @@ class CartModel extends Model
 	// 	}
 	// 	return $result;
 	// }
-	
+
 	// if (isset($arrParams['input-keyword']) && $arrParams['input-keyword'] != '') {
-		// 	$query[] = "AND (";
-		// 	foreach ($options as $cols => $value) {
-		// 		$checkSearchBy = false;
-		// 		if (isset($arrParams['search_by']) && $arrParams['search_by'] != '' && $arrParams['search_by'] != 'all') {
-		// 			$value = $arrParams['search_by'];
-		// 			$checkSearchBy = true;
-		// 		}
-		// 		if ($i == $total) {
-		// 			break;
-		// 		}
-		// 		$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
-		// 		$query[] = ($i < 4) ? "`u`.`{$value}` $likeKeyWord OR" : "`u`.`{$value}` $likeKeyWord";
-		// 		if ($checkSearchBy) {
-		// 			$query[] = "`u`.`{$value}` $likeKeyWord";
-		// 			break;
-		// 		}
-		// 		$i++;
-		// 	}
-		// 	$query[] = ")";
-		// }
+	// 	$query[] = "AND (";
+	// 	foreach ($options as $cols => $value) {
+	// 		$checkSearchBy = false;
+	// 		if (isset($arrParams['search_by']) && $arrParams['search_by'] != '' && $arrParams['search_by'] != 'all') {
+	// 			$value = $arrParams['search_by'];
+	// 			$checkSearchBy = true;
+	// 		}
+	// 		if ($i == $total) {
+	// 			break;
+	// 		}
+	// 		$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
+	// 		$query[] = ($i < 4) ? "`u`.`{$value}` $likeKeyWord OR" : "`u`.`{$value}` $likeKeyWord";
+	// 		if ($checkSearchBy) {
+	// 			$query[] = "`u`.`{$value}` $likeKeyWord";
+	// 			break;
+	// 		}
+	// 		$i++;
+	// 	}
+	// 	$query[] = ")";
+	// }
 }

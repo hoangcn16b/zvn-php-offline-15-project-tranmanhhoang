@@ -30,4 +30,10 @@ class CartController extends Controller
 		echo $result;
 		// echo json_encode($result);
 	}
+
+	public function viewAction(){
+		
+		$this->_view->getItem = $this->_model->getItem($this->_arrParam);
+		$this->_view->render('cart/view');
+	}
 }

@@ -17,7 +17,7 @@ if (!empty($items)) {
         $ajaxStatus = URL::createLink($module, $controller, 'ajaxStatus', ['id' => $id, 'status' => 'value_new']);
         $attrStatus = 'data-geturl = "' . $ajaxStatus . '"';
         $selectStatus = HelperForm::selectBoxOnCart($listStatus['selectStatus'], '', $item['status'], ' select-ordering-book', $attrStatus);
-        $linkView = URL::createLink($module, $controller, 'form', ['id' => $id]);
+        $linkView = URL::createLink($module, $controller, 'view', ['id' => $id]);
         $cmsButtonView = Helper::cmsButton($linkView, '<i class="fas fa-eye "></i>', 'btn btn-info btn-sm rounded-circle');
 
         $id = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['id']);
@@ -26,7 +26,6 @@ if (!empty($items)) {
         $email = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['email']);
         $phone = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['phone']);
         $address = Helper::highLight($this->arrParams['input-keyword'] ?? '', $item['address']);
-
 
         $tableContent = '';
         $date = date("H:i d/m/Y", strtotime($item['date']));
