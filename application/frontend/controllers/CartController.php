@@ -71,4 +71,34 @@ class CartController extends Controller
 		Session::unset('cart');
 		URL::redirectLink('frontend', 'cart', 'index');
 	}
+
+	public function changePriceAction()
+	{
+		$cart = Session::get('cart');
+		$bookId = $this->_arrParam['book_id'];
+		$price = $this->_arrParam['price'];
+		$quantity = $this->_arrParam['this_quantity'];
+		if (empty($cart)) {
+			$cart['quantity'][$bookId] = $quantity;
+			$cart['price'][$bookId] = $price;
+		} else {
+			if (key_exists($bookId, $cart['quantity'])) {
+				$cart['quantity'][$bookId] = $quantity;
+				$cart['price'][$bookId] = $price;
+			} else {
+				$cart['quantity'][$bookId] = $quantity;
+				$cart['price'][$bookId] = $price;
+			}
+		}
+		Session::set('cart', $cart);
+		$arrPrice = $cart['price'];
+
+		$total = 0;
+		foreach ($cart['quantity'] as $id => $value) {
+			$total = $total + $value * $cart['price'][$id];
+		}
+		$result[] = array_sum($cart['quantity']);
+		$result[] = $total;
+		echo json_encode($result);
+	}
 }

@@ -41,6 +41,7 @@ if (!empty($this->items)) {
             ';
     $countPrice = 0;
     foreach ($this->items as $key => $value) {
+        $id = $value['id'];
         $link = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
         $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
         if (file_exists($picturePath) == true) {
@@ -54,9 +55,11 @@ if (!empty($this->items)) {
         $totalPrice = number_format(($value['totalprice']), 0, ',', '.');
         $countPrice += $value['totalprice'];
         $linkDeleteProd = URL::createLink('frontend', 'cart', 'deleteProduct', ['book_id' => $value['id']]);
+        $linkData = URL::createLink('frontend', 'cart', 'changeQuantity', ['book_id' => $value['id']]);
+        $data = "data-price=" . $value['price'];
         $xhtml .= '
                 <tbody>
-                    <tr>
+                    <tr class="get-id" id="' . $id . '">
                         <td>
                             <a href="' . $link . '">
                             ' . $picture . '
@@ -82,18 +85,18 @@ if (!empty($this->items)) {
                             </div>
                         </td>
                         <td>
-                            <h2 class="text-lowercase">' . $price . ' đ</h2>
+                            <h2 class="text-lowercase" >' . $price . ' đ</h2>
                         </td>
                         <td>
                             <div class="qty-box">
                                 <div class="input-group">
-                                    <input type="number" name="form[quantity][]" value="' . $value['quantity'] . '" class="form-control input-number" id="quantity-10" min="1" readonly>
+                                    <input type="number" name="form[quantity][]" value="' . $value['quantity'] . '" class="form-control input-number" id="' . $id . '" min="1" ' . $data . '>
                                 </div>
                             </div>
                         </td>
                         <td><a href="' . $linkDeleteProd . '" class="icon"><i class="ti-close"></i></a></td>
                         <td>
-                            <h2 class="td-color text-lowercase">' . $totalPrice . ' đ</h2>
+                            <h2 id="total-per-prod' . $id . '" class="td-color text-lowercase total-per-prod" data-total-per-prod' . $id . '="">' . $totalPrice . ' đ</h2>
                         </td>
                     </tr>
                     <input type="hidden" name="form[book_id][]" value="' . $value['id'] . '" id="input_book_id_10">
@@ -104,7 +107,8 @@ if (!empty($this->items)) {
                 </tbody>
             ';
     }
-    $countPrice = number_format($countPrice, 0, ',', '.');
+    $countPriceAll = number_format($countPrice, 0, ',', '.');
+    $urlTotal = URL::createLink('frontend', 'cart', 'changePrice');
     $xhtml .= '
                 </table>
                     <table class="table cart-table table-responsive-md">
@@ -112,7 +116,7 @@ if (!empty($this->items)) {
                             <tr>
                                 <td>Tổng :</td>
                                 <td>
-                                    <h2 class="text-lowercase">' . $countPrice . ' đ</h2>
+                                    <h2 id ="count-total" class="text-lowercase count" data-url-total="' . $urlTotal . '" >' . $countPriceAll . ' đ</h2>
                                 </td>
                             </tr>
                         </tfoot>
