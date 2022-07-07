@@ -23,8 +23,8 @@ class SendMail extends PHPMailer
             $this->CharSet   = "utf-8";
             $this->Host = 'smtp.gmail.com;';                 // Specify main and backup SMTP servers
             $this->SMTPAuth = true;                          // Enable SMTP authentication
-            $this->Username = 'hoangcn16b@gmail.com';        // SMTP username
-            $this->Password = 'mmekqlnlooqrwvic';            //mmekqlnlooqrwvic         // SMTP password
+            $this->Username = 'hoangalt0498@gmail.com';        // SMTP username hoangcn16b@gmail.com
+            $this->Password = 'bfgotflfwnqkhseo';            // bfgotflfwnqkhseo mmekqlnlooqrwvic //SMTP password
             $this->SMTPSecure = 'ssl';                       // Enable TLS encryption, `ssl` also accepted
             $this->Port = 465;                               // TCP port to connect to
             //Recipients
