@@ -4,7 +4,6 @@ class HelperForm
 
     public static function input($type, $name, $value = null, $class = null, $attributes = null)
     {
-
         $xhtml = sprintf('
                     <input type="%s" name="%s" value="%s" class="%s" %s>
                 ', $type, $name, $value, $class, $attributes);

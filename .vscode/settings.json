@@ -1,0 +1,20 @@
+{
+    "workbench.colorTheme": "Default Dark+",
+    "php.validate.enable": true,
+    "php.suggest.basic": false,
+    "code-runner.saveAllFilesBeforeRun": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "files.autoSave": "afterDelay",
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
+    "editor.wordWrap": "on",
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+
+    "php.validate.executablePath": "c:/xampp/php/php.exe",
+}

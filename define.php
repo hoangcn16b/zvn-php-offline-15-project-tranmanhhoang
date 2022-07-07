@@ -25,7 +25,7 @@
 	define ('UPLOAD_URL'			, 'public' . DS . 'files' . DS);			// Định nghĩa đường dẫn đến thư mục thư thư viện
 
 	//ckEditor
-	define ('CKEDITOR_PATH'			, DS . ROOT_URL  . 'public' . DS . 'ckeditor' . DS);		// Định nghĩa đường dẫn đến thư  
+	define ('CKEDITOR_PATH'			, 'public' . DS . 'ckeditor' . DS);		// Định nghĩa đường dẫn đến thư  
 	//services layout
 	define	('SERVICE_LAYOUT'			, TEMPLATE_URL . 'frontend' . DS . 'html' . DS );
 

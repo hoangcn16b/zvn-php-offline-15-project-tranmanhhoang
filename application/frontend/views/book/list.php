@@ -72,7 +72,7 @@ foreach ($this->productAll as $key => $value) {
                                     </a>
                                 </div>
                                 <div class="cart-info cart-wrap">
-                                    <a href="' . $linkOrder . '" title="Add to cart"><i class="ti-shopping-cart"></i></a>
+                                    <a href="' . $linkOrder . '" class="form-cart" title="Add to cart"><i class="ti-shopping-cart"></i></a>
                                     <a href="#" id = "clickModal" class="' . $value['id'] . '" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
                                 </div>
                             </div>

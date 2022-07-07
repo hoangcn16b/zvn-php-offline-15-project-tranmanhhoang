@@ -76,6 +76,9 @@ $(document).ready(function () {
         e.preventDefault();
         let url = $(this).attr('href');
         var quantityNumber = $('.quantity-number').val();
+        if (!quantityNumber) {
+            quantityNumber = 1;
+        }
         // var quantityNumber = document.getElementById('quantity-number').value;
         var parent = $('.quantity-cart').parent();
         var parentCart = $(this).parent();
