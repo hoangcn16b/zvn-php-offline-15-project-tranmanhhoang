@@ -26,7 +26,7 @@ class IndexModel extends Model
 			$email = $params['email'];
 			$password = md5($params['password']);
 			// unset($params['submit']);
-			$query[] = "SELECT `u`.`id`, `u`.`fullname`, `u`.`username`, `u`.`email`, `u`.`group_id`, `g`.`group_acp` ";
+			$query[] = "SELECT `u`.`id`, `u`.`fullname`, `u`.`username`, `u`.`email`, `u`.`birthday`, `u`.`address`, `u`.`phone`, `u`.`group_id`, `g`.`group_acp`";
 			$query[] = "FROM `user` AS `u` LEFT JOIN `group` as `g` ON `u`.`group_id` = `g`.`id`";
 			$query[] = "WHERE `u`.`email` = '$email' AND `u`.`password` = '$password' ";
 			$query = implode(" ", $query);
@@ -60,5 +60,15 @@ class IndexModel extends Model
 		$where = [['id', $id]];
 		$this->update($params, [['id', $id]]);
 		Session::set('messageProfile', ['class' => 'success', 'content' => UPDATE_SUCCESS]);
+	}
+	public function getUser($params)
+	{
+		$query[] = "SELECT `id`, `fullname`, `username`, `email`, `birthday`, `address`, `phone`, `group_id`";
+			$query[] = "FROM `user` ";
+			$query[] = "WHERE `id` = '{$params['idLogged']}'";
+			$query = implode(" ", $query);
+			$result = $this->singleRecord($query);
+
+			return $result;
 	}
 }

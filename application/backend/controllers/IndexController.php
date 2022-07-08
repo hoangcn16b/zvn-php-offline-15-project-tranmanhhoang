@@ -61,11 +61,10 @@ class IndexController extends Controller
 	public function profileAction()
 	{
 		$this->_view->setTitleForm = 'Profile User';
-		
 		$this->_view->profileUser = $this->_userLogged;
 		$this->_templateObj->setFileTemplate('index.php');
 		$this->_templateObj->load();
-		$data = $this->_userLogged;
+		$data = $this->_model->getUser($this->_arrParam);
 		if (!empty($this->_arrParam['form'])) {
 			$data = $this->_arrParam['form'];
 			$validate = new Validate($data);

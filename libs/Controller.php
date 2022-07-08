@@ -105,18 +105,19 @@ class Controller
 		if (Session::get('user')) {
 			$userInfor = Session::get('user');
 			$id = $userInfor['info']['id'];
-			$query = "
-						SELECT `u`.`id`, `fullname`, `username`, `email`, `birthday`, `address`, `phone`, `group_id`, `g`.`group_acp`
-						FROM `user` AS `u`, `group` AS `g`
-						WHERE `u`.`group_id` = `g`.`id` AND `u`.`id` = $id
-					";
-			$model = new Model();
-			$result = $model->singleRecord($query);
-			
-			$groupAcp = $result['group_acp'] ?? '';
+			// $query = "
+			// 			SELECT `u`.`id`, `fullname`, `username`, `email`, `birthday`, `address`, `phone`, `group_id`, `g`.`group_acp`
+			// 			FROM `user` AS `u`, `group` AS `g`
+			// 			WHERE `u`.`group_id` = `g`.`id` AND `u`.`id` = $id
+			// 		";
+			// $model = new Model();
+			// $result = $model->singleRecord($query);
+
+			$groupAcp = $userInfor['group_acp'] ?? '';
+
 			$this->_idLogged = $id;
 			$this->_groupAcpLogged = $groupAcp;
-			$this->_userLogged = $result;
+			$this->_userLogged = $userInfor['info'];
 		}
 	}
 }

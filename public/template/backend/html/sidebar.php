@@ -13,7 +13,7 @@
                 <img src="<?= $this->_pathImg ?>avatar.jpg" class="img-circle elevation-2" alt="User Image" />
             </div>
             <div class="info">
-                <a href="<?= URL::createLink($this->arrParams['module'], 'index', 'profile') ?>" class="d-block"><?= $this->arrParams['userLogged']['fullname'] ?></a>
+                <a href="<?= URL::createLink($this->arrParams['module'], 'index', 'profile') ?>" class="d-block"><?= $this->arrParams['userLogged']['username'] ?></a>
             </div>
         </div>
 
