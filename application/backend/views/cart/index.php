@@ -7,7 +7,7 @@ $xhtml = '';
 $listStatus = [
     'selectStatus' => ['new' => 'New', 'waiting' => 'Waiting', 'process' => 'Process', 'completed' => 'Completed'],
     'filterStatus' => ['all' => '--Select Status--', 'new' => 'New', 'waiting' => 'Waiting', 'process' => 'Process', 'completed' => 'Completed'],
-    'search_by' => ['all' => '--Search by all--', 'fullname' => 'Fullname', 'username' => 'Username', 'email' => 'Email', 'phone' => 'Phone', 'address' => 'Address']
+    'search_by' => ['all' => '--Search by all--', 'id' => 'ID', 'fullname' => 'Fullname', 'username' => 'Username', 'email' => 'Email', 'phone' => 'Phone', 'address' => 'Address']
 ];
 $items = $this->items;
 if (!empty($items)) {
@@ -75,7 +75,7 @@ $valueApplication = HelperForm::input('hidden', 'module', $module) .
     HelperForm::input('hidden', 'action', $action);
 
 $filterAll = '
-            <a href="" class="btn btn-primary"> Total Deals
+            <a class="btn btn-primary"> Total Deals
                 <span class="badge badge-pill badge-light">' . $this->totalDeals . '</span>
             </a>';
 $select = HelperForm::selectBox($listStatus['filterStatus'], 'status', $this->arrParams['status'] ?? 'all', ' filter-element');
@@ -145,7 +145,7 @@ $xhtmlPagination = $this->pagination->showPagination();
             <div class="card-body">
                 <div class="container-fluid">
                     <div class="row align-items-center justify-content-between mb-2">
-                        <div>
+                        <!-- <div>
                             <div class="input-group">
                                 <select class="form-control custom-select">
                                     <option>Bulk Action</option>
@@ -159,11 +159,7 @@ $xhtmlPagination = $this->pagination->showPagination();
                             </div>
                         </div>
                         <div>
-                            <?php
-                            echo Helper::cmsButton(URL::createLink($module, $controller, 'form'), '<i class="fas fa-plus"></i> Add New', 'btn btn-info');
-                            ?>
-
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <span><?php

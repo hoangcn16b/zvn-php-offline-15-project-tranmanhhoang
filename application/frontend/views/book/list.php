@@ -11,10 +11,9 @@
 </div>
 
 <?php
-
+//cate Name
 $xhtmlAllCategory = '';
 $activeCategory = $this->arrParams['id'] ?? '';
-
 foreach ($this->categoryAllName as $key => $value) {
     $link = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $key]);
     if (isset($this->arrParams['sort'])) {
@@ -29,135 +28,35 @@ foreach ($this->categoryAllName as $key => $value) {
     $xhtmlAllCategory .= '
                         <div class="custom-control custom-checkbox collection-filter-checkbox pl-0 category-item">
                             <a class="' . $aClass . '" href="' . $link . '">' . $value . '</a>
-                        </div>
-                    ';
+                        </div>';
 }
-
+//add Prod
 $xhtmlProduct = '';
 foreach ($this->productAll as $key => $value) {
-    $iconSaleOff = '';
-    if ($value['sale_off'] > 0) {
-        $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
-        $iconSaleOff = '
-                            <div class="lable-block">
-                                <span class="lable4 badge badge-danger"> ' . $saleOff . '</span>
-                            </div>
-                        ';
-    }
-    $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
-    if (file_exists($picturePath) == true) {
-        $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-        $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload bg-img" alt="" >';
-    } else {
-        $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-        $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload bg-img" alt="" >';
-    }
-    $price = '';
-    $priceSale = number_format(($value['price']), 0, ',', '.');
-    $priceReal = $value['price'] - ($value['price'] * ($value['sale_off'] / 100));
-    if ($value['sale_off'] != 0) {
-        $priceSale = number_format($priceReal, 0, ',', '.');
-        $price = number_format(($value['price']), 0, ',', '.') . ' đ';
-    }
-    $linktoProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
-    $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
-    $xhtmlProduct .= '
-                    <div class="col-xl-3 col-6 col-grid-box" >
-                        <div class="product-box" title="' . Helper::collapseDesc($value['description'], 15) . '">
-                            <div class="img-wrapper">
-                                ' . $iconSaleOff . '
-                                <div class="front">
-                                    <a href="' . $linktoProd . '">
-                                        ' . $picture . '
-                                    </a>
-                                </div>
-                                <div class="cart-info cart-wrap">
-                                    <a href="' . $linkOrder . '" class="form-cart" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                    <a href="#" id = "clickModal" class="' . $value['id'] . '" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
-                                </div>
-                            </div>
-                            <div class="product-detail">
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <a href="' . $linktoProd . '" title="' . substr($value['description'], 0, 100) . '">
-                                    <h6> ' .  Helper::collapseDesc($value['name'], 5) . ' </h6>
-                                </a>
-                                <p></p>
-                                <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
-                            </div>
-                        </div>
-                    </div>
-                ';
+    $xhtmlProduct .= '<div class="col-xl-3 col-6 col-grid-box" >';
+    $xhtmlProduct .= HelperFrontend::loadHome($value);
+    $xhtmlProduct .= '</div>';
 }
-//sach noi bat
 
+//sach noi bat
 $xhtmlSpecialProduct = '';
-$i = 1;
 foreach ($this->getSpecialProduct as $idCate => $listItems) {
     $xhtmlSpecialProduct .= '<div>';
-
     foreach ($listItems as $key => $value) {
-
-        $iconSaleOff = '';
-        if ($value['sale_off'] > 0) {
-            $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
-            $iconSaleOff = '
-                                <div class="lable-block">
-                                    <span class="lable4 badge badge-danger"> ' . $saleOff . '</span>
-                                </div>
-                            ';
-        }
-        $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
-        if (file_exists($picturePath) == true) {
-            $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-            $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" style = "width:140px; height:210px;">';
-        } else {
-            $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-            $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" style = "width:140px; height:210px;">';
-        }
-        $price = '';
-        $priceSale = number_format(($value['price']), 0, ',', '.');
-        if ($value['sale_off'] != 0) {
-            $priceSale = number_format(($value['price'] - ($value['price'] * $value['sale_off'] / 100)), 0, ',', '.');
-            $price = number_format(($value['price']), 0, ',', '.') . ' đ';
-        }
-        $linktospecialProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
-        $xhtmlSpecialProduct .= '
-                                <div class="media">
-                                    <a href="' . $linktospecialProd . '">
-                                        ' . $picture . '
-                                    </a>
-                                    <div class="media-body align-self-center">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <a href="' . $linktospecialProd . '" title="' . Helper::collapseDesc($value['description']) . '">
-                                    <h6> ' . Helper::collapseDesc($value['name'], 5) . ' </h6>
-                                </a>
-                                <p></p>
-                                <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
-                                    </div>
-                                </div>
-                            ';
+        $xhtmlSpecialProduct .= HelperFrontend::loadSideProd($value);
     }
     $xhtmlSpecialProduct .= '</div>';
-    $i++;
 }
+
+
 $paramsId = '';
 if (isset($this->arrParams['id'])) {
     $paramsId = HelperForm::input('hidden', 'id', $this->arrParams['id']);
 }
 $paramsToURL = HelperForm::input('hidden', 'module', 'frontend') . HelperForm::input('hidden', 'controller', 'book') . HelperForm::input('hidden', 'action', 'list') . $paramsId;
 
+$arrData = ['default' => ' - Sắp xếp(mặc định) - ', 'price_asc' => 'Giá tăng dần', 'price_desc' => 'Giá giảm dần', 'latest' => 'Mới nhất'];
+$selectSearch = HelperFrontend::selectBox($arrData, 'sort', $this->arrParams['sort'] ?? 'default', '', 'id="sort"');
 $xhtmlPagination = $this->pagination->showPagination();
 
 ?>
@@ -232,12 +131,8 @@ $xhtmlPagination = $this->pagination->showPagination();
                                                     </div>
                                                     <div class="product-page-filter">
                                                         <form action="" id="sort-form" method="GET">
-                                                            <?= $paramsToURL ?>
-                                                            <?php
-                                                            $arrData = ['default' => ' - Sắp xếp(mặc định) - ', 'price_asc' => 'Giá tăng dần', 'price_desc' => 'Giá giảm dần', 'latest' => 'Mới nhất'];
-                                                            $selectSearch = HelperFrontend::selectBox($arrData, 'sort', $this->arrParams['sort'] ?? 'default', '', 'id="sort"');
-                                                            echo $selectSearch;
-                                                            ?>
+                                                            <?= $paramsToURL . $selectSearch ?>
+
                                                             <!-- <select id="sort" name="sort">
                                                                 <option value="default"> - Sắp xếp - </option>
                                                                 <option value="price_asc">Giá tăng dần</option>
@@ -309,7 +204,3 @@ $xhtmlPagination = $this->pagination->showPagination();
         </div>
     </div>
 </section>
-
-<?php
-    echo HelperFrontend::quickView($this->productAll);
-?>

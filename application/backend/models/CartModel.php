@@ -18,14 +18,23 @@ class CartModel extends Model
 
 			foreach ($options as $cols => $value) {
 				$checkSearchBy = false;
+				$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
+
 				if (isset($arrParams['search_by']) && $arrParams['search_by'] != '' && $arrParams['search_by'] != 'all') {
 					$value = $arrParams['search_by'];
 					$checkSearchBy = true;
+				} elseif ($arrParams['search_by'] == 'all') {
+					if ($i == 0) {
+						$query[]  = "`c`.`id` $likeKeyWord OR";
+					}
 				}
 				if ($i == $total) {
 					break;
 				}
-				$likeKeyWord = "LIKE '%" . trim($arrParams['input-keyword']) . "%'";
+				if ($value === 'id') {
+					$query[] = "`c`.`$value` $likeKeyWord";
+					break;
+				}
 				$query[] = ($i < 4) ? "`u`.`{$value}` $likeKeyWord OR" : "`u`.`{$value}` $likeKeyWord";
 				if ($checkSearchBy) {
 					$query[] = "`u`.`{$value}` $likeKeyWord";
@@ -39,7 +48,6 @@ class CartModel extends Model
 		if (isset($arrParams['status']) && $arrParams['status'] != '' && $arrParams['status'] != 'all') {
 			$query[] = "AND `c`.`status` = '{$arrParams['status']}'";
 		}
-
 		return implode(" ", $query);
 	}
 

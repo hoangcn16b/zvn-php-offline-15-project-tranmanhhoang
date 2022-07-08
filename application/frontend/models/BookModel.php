@@ -94,25 +94,47 @@ class BookModel extends Model
 		return $result;
 	}
 
-	public function getSpecialProduct($params = null)
+	public function getSpecialProduct($option = null, $total = 21, $prodPerTab = 4)
 	{
-		$query[] = "SELECT DISTINCT c.id, c.name ";
-		$query[] = "FROM `" . TABLE_CATEGORY . "` as `c`, `" . TABLE_BOOK . "` as `b`";
-		$query[] = "WHERE `b`.`category_id` = `c`.`id` AND `c`.`status` = 'active' ORDER BY `c`.`ordering` ASC ";
-		$query = implode(" ", $query);
-		$resultTblCate = $this->fetchPairs($query);
+		// $j = 0;
+		// $limit = 0;
+		// for ($i = 0; $i < $total; $i++) {
+		// 	if ($i % 4 !== 0) {
+		// 		continue;
+		// 	} else {
+		// 		$j = $i;
+		// 		if (($total - $j) < 4) {
+		// 			$limit = $total - $j;
+		// 		} else {
+		// 			$limit = 4;
+		// 		}
+		// 		$queryProduct = "SELECT DISTINCT `id` FROM  `" . TABLE_BOOK . "` WHERE `status` = 'active' AND `special` = 1 ORDER BY `id` DESC LIMIT $j,$limit";
+		// 		$result[] = $this->fetchAll($queryProduct);
+		// 	}
+		// }
+		$addWhere = '';
 
-		$result = [];
-		foreach ($resultTblCate as $key => $value) {
-			$queryProduct = [];
-			$queryProduct[] = "SELECT DISTINCT * ";
-			$queryProduct[] = "FROM  `" . TABLE_BOOK . "`";
-			$queryProduct[] = "WHERE `status` = 'active' AND `special` = 1 AND `category_id` = $key ";
-			$queryProduct[] = "ORDER BY `ordering` ASC LIMIT 0,4";
-			$queryProduct = implode(" ", $queryProduct);
-			$result[$key] = $this->fetchAll($queryProduct);
+		if ($option['task'] == 'special_book') {
+			$addWhere = 'AND `special` = 1';
+			$orderBy = ' `ordering` ASC ';
+		} elseif ($option['task'] == 'new_book') {
+			$addWhere = ' ';
+			$orderBy = ' `id` DESC, `ordering` ASC ';
 		}
-		return $result;
+		$query[] = "SELECT DISTINCT * FROM  `" . TABLE_BOOK . "` ";
+		$query[] = " WHERE `status` = 'active' $addWhere ";
+		$query[] = " ORDER BY $orderBy LIMIT 0,$total";
+		$query = implode(" ", $query);
+		$result = $this->fetchAll($query);
+		$outPut = [];
+		$j = 0;
+		for ($i = 0; $i < $total; $i++) {
+			$outPut[$j][] = $result[$i];
+			if ($i % $prodPerTab == 3) {
+				$j++;
+			}
+		}
+		return $outPut;
 	}
 
 	public function checkId($params, $options = null)

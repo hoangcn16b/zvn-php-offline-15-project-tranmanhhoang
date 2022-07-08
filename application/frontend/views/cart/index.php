@@ -15,10 +15,10 @@ $cart = Session::get('cart');
 // Session::unset('cart');
 
 $totalItems = 0;
-$totalPrice = 0;
+// $totalPrice = 0;
 if (!empty($cart)) {
     $totalItems = array_sum($cart['quantity']);
-    $totalPrice = array_sum($cart['price']);
+    // $totalPrice = array_sum($cart['price']);
 }
 
 $xhtml = '';
@@ -43,16 +43,9 @@ if (!empty($this->items)) {
     foreach ($this->items as $key => $value) {
         $id = $value['id'];
         $link = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
-        $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
-        if (file_exists($picturePath) == true) {
-            $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-            $picture = '<img src ="' . $pathImg . '"  alt="" >';
-        } else {
-            $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-            $picture = '<img src ="' . $pathImg . '"  alt="" >';
-        }
-        $price = number_format(($value['price']), 0, ',', '.');
-        $totalPrice = number_format(($value['totalprice']), 0, ',', '.');
+        $picture = HelperFrontend::loadPicture($value);
+        $price = HelperFrontend::formatPrice($value['price']);
+        $totalPrice = HelperFrontend::formatPrice($value['totalprice']);
         $countPrice += $value['totalprice'];
         $linkDeleteProd = URL::createLink('frontend', 'cart', 'deleteProduct', ['book_id' => $value['id']]);
         $linkData = URL::createLink('frontend', 'cart', 'changeQuantity', ['book_id' => $value['id']]);
@@ -96,7 +89,7 @@ if (!empty($this->items)) {
                         </td>
                         <td><a href="' . $linkDeleteProd . '" class="icon"><i class="ti-close"></i></a></td>
                         <td>
-                            <h2 id="total-per-prod' . $id . '" class="td-color text-lowercase total-per-prod" data-total-per-prod' . $id . '="">' . $totalPrice . ' đ</h2>
+                            <h2 id="total-per-prod' . $id . '" class="td-color text-lowercase total-per-prod" >' . $totalPrice . ' đ</h2>
                         </td>
                     </tr>
                     <input type="hidden" name="form[book_id][]" value="' . $value['id'] . '" id="input_book_id_10">

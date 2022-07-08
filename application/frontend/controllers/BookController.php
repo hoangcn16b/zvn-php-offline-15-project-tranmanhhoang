@@ -30,7 +30,7 @@ class BookController extends Controller
         // $this->_view->categoryName = $this->_model->infoItems($this->_arrParam, ['task' => 'get_cate_name']);
         $this->_view->categoryAllName = $this->_model->infoItems($this->_arrParam, ['task' => 'get_all_cate_name']);
         $this->_view->productAll = $this->_model->infoItems($this->_arrParam, ['task' => 'get_product_by_cate_id']);
-        $this->_view->getSpecialProduct = $this->_model->getSpecialProduct();
+        $this->_view->getSpecialProduct = $this->_model->getSpecialProduct(['task' => 'special_book'], 21);
 
         $this->totalItems = $this->_model->countItem($this->_arrParam);
         $this->_view->pagination = new Pagination_frontend($this->totalItems, $this->_pagination);
@@ -47,9 +47,8 @@ class BookController extends Controller
         $this->_view->infoBook = 'Thông tin chi tiết';
         $this->_view->bookInfo = $this->_model->bookDetail($this->_arrParam, ['task' => 'book_info']);
         $this->_view->bookRelate = $this->_model->bookDetail($this->_arrParam, ['task' => 'book_relate']);
-        $this->_view->bookNew = $this->_model->bookNew();
-        $this->_view->getSpecialProduct = $this->_model->getSpecialProduct();
+        $this->_view->bookNew = $this->_model->getSpecialProduct(['task' => 'new_book']);
+        $this->_view->getSpecialProduct = $this->_model->getSpecialProduct(['task' => 'special_book']);
         $this->_view->render('book/detail');
     }
-    
 }

@@ -32,7 +32,7 @@ if (!empty($item)) {
     $arrQuantity = json_decode($item['quantities']);
     $arrPicture = json_decode($item['pictures']);
     $totalPrice = 0;
-
+    $totalQty = 0;
     foreach ($arrBook as $keyB => $valueB) {
         $idBook = $valueB;
         $linkBook = URL::createLink('backend', 'book', 'form', ['id' => $idBook]);
@@ -42,6 +42,7 @@ if (!empty($item)) {
         $quantity = $arrQuantity[$keyB];
         $totalperProd = number_format($price * $quantity);
         $name = $arrName[$keyB];
+        $totalQty += $quantity;
         $totalPrice += $price * $quantity;
         $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($arrPicture[$keyB]);
         if (file_exists($picturePath) == true) {
@@ -65,9 +66,9 @@ if (!empty($item)) {
                         <tr>
                             <td></td>
                             <td></td>
-                            <td ></td>
-                            <td class="text-center">Tổng</td>
-                            <td class="text-center">' . $formatTotalPrice . 'đ</td>
+                            <td class="text-center"><b>Tổng</b></td>
+                            <td class="text-center"><b>' . $totalQty . '</b></td>
+                            <td class="text-center"><b>' . $formatTotalPrice . 'đ</b></td>
                         </tr>';
 }
 

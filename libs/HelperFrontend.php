@@ -112,6 +112,7 @@ class HelperFrontend
         $xhtml .= number_format(($price), 0, ',', '.');
         return $xhtml;
     }
+
     public static function loadPicture($value, $class = 'img-fluid blur-up lazyload bg-img', $attr = '')
     {
         $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
@@ -193,6 +194,53 @@ class HelperFrontend
                         <img src="' . $linkImg . '" alt="" class="bg-img blur-up lazyload">
                     </a>
                     </div>   
+                ';
+        return $xhtml;
+    }
+
+    public static function loadSideProd($value)
+    {
+        $xhtml = '';
+
+        $iconSaleOff = '';
+        if ($value['sale_off'] > 0) {
+            $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
+            $iconSaleOff = '
+                            <div class="lable-block">
+                                <span class="lable4 badge badge-danger"> ' . $saleOff . '</span>
+                            </div>';
+        }
+        $picture = HelperFrontend::loadPicture($value, 'img-fluid blur-up lazyload', 'style = "width:140px; height:210px;"');
+        $name = Helper::collapseDesc($value['name'], 5);
+        $description = Helper::collapseDesc($value['description'], 30);
+        $price = '';
+        $priceSale = self::formatPrice($value['price']);
+        $priceReal = $value['price'] - ($value['price'] * $value['sale_off'] / 100);
+        if ($value['sale_off'] != 0) {
+            $priceSale = self::formatPrice($priceReal);
+            $price = self::formatPrice($value['price']) . ' đ';
+        }
+        $linktospecialProd = URL::createLink('frontend', 'book', 'detail', ['book_id' => $value['id']]);
+        $xhtml .= '
+                    <div class="media">
+                        <a href="' . $linktospecialProd . '">
+                            ' . $picture . '
+                        </a>
+                        <div class="media-body align-self-center">
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <a href="' . $linktospecialProd . '" title="' . $description . '">
+                                <h6> ' . $name . ' </h6>
+                            </a>
+                            <p></p>
+                            <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
+                        </div>
+                    </div>
                 ';
         return $xhtml;
     }
