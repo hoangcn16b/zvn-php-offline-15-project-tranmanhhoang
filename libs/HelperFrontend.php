@@ -105,4 +105,95 @@ class HelperFrontend
         }
         return $xhtml;
     }
+
+    public static function formatPrice($price)
+    {
+        $xhtml = '';
+        $xhtml .= number_format(($price), 0, ',', '.');
+        return $xhtml;
+    }
+    public static function loadPicture($value, $class = 'img-fluid blur-up lazyload bg-img', $attr = '')
+    {
+        $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
+        if (file_exists($picturePath) == true) {
+            $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
+            $picture = sprintf('<img src ="%s"  class="%s" alt="product" >', $pathImg, $class);
+        } else {
+            $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
+            $picture = sprintf('<img src ="%s" class="img-fluid blur-up lazyload" alt="product" >', $pathImg);
+        }
+        return $picture;
+    }
+
+    public static function loadHome($value)
+    {
+        $xhtml = '';
+        $iconSaleOff = '';
+        $name = Helper::collapseDesc($value['name'], 5);
+        $description = Helper::collapseDesc($value['description'], 10);
+        $title =  Helper::collapseDesc($value['description'], 30);
+        if ($value['sale_off'] > 0) {
+            $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
+            $iconSaleOff = '
+                                <div class="lable-block">
+                                    <span class="lable4 badge badge-danger"> ' . $saleOff . '</span>
+                                </div>
+                            ';
+        }
+        $picture = self::loadPicture($value);
+        $price = '';
+        $priceSale = self::formatPrice($value['price']);
+        $priceReal = $value['price'] - ($value['price'] * ($value['sale_off'] / 100));
+        if ($value['sale_off'] != 0) {
+            $priceSale = self::formatPrice($priceReal);
+            $price = self::formatPrice($value['price']) . ' đ';
+        }
+        $linktoSpecialProd = URL::createLink('frontend', 'book', 'detail', ['book_id' => $value['id']]);
+        $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
+        $xhtml .= '
+                    <div class="product-box" title="' . $title . '">
+                            <div class="img-wrapper">
+                                ' . $iconSaleOff . '
+                                <div class="front">
+                                    <a href="' . $linktoSpecialProd . '">
+                                        ' . $picture . '
+                                    </a>
+                                </div>
+                                <div class="cart-info cart-wrap">
+                                    <a href="' . $linkOrder . '" class="form-cart" title="Add to cart"><i class="ti-shopping-cart"></i></a>
+                                    <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
+                                </div>
+                            </div>
+                            <div class="product-detail">
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <a href="' . $linktoSpecialProd . '" title="' . $description . '">
+                                <h6> ' . $name . ' </h6>
+                            </a>
+
+                        <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
+                    </div>
+                        </div>
+                    ';
+        return $xhtml;
+    }
+
+    public static function loadSlider($value)
+    {
+        $xhtml = '';
+        $linkImg = UPLOAD_URL . 'slider' . DS . $value['picture'];
+        $xhtml .= '
+                    <div>
+                    <a href="" class="home text-center">
+                        <img src="' . $linkImg . '" alt="" class="bg-img blur-up lazyload">
+                    </a>
+                    </div>   
+                ';
+        return $xhtml;
+    }
 }

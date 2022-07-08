@@ -21,25 +21,19 @@ $bookRelate = $this->bookRelate;
 
 //1 bookInfo
 $xhtmlBookInfo = '';
-$picturePath = UPLOAD_PATH . 'book' . DS . '' . ($bookInfo['picture']);
-if (file_exists($picturePath) == true) {
-    $pathImg = UPLOAD_URL . 'book' . DS . '' . ($bookInfo['picture']);
-    $picture = '<img src ="' . $pathImg . '"  class="img-fluid w-100 blur-up lazyload image_zoom_cls-0" alt="" >';
-} else {
-    $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-    $picture = '<img src ="' . $pathImg . '" class="img-fluid w-100 blur-up lazyload image_zoom_cls-0" alt="" >';
-}
+
+$picture = HelperFrontend::loadPicture($bookInfo, 'img-fluid w-100 blur-up lazyload image_zoom_cls-0');
 $iconSaleOff = '';
 if ($bookInfo['sale_off'] > 0) {
     $saleOff = ($bookInfo['sale_off'] > 0) ? '-' . $bookInfo['sale_off'] . '%' : '';
     $iconSaleOff = '<span> ' . $saleOff . '</span>';
 }
 $price = '';
-$priceSale = number_format(($bookInfo['price']), 0, ',', '.');
+$priceSale = HelperFrontend::formatPrice($bookInfo['price']);
 $priceReal = $bookInfo['price'] - ($bookInfo['price'] * ($bookInfo['sale_off'] / 100));
 if ($bookInfo['sale_off'] != 0) {
-    $priceSale = number_format($priceReal, 0, ',', '.');
-    $price = number_format(($bookInfo['price']), 0, ',', '.') . ' đ';
+    $priceSale = HelperFrontend::formatPrice($priceReal);
+    $price = HelperFrontend::formatPrice($bookInfo['price']) . ' đ';
 }
 $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $bookInfo['id'], 'price' => $priceReal]);
 $xhtmlBookInfo = '
@@ -112,7 +106,6 @@ $xhtmlBookInfo = '
                         </section>
                     </div>
                 ';
-
 
 //2 bookSpecial
 $xhtmlBookSpecial = '';
@@ -237,63 +230,9 @@ foreach ($bookNew as $idNew => $listItemsNew) {
 $xhtmlBookRelate = '';
 foreach ($bookRelate as $key => $value) {
     if ($value['id'] != $this->arrParams['book_id']) {
-        $iconSaleOff = '';
-        if ($value['sale_off'] > 0) {
-            $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
-            $iconSaleOff = '
-                            <div class="lable-block">
-                                <span class="lable4 badge badge-danger"> ' . $saleOff . '</span>
-                            </div>
-                        ';
-        }
-        $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
-        if (file_exists($picturePath) == true) {
-            $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-            $picture = '<img src ="' . $pathImg . '"  class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
-        } else {
-            $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-            $picture = '<img src ="' . $pathImg . '" class="img-fluid blur-up lazyload" alt="' . $value['name'] . '" >';
-        }
-        $price = '';
-        $priceSale = number_format(($value['price']), 0, ',', '.');
-        $priceReal = $value['price'] - ($value['price'] * ($value['sale_off'] / 100));
-        if ($value['sale_off'] != 0) {
-            $priceSale = number_format($priceReal, 0, ',', '.');
-            $price = number_format(($value['price']), 0, ',', '.') . ' đ';
-        }
-        $linktospecialProd = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
-        $linkOrder = URL::createLink('frontend', 'cart', 'order', ['book_id' => $value['id'], 'price' => $priceReal]);
-        $xhtmlBookRelate .= '
-                            <div class="col-xl-2 col-md-4 col-sm-6">
-                                <div class="product-box">
-                                    <div class="img-wrapper">
-                                        ' . $iconSaleOff . '
-                                        <div class="front" style="text-align:center;">
-                                            <a href="' . $linktospecialProd . '">
-                                                ' . $picture . '
-                                            </a>
-                                        </div>
-                                        <div class="cart-info cart-wrap">
-                                            <a href="' . $linkOrder . '" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                            <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view-relate' . $value['id'] . '"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-detail">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <a href="' . $linktospecialProd . '" title="' .  Helper::collapseDesc($value['description'], 20)  . '">
-                                        <h6> ' . Helper::collapseDesc($value['name'], 5)  . ' </h6>
-                                        </a>
-                                        <h4 class="text-lowercase">' . $priceSale . ' đ <del>' . $price . '</del></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            ';
+        $xhtmlBookRelate .= '<div class="col-xl-2 col-md-4 col-sm-6">';
+        $xhtmlBookRelate .= HelperFrontend::loadHome($value);
+        $xhtmlBookRelate .= '</div>';
     }
 }
 ?>
@@ -303,7 +242,6 @@ foreach ($bookRelate as $key => $value) {
         <div class="container">
             <div class="row">
                 <?= $xhtmlBookInfo ?>
-
                 <div class="col-sm-3 collection-filter">
                     <div class="collection-filter-block">
                         <div class="collection-mobile-back">
@@ -635,7 +573,6 @@ foreach ($bookRelate as $key => $value) {
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="row">
                 <section class="section-b-space j-box ratio_asos pb-0">
@@ -648,134 +585,6 @@ foreach ($bookRelate as $key => $value) {
                         <div class="row search-product">
                             <?= $xhtmlBookRelate ?>
                             <!-- <div class="col-xl-2 col-md-4 col-sm-6">
-                                <div class="product-box">
-                                    <div class="img-wrapper">
-                                        <div class="lable-block">
-                                            <span class="lable4 badge badge-danger"> -34%</span>
-                                        </div>
-                                        <div class="front">
-                                            <a href="item.html">
-                                                <img src="images/product.jpg" class="img-fluid blur-up lazyload bg-img" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="cart-info cart-wrap">
-                                            <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                            <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-detail">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <a href="item.html" title="Nuôi Con Không Phải Là Cuộc Chiến 2 (Trọn Bộ 3 Tập)">
-                                            <h6>Nuôi Con Không Phải Là Cuộc Chiến 2 (Trọn Bộ ...</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">210,540 đ <del>319,000 đ</del></h4>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-2 col-md-4 col-sm-6">
-                                <div class="product-box">
-                                    <div class="img-wrapper">
-                                        <div class="lable-block">
-                                            <span class="lable4 badge badge-danger"> -34%</span>
-                                        </div>
-                                        <div class="front">
-                                            <a href="item.html">
-                                                <img src="images/product.jpg" class="img-fluid blur-up lazyload bg-img" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="cart-info cart-wrap">
-                                            <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                            <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-detail">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <a href="item.html" title="Nuôi Con Không Phải Là Cuộc Chiến 2 (Trọn Bộ 3 Tập)">
-                                            <h6>Nuôi Con Không Phải Là Cuộc Chiến 2 (Trọn Bộ ...</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">210,540 đ <del>319,000 đ</del></h4>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-2 col-md-4 col-sm-6">
-                                <div class="product-box">
-                                    <div class="img-wrapper">
-                                        <div class="lable-block">
-                                            <span class="lable4 badge badge-danger"> -34%</span>
-                                        </div>
-                                        <div class="front">
-                                            <a href="item.html">
-                                                <img src="images/product.jpg" class="img-fluid blur-up lazyload bg-img" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="cart-info cart-wrap">
-                                            <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                            <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-detail">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <a href="item.html" title="Nuôi Con Không Phải Là Cuộc Chiến 2 (Trọn Bộ 3 Tập)">
-                                            <h6>Nuôi Con Không Phải Là Cuộc Chiến 2 (Trọn Bộ ...</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">210,540 đ <del>319,000 đ</del></h4>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-2 col-md-4 col-sm-6">
-                                <div class="product-box">
-                                    <div class="img-wrapper">
-                                        <div class="lable-block">
-                                            <span class="lable4 badge badge-danger"> -34%</span>
-                                        </div>
-                                        <div class="front">
-                                            <a href="item.html">
-                                                <img src="images/product.jpg" class="img-fluid blur-up lazyload bg-img" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="cart-info cart-wrap">
-                                            <a href="#" title="Add to cart"><i class="ti-shopping-cart"></i></a>
-                                            <a href="#" title="Quick View"><i class="ti-search" data-toggle="modal" data-target="#quick-view"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="product-detail">
-                                        <div class="rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <a href="item.html" title="Nuôi Con Không Phải Là Cuộc Chiến 2 (Trọn Bộ 3 Tập)">
-                                            <h6>Nuôi Con Không Phải Là Cuộc Chiến 2 (Trọn Bộ ...</h6>
-                                        </a>
-                                        <h4 class="text-lowercase">210,540 đ <del>319,000 đ</del></h4>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-2 col-md-4 col-sm-6">
                                 <div class="product-box">
                                     <div class="img-wrapper">
                                         <div class="lable-block">
