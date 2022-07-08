@@ -17,7 +17,7 @@
 	define	('PUBLIC_URL'			,  'public' . DS);
 	define	('TEMPLATE_URL'			, PUBLIC_URL . 'template' . DS);
 	
-	define	('DEFAULT_MODULE'		, 'default');
+	define	('DEFAULT_MODULE'		, 'frontend');
 	define	('DEFAULT_CONTROLLER'	, 'index');
 	define	('DEFAULT_ACTION'		, 'index');
 
