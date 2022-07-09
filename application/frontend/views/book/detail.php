@@ -1,14 +1,3 @@
-<div class="breadcrumb-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title">
-                    <h2 class="py-2"><?= $this->infoBook . ' sách: ' . $this->bookInfo['name'] ?></h2>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <?php
 
 $bookInfo = $this->bookInfo;
@@ -18,7 +7,7 @@ $bookRelate = $this->bookRelate;
 
 //1 bookInfo
 $xhtmlBookInfo = '';
-$picture = HelperFrontend::loadPicture($bookInfo, 'img-fluid w-100 blur-up lazyload image_zoom_cls-0');
+$picture = HelperFrontend::loadPicture($bookInfo['picture'], 'book', 'img-fluid w-100 blur-up lazyload image_zoom_cls-0');
 $iconSaleOff = '';
 if ($bookInfo['sale_off'] > 0) {
     $saleOff = ($bookInfo['sale_off'] > 0) ? '-' . $bookInfo['sale_off'] . '%' : '';
@@ -140,7 +129,7 @@ foreach ($bookRelate as $key => $value) {
     }
 }
 ?>
-
+<?= HelperFrontend::loadTitle($bookInfo['name']); ?>
 <section class="section-b-space">
     <div class="collection-wrapper">
         <div class="container">

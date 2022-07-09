@@ -38,7 +38,6 @@ class IndexModel extends Model
 			// 	foreach ($arrPrivilege as $privilegeId) {
 			// 		$strPrivilegeId .= "'$privilegeId',";
 			// 	}
-
 			// 	$queryP[] = "SELECT `id`, CONCAT(`module`, '-',`controller`,'-', `action`) AS `name`";
 			// 	$queryP[] = "FROM `" . TABLE_PRIVILEGE . "` AS `p`";
 			// 	$queryP[] = "WHERE id IN ($strPrivilegeId'0') ";
@@ -64,11 +63,11 @@ class IndexModel extends Model
 	public function getUser($params)
 	{
 		$query[] = "SELECT `id`, `fullname`, `username`, `email`, `birthday`, `address`, `phone`, `group_id`";
-			$query[] = "FROM `user` ";
-			$query[] = "WHERE `id` = '{$params['idLogged']}'";
-			$query = implode(" ", $query);
-			$result = $this->singleRecord($query);
+		$query[] = "FROM `user` ";
+		$query[] = "WHERE `id` = '{$params['idLogged']}'";
+		$query = implode(" ", $query);
+		$result = $this->singleRecord($query);
 
-			return $result;
+		return $result;
 	}
 }

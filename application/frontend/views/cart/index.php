@@ -1,14 +1,3 @@
-<div class="breadcrumb-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title">
-                    <h2 class="py-2">Giỏ hàng</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <?php
 $cart = Session::get('cart');
@@ -43,7 +32,7 @@ if (!empty($this->items)) {
     foreach ($this->items as $key => $value) {
         $id = $value['id'];
         $link = URL::createLink($this->arrParams['module'], 'book', 'detail', ['book_id' => $value['id']]);
-        $picture = HelperFrontend::loadPicture($value);
+        $picture = HelperFrontend::loadPicture($value['picture'],'book','');
         $price = HelperFrontend::formatPrice($value['price']);
         $totalPrice = HelperFrontend::formatPrice($value['totalprice']);
         $countPrice += $value['totalprice'];
@@ -123,6 +112,7 @@ if (!empty($this->items)) {
 $linkContinue = URL::createLink('frontend', 'book', 'list');
 $linkSubmit = URL::createLink('frontend', 'cart', 'buy');
 ?>
+<?= HelperFrontend::loadTitle($this->thisTitle); ?>
 
 <form action="<?= $linkSubmit ?>" method="POST" name="admin-form" id="admin-form">
     <section class="cart-section section-b-space">

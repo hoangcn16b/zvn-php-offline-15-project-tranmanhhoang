@@ -21,24 +21,16 @@ if ($this->specialCategory) {
         $categoryId = $valueC['id'];
         $categoryName = $valueC['name'];
         $xhtmlCateSpecial .= sprintf('<li><a href="tab-category-%s" class="my-product-tab" data-category="%s">%s</a></li>', $categoryId, $categoryId, $categoryName);
-
         $linkPreview = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $categoryId]);
-
         $attr = '';
         if ($key == 0 || $i == 0) $attr = 'active default';
-
         $xhtmldetailCate .= '
                     <div id="tab-category-' . $categoryId . '" class="tab-content ' . $attr . '">
                         <div class="no-slider row tab-content-inside"> ';
         foreach ($valueC['books'] as $keyB => $value) {
             $xhtmldetailCate .= HelperFrontend::loadHome($value);
         }
-
-        $xhtmldetailCate .= '
-                        </div>
-                        <div class="text-center"><a href="' . $linkPreview . '" class="btn btn-solid">Xem tất cả</a></div>
-                    </div> 
-                ';
+        $xhtmldetailCate .= sprintf('</div><div class="text-center"><a href="%s" class="btn btn-solid">Xem tất cả</a></div></div> ', $linkPreview);
         $i++;
     }
     $xhtmlCateSpecial .= '</ul>';

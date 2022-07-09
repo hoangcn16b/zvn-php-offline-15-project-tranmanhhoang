@@ -16,12 +16,14 @@
 
     $xhtml = '<ul class="onhover-show-div">';
     foreach ($arrMenu as $key => $value) {
-        $xhtml .= '
-                <li><a href="' . $value['link'] . '" class="' . $value['class'] . '">' . $value['name'] . '</a></li>
-            ';
+        $xhtml .= sprintf('<li><a href="%s" class="%s">%s</a></li>', $value['link'], $value['class'], $value['name']);
     }
     $xhtml .= '</ul>';
-
+    if (!empty($userObj)) {
+        $iconAvt = sprintf('<img src=" %sprofile-user.png" alt="avatar">', $this->_pathImg);
+    } else {
+        $iconAvt = sprintf('<img src=" %savatar.png" alt="avatar">', $this->_pathImg);
+    }
     //Category
     $model = new Model();
     $query = "SELECT `id`, `name` FROM `category` WHERE `status` = 'active' ORDER BY `ordering`";
@@ -34,9 +36,7 @@
             $link = URL::createLink($this->arrParams['module'], 'book', 'list', ['id' => $item['id']]);
             $style = '';
             if (($activeCategory) === $item['id']) $style = 'style = "color: #5fcbc4;"';
-            $xhtmlCategory .= '
-                                <li ><a ' . $style . ' href="' . $link . '"> ' . $item['name'] . '</a></li>
-                            ';
+            $xhtmlCategory .= sprintf('<li ><a %s href="%s"> %s</a></li>', $style, $link, $item['name']);
         }
         $xhtmlCategory .= '</ul>';
     }
@@ -47,7 +47,10 @@
     } else {
         $totalItems = 0;
     }
-
+    $linkHome  = URL::createLink($this->arrParams['module'], 'index', 'index');
+    $linkBook = URL::createLink($this->arrParams['module'], 'book', 'list');
+    $linkCate = URL::createLink('frontend', 'category', 'index');
+    $linkCart = URL::createLink('frontend', 'cart', 'index');
     ?>
     <div class="mobile-fix-option"></div>
     <div class="container">
@@ -69,10 +72,10 @@
                                     <li>
                                         <div class="mobile-back text-right">Back<i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
                                     </li>
-                                    <li><a href="<?= URL::createLink($this->arrParams['module'], 'index', 'index') ?>" class="my-menu-link index-index">Trang chủ</a></li>
-                                    <li><a href="<?= URL::createLink($this->arrParams['module'], 'book', 'list') ?>" class="my-menu-link book-empty">Sách</a></li>
+                                    <li><a href="<?= $linkHome ?>" class="my-menu-link index-index">Trang chủ</a></li>
+                                    <li><a href="<?= $linkBook ?>" class="my-menu-link book-list">Sách</a></li>
                                     <li>
-                                        <a href="<?= URL::createLink('frontend', 'category', 'index') ?>" class="my-menu-link category-book">Danh mục</a>
+                                        <a href="<?= $linkCate ?>" class="my-menu-link category-index">Danh mục</a>
                                         <?= $xhtmlCategory ?>
                                     </li>
                                 </ul>
@@ -81,9 +84,8 @@
                         <div class="top-header">
                             <ul class="header-dropdown">
                                 <li class="onhover-dropdown mobile-account">
-                                    <img src="<?= $this->_pathImg ?>avatar.png" alt="avatar">
 
-                                    <?= $xhtml ?>
+                                    <?= $iconAvt . $xhtml ?>
 
                                 </li>
                             </ul>
@@ -118,7 +120,7 @@
                                     </li>
                                     <li class="onhover-div mobile-cart">
                                         <div>
-                                            <a href="<?= URL::createLink('frontend', 'cart', 'index') ?>" id="cart" class="position-relative cart-index">
+                                            <a href="<?= $linkCart ?>" id="cart" class="position-relative cart-index">
                                                 <img src="<?= $this->_pathImg ?>cart.png" class="img-fluid blur-up lazyload" alt="cart">
                                                 <i class="ti-shopping-cart"></i>
                                                 <span class="badge badge-warning quantity-cart" id="quantity-cart"><?= $totalItems ?? '0' ?></span>

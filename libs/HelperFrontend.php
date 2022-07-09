@@ -108,25 +108,25 @@ class HelperFrontend
 
     public static function formatPrice($price)
     {
-        $xhtml = '';
-        $xhtml .= number_format(($price), 0, ',', '.');
+        $xhtml = number_format(($price), 0, ',', '.');
         return $xhtml;
     }
 
-    public static function loadPicture($value, $class = 'img-fluid blur-up lazyload bg-img', $attr = '')
+    public static function loadPicture($value, $folder = 'book', $class = '', $attr = '')
     {
-        $picturePath = UPLOAD_PATH . 'book' . DS . '' . ($value['picture']);
+        $class = (!empty($class)) ? $class : '';
+        $picturePath = UPLOAD_PATH . $folder . DS . '' . ($value);
         if (file_exists($picturePath) == true) {
-            $pathImg = UPLOAD_URL . 'book' . DS . '' . ($value['picture']);
-            $picture = sprintf('<img src ="%s"  class="%s" alt="product" >', $pathImg, $class);
+            $pathImg = UPLOAD_URL . $folder . DS . '' . ($value);
+            $picture = sprintf('<img src ="%s"  class="%s" alt="product" %s>', $pathImg, $class, $attr);
         } else {
-            $pathImg = UPLOAD_URL . 'book' . DS . 'default.png';
-            $picture = sprintf('<img src ="%s" class="img-fluid blur-up lazyload" alt="product" >', $pathImg);
+            $pathImg = UPLOAD_URL . $folder . DS . 'default.png';
+            $picture = sprintf('<img src ="%s" class="%s" alt="product" %s>', $pathImg, $class, $attr);
         }
         return $picture;
     }
 
-    public static function loadHome($value)
+    public static function loadHome($value, $picture = null)
     {
         $xhtml = '';
         $iconSaleOff = '';
@@ -141,7 +141,7 @@ class HelperFrontend
                                 </div>
                             ';
         }
-        $picture = self::loadPicture($value);
+        $picture = self::loadPicture($value['picture'], 'book', 'img-fluid blur-up lazyload bg-img');
         $price = '';
         $priceSale = self::formatPrice($value['price']);
         $priceReal = $value['price'] - ($value['price'] * ($value['sale_off'] / 100));
@@ -201,7 +201,6 @@ class HelperFrontend
     public static function loadSideProd($value)
     {
         $xhtml = '';
-
         $iconSaleOff = '';
         if ($value['sale_off'] > 0) {
             $saleOff = ($value['sale_off'] > 0) ? '-' . $value['sale_off'] . '%' : '';
@@ -210,7 +209,7 @@ class HelperFrontend
                                 <span class="lable4 badge badge-danger"> ' . $saleOff . '</span>
                             </div>';
         }
-        $picture = HelperFrontend::loadPicture($value, 'img-fluid blur-up lazyload', 'style = "width:140px; height:210px;"');
+        $picture = HelperFrontend::loadPicture($value['picture'], 'book', 'img-fluid blur-up lazyload', 'style = "width:140px; height:210px;"');
         $name = Helper::collapseDesc($value['name'], 5);
         $description = Helper::collapseDesc($value['description'], 30);
         $price = '';
@@ -242,6 +241,23 @@ class HelperFrontend
                         </div>
                     </div>
                 ';
+        return $xhtml;
+    }
+
+    public static function loadTitle($title = '')
+    {
+        $xhtml = '
+                    <div class="breadcrumb-section">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="page-title">
+                                        <h2 class="py-2"> ' . $title . '</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
         return $xhtml;
     }
 }

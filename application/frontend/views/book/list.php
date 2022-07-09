@@ -1,14 +1,3 @@
-<div class="breadcrumb-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title">
-                    <h2 class="py-2">Tất cả sách</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <?php
 //cate Name
@@ -60,7 +49,7 @@ $selectSearch = HelperFrontend::selectBox($arrData, 'sort', $this->arrParams['so
 $xhtmlPagination = $this->pagination->showPagination();
 
 ?>
-
+<?= HelperFrontend::loadTitle($this->thisTitle); ?>
 <section class="section-b-space j-box ratio_asos">
     <div class="collection-wrapper">
         <div class="container">

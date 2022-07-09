@@ -10,14 +10,14 @@ class BookModel extends Model
 
 	public function infoItems($params = null, $options = null)
 	{
-		if ($options['task'] == 'get_cate_name') {
-			$query[] = "SELECT `name` FROM `" . TABLE_CATEGORY . "`";
-			$addWhere = " ";
-			if (isset($params['id'])) $addWhere = " `id` = '{$params['id']}' AND ";
-			$query[] = "WHERE $addWhere `status` = 'active'";
-			$query = implode(" ", $query);
-			$result = $this->singleRecord($query);
-		} elseif ($options['task'] == 'get_all_cate_name') {
+		// if ($options['task'] == 'get_cate_name') {
+		// 	$query[] = "SELECT `name` FROM `" . TABLE_CATEGORY . "`";
+		// 	$addWhere = " ";
+		// 	if (isset($params['id'])) $addWhere = " `id` = '{$params['id']}' AND ";
+		// 	$query[] = "WHERE $addWhere `status` = 'active'";
+		// 	$query = implode(" ", $query);
+		// 	$result = $this->singleRecord($query);
+		if ($options['task'] == 'get_all_cate_name') {
 			$query[] = "SELECT `id`, `name` FROM `" . TABLE_CATEGORY . "` WHERE `status` = 'active'";
 			$query = implode(" ", $query);
 			$result = $this->fetchPairs($query);

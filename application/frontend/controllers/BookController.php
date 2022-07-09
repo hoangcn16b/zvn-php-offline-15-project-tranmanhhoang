@@ -20,6 +20,7 @@ class BookController extends Controller
 
     public function listAction()
     {
+        $this->_view->thisTitle = 'Tất cả sách';
         if (isset($this->_arrParam['id'])) {
             if ($this->_model->checkId($this->_arrParam, ['task' => 'check_id_category']) == false) {
                 URL::redirectLink($this->_arrParam['module'], 'index', 'error', ['type' => 'file_not_exist']);

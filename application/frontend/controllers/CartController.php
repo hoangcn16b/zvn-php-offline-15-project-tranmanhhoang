@@ -13,6 +13,7 @@ class CartController extends Controller
 
 	public function indexAction()
 	{
+        $this->_view->thisTitle = 'Tất cả sách';
 		$this->_view->items = $this->_model->listItems($this->_arrParam, ['task' => 'books-in-cart']);
 		$this->_view->render('cart/index');
 	}

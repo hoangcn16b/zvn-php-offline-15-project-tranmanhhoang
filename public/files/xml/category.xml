@@ -1,0 +1,35 @@
+<book_store>
+	<category>
+		<id>
+			105
+		</id>
+		<name>
+			Art & Photography
+		</name>
+		<picture>
+			N6GboTU.png
+		</picture>
+	</category>
+	<category>
+		<id>
+			106
+		</id>
+		<name>
+			Biographies & Memoirs
+		</name>
+		<picture>
+			P2p4oHH.jpg
+		</picture>
+	</category>
+	<category>
+		<id>
+			107
+		</id>
+		<name>
+			Business & Economics
+		</name>
+		<picture>
+			iaRAnzX.jpg
+		</picture>
+	</category>
+</book_store>
