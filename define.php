@@ -12,8 +12,8 @@
 	define ('SCRIPT_PATH'			, PUBLIC_PATH  . 'scripts' . DS);		// đến thư  
 	
 
-	define	('ROOT_URL'				, DS);
-	define	('APPLICATION_URL'		, 'zvn-php-offline-15-project-tranmanhhoang' . DS . 'application' . DS);
+	define	('ROOT_URL'				,  DS);
+	define	('APPLICATION_URL'		,  DS. 'zvn-php-offline-15-project-tranmanhhoang' . 'application' . DS);
 	define	('PUBLIC_URL'			,  'public' . DS);
 	define	('TEMPLATE_URL'			, PUBLIC_URL . 'template' . DS);
 	
