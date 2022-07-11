@@ -96,24 +96,7 @@ class BookModel extends Model
 
 	public function getSpecialProduct($option = null, $total = 21, $prodPerTab = 4)
 	{
-		// $j = 0;
-		// $limit = 0;
-		// for ($i = 0; $i < $total; $i++) {
-		// 	if ($i % 4 !== 0) {
-		// 		continue;
-		// 	} else {
-		// 		$j = $i;
-		// 		if (($total - $j) < 4) {
-		// 			$limit = $total - $j;
-		// 		} else {
-		// 			$limit = 4;
-		// 		}
-		// 		$queryProduct = "SELECT DISTINCT `id` FROM  `" . TABLE_BOOK . "` WHERE `status` = 'active' AND `special` = 1 ORDER BY `id` DESC LIMIT $j,$limit";
-		// 		$result[] = $this->fetchAll($queryProduct);
-		// 	}
-		// }
 		$addWhere = '';
-
 		if ($option['task'] == 'special_book') {
 			$addWhere = 'AND `special` = 1';
 			$orderBy = ' `ordering` ASC ';
